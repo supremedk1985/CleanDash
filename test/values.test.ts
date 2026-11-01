@@ -54,6 +54,10 @@ describe("lampState", () => {
     expect(lampState(l, { a: false, b: false, ar: false, br: true }).reachable).toBe(true);
     expect(lampState(l, { a: false, b: false, ar: false, br: false }).reachable).toBe(false);
   });
+  it("does not call a lamp unreachable because its reachable datapoint is empty", () => {
+    const l = lamp([{ on: "a", reachable: "ar", levelMax: 100 }]);
+    expect(lampState(l, { a: true, ar: null }).reachable).toBe(true);
+  });
 });
 
 describe("writing", () => {

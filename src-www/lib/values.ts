@@ -71,7 +71,9 @@ export function lampState(l: Lamp, values: Values): LampState {
     const raw = values[d.on];
     if (raw !== undefined && raw !== null) known = true;
     const dOn = truthy(raw);
-    const dReach = d.reachable ? values[d.reachable] === undefined || truthy(values[d.reachable]) : raw !== undefined;
+    // an empty "reachable" datapoint (null) says nothing; only an explicit false counts as unreachable
+    const r = d.reachable ? values[d.reachable] : undefined;
+    const dReach = d.reachable ? r === undefined || r === null || truthy(r) : raw !== undefined;
     if (dReach) reachable = true;
     if (dOn) {
       on = true;

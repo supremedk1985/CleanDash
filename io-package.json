@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cleandash",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "Weather, energy, waste collection, dishwasher and shopping list tiles; notices for bin day and dishwasher",
+        "de": "Kacheln für Wetter, Energie, Müllabfuhr, Spülmaschine und Einkaufsliste; Meldungen zu Abholtag und Spülmaschine"
+      },
       "0.1.0": {
         "en": "First draft: rooms and lights tile, configured in admin",
         "de": "Erster Entwurf: Kachel für Räume und Licht, Einrichtung im Admin"
@@ -66,7 +70,21 @@
     "theme": "auto",
     "rooms": [],
     "lights": [],
-    "shutters": []
+    "shutters": [],
+    "weatherInstance": "",
+    "trashInstance": "",
+    "dishwasherDevice": "",
+    "energySolar": "",
+    "energyConsumption": "",
+    "energyGridImport": "",
+    "energyGridExport": "",
+    "energyBatteryLevel": "",
+    "energyBatteryCharge": "",
+    "energyBatteryDischarge": "",
+    "energySolarToday": "",
+    "energyConsumptionToday": "",
+    "energyGridToday": "",
+    "shoppingLists": []
   },
   "objects": [],
   "instanceObjects": []

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
 import HouseTile from "./components/HouseTile.vue";
+import WeatherTile from "./components/WeatherTile.vue";
+import EnergyTile from "./components/EnergyTile.vue";
+import TrashTile from "./components/TrashTile.vue";
+import DishwasherTile from "./components/DishwasherTile.vue";
+import ShoppingTile from "./components/ShoppingTile.vue";
 import ConfirmDialog from "./components/ConfirmDialog.vue";
 import NoticeBar from "./components/NoticeBar.vue";
 import { config, connected, demo, errorText, lastContact, loading, start } from "./lib/store";
@@ -14,7 +19,10 @@ onMounted(() => {
 });
 onUnmounted(() => clearInterval(timer));
 
-const empty = () => !config.value || (!config.value.rooms.length && !config.value.lamps.length);
+const empty = () => {
+  const c = config.value;
+  return !c || (!c.rooms.length && !c.lamps.length && !c.weather && !c.energy && !c.trash && !c.dishwasher && !c.shoppingLists.length);
+};
 </script>
 
 <template>
@@ -37,8 +45,18 @@ const empty = () => !config.value || (!config.value.rooms.length && !config.valu
       <h2 class="card-title">{{ t("noConfig") }}</h2>
       <p class="muted">{{ t("noConfigHint") }}</p>
     </section>
-    <div v-else class="grid">
-      <HouseTile />
+    <!-- Wide screens: two columns. Narrow: one, in the order of the "o" classes (weather and bins first). -->
+    <div v-else class="columns">
+      <div class="col">
+        <EnergyTile v-if="config?.energy" class="o4" />
+        <HouseTile v-if="config?.rooms.length || config?.lamps.length" class="o3" />
+      </div>
+      <div class="col">
+        <WeatherTile v-if="config?.weather" class="o1" />
+        <TrashTile v-if="config?.trash" class="o2" />
+        <DishwasherTile v-if="config?.dishwasher" class="o5" />
+        <ShoppingTile class="o6" />
+      </div>
     </div>
   </main>
 

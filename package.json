@@ -1,6 +1,6 @@
 {
   "name": "iobroker.cleandash",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A clean, ready-made dashboard for wall tablets: pick your datapoints, no design work",
   "author": {
     "name": "Daniel Korte",

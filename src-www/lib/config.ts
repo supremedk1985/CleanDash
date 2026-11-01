@@ -39,6 +39,20 @@ export interface ShutterRow {
 
 export interface RawConfig {
   title?: string;
+  weatherInstance?: string;
+  trashInstance?: string;
+  dishwasherDevice?: string;
+  energySolar?: string;
+  energyConsumption?: string;
+  energyGridImport?: string;
+  energyGridExport?: string;
+  energyBatteryLevel?: string;
+  energyBatteryCharge?: string;
+  energyBatteryDischarge?: string;
+  energySolarToday?: string;
+  energyConsumptionToday?: string;
+  energyGridToday?: string;
+  shoppingLists?: { name?: string; content?: string }[];
   confirmWrites?: ConfirmMode;
   theme?: ThemeMode;
   rooms?: RoomRow[];
@@ -75,8 +89,51 @@ export interface Room {
   shutters: Shutter[];
 }
 
+export interface Energy {
+  solar?: string;
+  consumption?: string;
+  gridImport?: string;
+  gridExport?: string;
+  batteryLevel?: string;
+  batteryCharge?: string;
+  batteryDischarge?: string;
+  solarToday?: string;
+  consumptionToday?: string;
+  gridToday?: string;
+}
+
+/** Datapoints of the openweathermap adapter (forecast.current, forecast.day0–5, forecast.period0–7). */
+export interface Weather {
+  base: string;
+}
+
+/** The trashschedule adapter: next pickup and the one after. */
+export interface Trash {
+  instance: string;
+}
+
+/** A Home Connect dishwasher (homeconnect adapter), by its device id. */
+export interface Dishwasher {
+  base: string;
+}
+
+/** A Bring! list (bring adapter), by its content datapoint. */
+export interface ShoppingList {
+  key: string;
+  name: string;
+  content: string;
+  recent: string;
+  add: string;
+  remove: string;
+}
+
 export interface Config {
   title: string;
+  weather?: Weather;
+  energy?: Energy;
+  trash?: Trash;
+  dishwasher?: Dishwasher;
+  shoppingLists: ShoppingList[];
   confirmWrites: ConfirmMode;
   theme: ThemeMode;
   /** Floors in the order they first appear in the room list; "" means no floor given. */
@@ -155,8 +212,38 @@ export function buildConfig(raw: RawConfig | null | undefined): Config {
     f.rooms.push(room);
   }
 
+  const energy: Energy = {
+    solar: id(r.energySolar),
+    consumption: id(r.energyConsumption),
+    gridImport: id(r.energyGridImport),
+    gridExport: id(r.energyGridExport),
+    batteryLevel: id(r.energyBatteryLevel),
+    batteryCharge: id(r.energyBatteryCharge),
+    batteryDischarge: id(r.energyBatteryDischarge),
+    solarToday: id(r.energySolarToday),
+    consumptionToday: id(r.energyConsumptionToday),
+    gridToday: id(r.energyGridToday),
+  };
+  // the admin's instance picker may store "system.adapter.x.0" or "x.0"
+  const instance = (s: unknown) => id(s)?.replace(/^system\.adapter\./, "");
+  const weatherBase = instance(r.weatherInstance);
+  const trashInstance = instance(r.trashInstance);
+  const dishwasherBase = id(r.dishwasherDevice);
+  const shoppingLists: ShoppingList[] = [];
+  for (const row of r.shoppingLists ?? []) {
+    const content = id(row?.content);
+    if (!content || !content.endsWith(".content")) continue;
+    const base = content.slice(0, -".content".length);
+    shoppingLists.push({ key: `list-${shoppingLists.length}`, name: text(row.name), content, recent: `${base}.recentContent`, add: `${base}.saveItemTranslated`, remove: `${base}.removeItemTranslated` });
+  }
+
   return {
     title: text(r.title),
+    weather: weatherBase ? { base: weatherBase.replace(/\.forecast.*$/, "") } : undefined,
+    energy: Object.values(energy).some(Boolean) ? energy : undefined,
+    trash: trashInstance ? { instance: trashInstance } : undefined,
+    dishwasher: dishwasherBase ? { base: dishwasherBase } : undefined,
+    shoppingLists,
     confirmWrites: r.confirmWrites === "bulk" ? "bulk" : "all",
     theme: r.theme === "light" || r.theme === "dark" ? r.theme : "auto",
     floors,
@@ -175,5 +262,38 @@ export function datapoints(c: Config): string[] {
     r.shutters.forEach((s) => add(s.position));
   }
   for (const l of c.lamps) for (const d of l.devices) [d.on, d.level, d.reachable].forEach(add);
+  if (c.energy) Object.values(c.energy).forEach(add);
+  if (c.weather) weatherIds(c.weather).forEach(add);
+  if (c.trash) trashIds(c.trash).forEach(add);
+  if (c.dishwasher) Object.values(dishwasherIds(c.dishwasher)).forEach(add);
+  for (const l of c.shoppingLists) [l.content, l.recent].forEach(add);
   return [...ids];
+}
+
+export const WEATHER_DAYS = 6;
+export const WEATHER_PERIODS = 8;
+const CURRENT = ["temperature", "state", "icon", "windSpeed", "humidity", "sunrise", "sunset"];
+const DAY = ["date", "temperatureMax", "temperatureMin", "precipitation", "icon", "state"];
+const PERIOD = ["date", "temperatureMax", "precipitation", "icon"];
+
+export function weatherIds(w: Weather): string[] {
+  const f = `${w.base}.forecast`;
+  return [
+    ...CURRENT.map((k) => `${f}.current.${k}`),
+    ...Array.from({ length: WEATHER_DAYS }, (_, i) => DAY.map((k) => `${f}.day${i}.${k}`)).flat(),
+    ...Array.from({ length: WEATHER_PERIODS }, (_, i) => PERIOD.map((k) => `${f}.period${i}.${k}`)).flat(),
+  ];
+}
+
+export function trashIds(t: Trash): string[] {
+  return ["next.daysLeft", "next.types", "nextAfter.daysLeft", "nextAfter.types"].map((k) => `${t.instance}.${k}`);
+}
+
+export function dishwasherIds(d: Dishwasher) {
+  return {
+    state: `${d.base}.status.BSH_Common_Status_OperationState`,
+    progress: `${d.base}.programs.active.options.BSH_Common_Option_ProgramProgress`,
+    remaining: `${d.base}.programs.active.options.BSH_Common_Option_RemainingProgramTime`,
+    connected: `${d.base}.general.connected`,
+  };
 }

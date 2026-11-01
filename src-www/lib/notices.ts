@@ -7,6 +7,8 @@
 import { computed, ref, type ComputedRef } from "vue";
 import { config, lampStates, values } from "./store";
 import { num, truthy, windowState } from "./values";
+import { dishwasherIds, trashIds } from "./config";
+import { machine, pickup } from "./tiles";
 import { t } from "./i18n";
 
 export interface Notice {
@@ -34,8 +36,29 @@ const unreachableLamps = computed<Notice[]>(() => {
   return names.length ? [{ key: "unreachable", level: "info", text: t("noticeUnreachable", { lamps: names.join(", ") }) }] : [];
 });
 
-/** Tiles add their own sources here (mower stuck, bin day, …). */
-export const noticeSources: ComputedRef<Notice[]>[] = [heatingWithOpenWindow, unreachableLamps];
+const binDay = computed<Notice[]>(() => {
+  const tr = config.value?.trash;
+  if (!tr) return [];
+  const [days, types] = trashIds(tr);
+  const p = pickup(values[days], values[types]);
+  if (!p || p.daysLeft > 1) return [];
+  const key = p.daysLeft === 0 ? "noticeTrashToday" : "noticeTrashTomorrow";
+  return [{ key: `trash:${p.daysLeft}`, level: "alert", text: t(key, { types: p.types.join(", ") }) }];
+});
+
+const dishwasherNotices = computed<Notice[]>(() => {
+  const dw = config.value?.dishwasher;
+  if (!dw) return [];
+  const m = machine(values, dishwasherIds(dw));
+  if (!m.connected) return [{ key: "dishwasher", level: "info", text: t("noticeDwOffline") }];
+  if (m.state === "finished") return [{ key: "dishwasher", level: "info", text: t("noticeDwFinished") }];
+  if (m.state === "paused") return [{ key: "dishwasher", level: "alert", text: t("noticeDwPaused") }];
+  if (m.state === "error") return [{ key: "dishwasher", level: "alert", text: t("noticeDwError") }];
+  return [];
+});
+
+/** Tiles add their own sources here (mower stuck, …). Order = order on screen. */
+export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices, unreachableLamps];
 
 const dismissed = ref<Record<string, string>>({});
 

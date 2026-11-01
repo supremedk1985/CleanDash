@@ -6,6 +6,8 @@ import { computed, reactive, ref } from "vue";
 import { buildConfig, datapoints, type Config, type Lamp, type Room, type Shutter } from "./config";
 import { clampSetpoint, lampState, levelRaw, shutterRaw, type LampState } from "./values";
 import { chooseSource, type Source } from "./source";
+import { itemText, trashColors, type Item } from "./tiles";
+import type { ShoppingList } from "./config";
 import { setLanguage, t } from "./i18n";
 import { isDarkAt } from "./sun";
 
@@ -16,6 +18,8 @@ export const lastContact = ref<Date | null>(null);
 export const loading = ref(true);
 export const demo = ref(false);
 export const errorText = ref<string | null>(null);
+/** trashschedule colours by type name */
+export const trashColorMap = ref<Record<string, string>>({});
 
 let source: Source;
 let location: { latitude?: number; longitude?: number } = {};
@@ -40,6 +44,9 @@ export async function start() {
     config.value = buildConfig(raw);
     applyTheme();
     setInterval(applyTheme, 60_000);
+    if (config.value.trash) {
+      source.readNative(`system.adapter.${config.value.trash.instance}`).then((n) => (trashColorMap.value = trashColors(n)), () => undefined);
+    }
     await source.watch(datapoints(config.value), (id, v) => {
       values[id] = v;
       lastContact.value = new Date();
@@ -123,4 +130,12 @@ export async function moveShutter(s: Shutter, closedPercent: number) {
 
 export async function setSetpoint(r: Room, v: number) {
   if (r.setpoint) await put(r.setpoint, clampSetpoint(v));
+}
+
+export async function addItem(l: ShoppingList, i: Item) {
+  await source.write(l.add, itemText(i));
+}
+
+export async function removeItem(l: ShoppingList, i: Item) {
+  await source.write(l.remove, i.name);
 }

@@ -4,7 +4,7 @@
  */
 import { Connection } from "@iobroker/socket-client";
 import type { RawConfig } from "./config";
-import { DEMO_VALUES, demoConfig } from "./demo";
+import { DEMO_NATIVE, DEMO_VALUES, demoConfig } from "./demo";
 
 export interface SystemInfo {
   language?: string;
@@ -19,6 +19,8 @@ export interface Source {
   /** Initial values plus every later change; returns when the initial values are in. */
   watch(ids: string[], onValue: (id: string, value: unknown) => void): Promise<void>;
   write(id: string, value: string | number | boolean): Promise<void>;
+  /** The native part of an object, e.g. the settings of another adapter instance. */
+  readNative(id: string): Promise<unknown>;
   onConnection(handler: (connected: boolean) => void): void;
 }
 
@@ -64,6 +66,12 @@ export class IoBrokerSource implements Source {
     await this.conn.setState(id, value);
   }
 
+  async readNative(id: string): Promise<unknown> {
+    await this.ready;
+    const obj = await this.conn.getObject(id);
+    return (obj as { native?: unknown } | null | undefined)?.native ?? null;
+  }
+
   onConnection(handler: (connected: boolean) => void): void {
     this.conn.registerConnectionHandler(handler);
   }
@@ -91,8 +99,24 @@ export class DemoSource implements Source {
   }
 
   async write(id: string, value: string | number | boolean): Promise<void> {
+    // the bring adapter's commands change the list, like the real adapter does a moment later
+    const m = /^(.*)\.(saveItemTranslated|removeItemTranslated)$/.exec(id);
+    if (m) {
+      const contentId = `${m[1]}.content`;
+      const list = JSON.parse(String(this.values.get(contentId) ?? "[]")) as { name: string; specification?: string }[];
+      const [name, ...spec] = String(value).split(",");
+      const next = m[2] === "saveItemTranslated"
+        ? [...list.filter((i) => i.name !== name.trim()), { name: name.trim(), specification: spec.join(",").trim() || undefined }]
+        : list.filter((i) => i.name !== name.trim());
+      id = contentId;
+      value = JSON.stringify(next);
+    }
     this.values.set(id, value);
     setTimeout(() => this.listeners.forEach((l) => l(id, value)), 300);
+  }
+
+  async readNative(id: string): Promise<unknown> {
+    return DEMO_NATIVE[id] ?? null;
   }
 
   onConnection(handler: (connected: boolean) => void): void {

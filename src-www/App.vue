@@ -20,7 +20,7 @@ import Dishwasher from "./components/kitchen/Dishwasher.vue";
 import Paperless from "./components/kitchen/Paperless.vue";
 import Speedtest from "./components/kitchen/Speedtest.vue";
 import SettingsPanel from "./components/kitchen/Config.vue";
-import { config, connected, demo, errorText, lastContact, loading, rawConfig, start } from "./lib/store";
+import { config, connected, demo, errorText, lastContact, loading, onConfig, rawConfig, start } from "./lib/store";
 import { clock, t } from "./lib/i18n";
 import { startPolling } from "./compat/engine";
 import type { FeatureModule } from "./compat/registry";
@@ -37,10 +37,7 @@ import { speedtestFeature } from "./features/speedtest";
 
 const now = ref(new Date());
 let timer: number | undefined;
-onMounted(async () => {
-  timer = window.setInterval(() => (now.value = new Date()), 15_000);
-  await start();
-  const r = rawConfig.value;
+onConfig.push((r) => {
   setBringLists(r.shoppingLists);
   const on: [unknown, FeatureModule][] = [
     [r.aufgabenUrl, aufgabenFeature], [r.shoppingLists?.length, bringFeature], [r.dishwasherDevice, dishwasherFeature],
@@ -49,6 +46,10 @@ onMounted(async () => {
     [r.speedtestUrl, speedtestFeature],
   ];
   startPolling(on.filter(([set]) => !!set).map(([, m]) => m));
+});
+onMounted(() => {
+  timer = window.setInterval(() => (now.value = new Date()), 15_000);
+  void start();
 });
 onUnmounted(() => clearInterval(timer));
 

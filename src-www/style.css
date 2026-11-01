@@ -89,7 +89,7 @@ h1, h2, h3, p { margin: 0; }
 @media (min-width: 640px) { .columns { grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 2fr); } }
 
 
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); }
 .card.empty { display: grid; gap: 8px; max-width: 40rem; }
 .card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .card-title { font-size: 1.25rem; font-weight: 600; }
@@ -259,8 +259,8 @@ input[type="range"] { accent-color: var(--warm); height: 32px; }
 .pv-btn.pv-small { min-height: 34px; padding: 4px 12px; font-size: 0.875rem; }
 .pv-btn.pv-small.pv-icon-only { width: 34px; padding: 0; }
 .pv-btn.pv-large { min-height: 52px; font-size: 1.125rem; }
-.pv-toggle { background: var(--pv-secondary); color: var(--text); }
-.pv-toggle.pv-toggle-on { background: var(--pv-primary); color: #fff; }
+.pv-toggle { background: transparent; color: var(--text); border-color: var(--line); min-height: 34px; padding: 4px 12px; }
+.pv-toggle.pv-toggle-on { background: transparent; color: var(--text); }
 .pv-progress { height: 1.25rem; border-radius: 6px; background: var(--line); overflow: hidden; }
 .pv-progress-value { height: 100%; background: var(--pv-primary); display: flex; align-items: center; justify-content: center; transition: width 0.3s; }
 .pv-progress-label { color: #fff; font-size: 0.75rem; font-weight: 600; }

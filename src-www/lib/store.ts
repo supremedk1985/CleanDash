@@ -26,6 +26,9 @@ export const trashColorMap = ref<Record<string, string>>({});
 let source: Source;
 /** the configuration exactly as stored, for tiles that read their own settings */
 export const rawConfig = ref<RawConfig>({});
+/** Run when the configuration is known, before any tile is shown (kitchen tiles set themselves up here). */
+export const onConfig: ((raw: RawConfig) => void)[] = [];
+
 export function getSource(): Source {
   return source;
 }
@@ -51,6 +54,7 @@ export async function start() {
     location.value = { latitude: sys.latitude, longitude: sys.longitude };
     rawConfig.value = raw;
     config.value = buildConfig(raw);
+    for (const f of onConfig) f(raw);
     applyTheme();
     setInterval(() => applyTheme(), 60_000);
     if (config.value.trash) {

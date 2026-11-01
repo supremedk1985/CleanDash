@@ -2,7 +2,10 @@
 /** PrimeVue's Dialog: v-model:visible, header (or #header slot), closes on the backdrop and Escape. */
 defineOptions({ inheritAttrs: false });
 const visible = defineModel<boolean>("visible", { default: false });
-defineProps<{ header?: string; modal?: boolean; showHeader?: boolean; dismissableMask?: boolean; closable?: boolean; contentStyle?: unknown; draggable?: boolean }>();
+// Vue turns a missing boolean prop into false; PrimeVue's defaults are true, so they are set here.
+withDefaults(defineProps<{ header?: string; modal?: boolean; showHeader?: boolean; dismissableMask?: boolean; closable?: boolean; contentStyle?: unknown; draggable?: boolean }>(), {
+  showHeader: true, closable: true, modal: true, dismissableMask: false, draggable: false,
+});
 </script>
 
 <template>

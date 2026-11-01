@@ -1,0 +1,145 @@
+{
+  "i18n": true,
+  "type": "tabs",
+  "items": {
+    "general": {
+      "type": "panel",
+      "label": "General",
+      "items": {
+        "title": {
+          "type": "text",
+          "label": "Title",
+          "help": "Shown at the top of the dashboard. Empty: no title",
+          "xs": 12,
+          "md": 6
+        },
+        "confirmWrites": {
+          "type": "select",
+          "label": "Ask before switching",
+          "options": [
+            { "label": "Always", "value": "all" },
+            { "label": "Only for several devices at once", "value": "bulk" }
+          ],
+          "xs": 12,
+          "md": 6,
+          "newLine": true
+        },
+        "theme": {
+          "type": "select",
+          "label": "Light or dark",
+          "help": "Automatic uses sunrise and sunset at the location set in the ioBroker system settings",
+          "options": [
+            { "label": "Automatic", "value": "auto" },
+            { "label": "Light", "value": "light" },
+            { "label": "Dark", "value": "dark" }
+          ],
+          "xs": 12,
+          "md": 6
+        },
+        "openLink": {
+          "type": "staticLink",
+          "label": "Open dashboard",
+          "href": "/cleandash/index.html",
+          "button": true,
+          "newLine": true
+        }
+      }
+    },
+    "rooms": {
+      "type": "panel",
+      "label": "Rooms",
+      "items": {
+        "roomsHint": {
+          "type": "staticText",
+          "text": "One row per room. Every datapoint is optional; leave out what the room does not have.",
+          "xs": 12
+        },
+        "rooms": {
+          "type": "table",
+          "xs": 12,
+          "noDelete": false,
+          "items": [
+            { "type": "text", "attr": "name", "title": "Name", "width": "12%", "filter": false, "sort": false, "default": "" },
+            { "type": "text", "attr": "floor", "title": "Floor", "width": "8%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "temperature", "title": "Temperature", "width": "14%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "setpoint", "title": "Setpoint", "width": "14%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "humidity", "title": "Humidity", "width": "12%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "heating", "title": "Heating active (valve)", "width": "12%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "window", "title": "Window", "width": "14%", "filter": false, "sort": false, "default": "" },
+            {
+              "type": "select",
+              "attr": "windowMode",
+              "title": "Window value",
+              "width": "10%",
+              "filter": false,
+              "sort": false,
+              "default": "contact",
+              "options": [
+                { "label": "Contact (true = open)", "value": "contact" },
+                { "label": "Handle (0 closed, 1 tilted, 2 open)", "value": "handle" },
+                { "label": "Text (OPEN, TILTED, CLOSED)", "value": "text" }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "lights": {
+      "type": "panel",
+      "label": "Lights",
+      "items": {
+        "lightsHint": {
+          "type": "staticText",
+          "text": "One row per device. Rows with the same name and room become one lamp (for example several LED strips). A room that does not exist in the room list shows the lamp under 'More lights'.",
+          "xs": 12
+        },
+        "lights": {
+          "type": "table",
+          "xs": 12,
+          "items": [
+            { "type": "text", "attr": "name", "title": "Name", "width": "16%", "filter": false, "sort": false, "default": "" },
+            { "type": "text", "attr": "room", "title": "Room", "width": "12%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "on", "title": "On/off", "width": "22%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "level", "title": "Brightness", "width": "22%", "filter": false, "sort": false, "default": "" },
+            { "type": "number", "attr": "levelMax", "title": "Brightness max", "width": "8%", "filter": false, "sort": false, "default": 100 },
+            { "type": "objectId", "attr": "reachable", "title": "Reachable", "width": "20%", "filter": false, "sort": false, "default": "" }
+          ]
+        }
+      }
+    },
+    "shutters": {
+      "type": "panel",
+      "label": "Shutters",
+      "items": {
+        "shuttersHint": {
+          "type": "staticText",
+          "text": "One row per shutter. The room must match a name in the room list.",
+          "xs": 12
+        },
+        "shutters": {
+          "type": "table",
+          "xs": 12,
+          "items": [
+            { "type": "text", "attr": "room", "title": "Room", "width": "16%", "filter": false, "sort": false, "default": "" },
+            { "type": "text", "attr": "name", "title": "Name", "width": "16%", "filter": false, "sort": false, "default": "" },
+            { "type": "objectId", "attr": "position", "title": "Position", "width": "38%", "filter": false, "sort": false, "default": "" },
+            { "type": "number", "attr": "max", "title": "Value range up to", "width": "12%", "filter": false, "sort": false, "default": 100 },
+            {
+              "type": "select",
+              "attr": "closedAt",
+              "title": "Fully closed is",
+              "width": "18%",
+              "filter": false,
+              "sort": false,
+              "default": "max",
+              "options": [
+                { "label": "the highest value", "value": "max" },
+                { "label": "0", "value": "min" }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

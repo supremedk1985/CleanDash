@@ -1,0 +1,49 @@
+{
+  "name": "iobroker.cleandash",
+  "version": "0.1.0",
+  "description": "A clean, ready-made dashboard for wall tablets: pick your datapoints, no design work",
+  "author": {
+    "name": "Daniel Korte",
+    "email": "korte.daniel@outlook.de"
+  },
+  "homepage": "https://github.com/supremedk1985/CleanDash",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "dashboard",
+    "tablet",
+    "kiosk",
+    "visualization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/supremedk1985/CleanDash.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "files": [
+    "admin/",
+    "www/",
+    "io-package.json",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
+    "test": "vitest run",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@iobroker/socket-client": "^5.0.2",
+    "@iobroker/types": "^7.0.7",
+    "@mdi/js": "^7.4.47",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.2",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.18",
+    "vue-tsc": "^3.0.5"
+  }
+}

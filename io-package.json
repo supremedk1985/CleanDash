@@ -1,0 +1,73 @@
+{
+  "common": {
+    "name": "cleandash",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "First draft: rooms and lights tile, configured in admin",
+        "de": "Erster Entwurf: Kachel für Räume und Licht, Einrichtung im Admin"
+      }
+    },
+    "titleLang": {
+      "en": "CleanDash",
+      "de": "CleanDash"
+    },
+    "desc": {
+      "en": "A clean, ready-made dashboard for wall tablets: pick your datapoints, no design work",
+      "de": "Aufgeräumtes, fertiges Dashboard für Wandtablets: Datenpunkte wählen, keine Gestaltungsarbeit"
+    },
+    "authors": [
+      "Daniel Korte <korte.daniel@outlook.de>"
+    ],
+    "keywords": [
+      "dashboard",
+      "tablet",
+      "kiosk",
+      "visualization"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "icon": "cleandash.svg",
+    "extIcon": "https://raw.githubusercontent.com/supremedk1985/CleanDash/main/admin/cleandash.svg",
+    "readme": "https://github.com/supremedk1985/CleanDash/blob/main/README.md",
+    "type": "visualization",
+    "mode": "none",
+    "enabled": true,
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "tier": 3,
+    "adminUI": {
+      "config": "json"
+    },
+    "localLinks": {
+      "_default": {
+        "link": "%web_protocol%://%ip%:%web_port%/cleandash/index.html",
+        "color": "#2EC4D6"
+      }
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.0.0"
+      },
+      {
+        "web": ">=6.0.0"
+      }
+    ]
+  },
+  "native": {
+    "title": "",
+    "confirmWrites": "all",
+    "theme": "auto",
+    "rooms": [],
+    "lights": [],
+    "shutters": []
+  },
+  "objects": [],
+  "instanceObjects": []
+}

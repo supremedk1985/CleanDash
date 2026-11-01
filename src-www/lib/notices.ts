@@ -28,7 +28,9 @@ const heatingWithOpenWindow = computed<Notice[]>(() =>
 );
 
 const unreachableLamps = computed<Notice[]>(() => {
-  const names = (config.value?.lamps ?? []).filter((l) => lampStates.value[l.key] && !lampStates.value[l.key].reachable).map((l) => l.name);
+  const names = (config.value?.lamps ?? [])
+    .filter((l) => lampStates.value[l.key] && !lampStates.value[l.key].reachable)
+    .map((l) => (l.room ? `${l.name} (${l.room})` : l.name));
   return names.length ? [{ key: "unreachable", level: "info", text: t("noticeUnreachable", { lamps: names.join(", ") }) }] : [];
 });
 

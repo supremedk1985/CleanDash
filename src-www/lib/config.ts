@@ -40,6 +40,7 @@ export interface ShutterRow {
 export interface RawConfig {
   title?: string;
   weatherInstance?: string;
+  weatherHourly?: boolean;
   trashInstance?: string;
   dishwasherDevice?: string;
   energySolar?: string;
@@ -52,6 +53,12 @@ export interface RawConfig {
   energySolarToday?: string;
   energyConsumptionToday?: string;
   energyGridToday?: string;
+  energySavings?: string;
+  energyTotal?: string;
+  energySolarMax?: number;
+  energyHomeMax?: number;
+  energyTitle?: string;
+  energyHistoryUrl?: string;
   shoppingLists?: { name?: string; content?: string }[];
   confirmWrites?: ConfirmMode;
   theme?: ThemeMode;
@@ -100,6 +107,15 @@ export interface Energy {
   solarToday?: string;
   consumptionToday?: string;
   gridToday?: string;
+  /** money saved so far (€) and energy produced so far (kWh) */
+  savings?: string;
+  total?: string;
+  /** full ring for solar and house, in watts */
+  solarMax: number;
+  homeMax: number;
+  title: string;
+  /** folder with day/week/month/year files for the history dialog (docs/energy-history.md) */
+  historyUrl?: string;
 }
 
 /** Datapoints of the openweathermap adapter (forecast.current, forecast.day0–5, forecast.period0–7). */
@@ -130,6 +146,8 @@ export interface ShoppingList {
 export interface Config {
   title: string;
   weather?: Weather;
+  /** hourly rain and temperature from Open-Meteo (internet) */
+  weatherHourly: boolean;
   energy?: Energy;
   trash?: Trash;
   dishwasher?: Dishwasher;
@@ -223,7 +241,15 @@ export function buildConfig(raw: RawConfig | null | undefined): Config {
     solarToday: id(r.energySolarToday),
     consumptionToday: id(r.energyConsumptionToday),
     gridToday: id(r.energyGridToday),
+    savings: id(r.energySavings),
+    total: id(r.energyTotal),
+    solarMax: positive(r.energySolarMax, 2700),
+    homeMax: positive(r.energyHomeMax, 1300),
+    title: text(r.energyTitle),
+    historyUrl: id(r.energyHistoryUrl)?.replace(/\/+$/, ""),
   };
+  const energyIds = [energy.solar, energy.consumption, energy.gridImport, energy.gridExport, energy.batteryLevel, energy.batteryCharge,
+    energy.batteryDischarge, energy.solarToday, energy.consumptionToday, energy.gridToday, energy.savings, energy.total];
   // the admin's instance picker may store "system.adapter.x.0" or "x.0"
   const instance = (s: unknown) => id(s)?.replace(/^system\.adapter\./, "");
   const weatherBase = instance(r.weatherInstance);
@@ -239,8 +265,9 @@ export function buildConfig(raw: RawConfig | null | undefined): Config {
 
   return {
     title: text(r.title),
+    weatherHourly: r.weatherHourly === true,
     weather: weatherBase ? { base: weatherBase.replace(/\.forecast.*$/, "") } : undefined,
-    energy: Object.values(energy).some(Boolean) ? energy : undefined,
+    energy: energyIds.some(Boolean) ? energy : undefined,
     trash: trashInstance ? { instance: trashInstance } : undefined,
     dishwasher: dishwasherBase ? { base: dishwasherBase } : undefined,
     shoppingLists,
@@ -262,7 +289,11 @@ export function datapoints(c: Config): string[] {
     r.shutters.forEach((s) => add(s.position));
   }
   for (const l of c.lamps) for (const d of l.devices) [d.on, d.level, d.reachable].forEach(add);
-  if (c.energy) Object.values(c.energy).forEach(add);
+  if (c.energy) {
+    const e = c.energy;
+    [e.solar, e.consumption, e.gridImport, e.gridExport, e.batteryLevel, e.batteryCharge, e.batteryDischarge,
+      e.solarToday, e.consumptionToday, e.gridToday, e.savings, e.total].forEach(add);
+  }
   if (c.weather) weatherIds(c.weather).forEach(add);
   if (c.trash) trashIds(c.trash).forEach(add);
   if (c.dishwasher) Object.values(dishwasherIds(c.dishwasher)).forEach(add);
@@ -272,8 +303,8 @@ export function datapoints(c: Config): string[] {
 
 export const WEATHER_DAYS = 6;
 export const WEATHER_PERIODS = 8;
-const CURRENT = ["temperature", "state", "icon", "windSpeed", "humidity", "sunrise", "sunset"];
-const DAY = ["date", "temperatureMax", "temperatureMin", "precipitation", "icon", "state"];
+const CURRENT = ["temperature", "state", "icon", "windSpeed", "windGust", "humidity", "pressure", "sunrise", "sunset"];
+const DAY = ["date", "temperatureMax", "temperatureMin", "windSpeed", "state", "precipitation", "title", "icon", "humidity", "pressure"];
 const PERIOD = ["date", "temperatureMax", "precipitation", "icon"];
 
 export function weatherIds(w: Weather): string[] {

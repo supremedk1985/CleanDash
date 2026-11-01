@@ -8,6 +8,10 @@ const d = (s: string) => `0_userdata.0.demo.${s}`;
 export const DEMO_CONFIG: RawConfig = {
   title: "",
   weatherInstance: "openweathermap.0",
+  weatherHourly: true,
+  energySavings: d("e.saved"),
+  energyTotal: d("e.total"),
+  energyTitle: "",
   trashInstance: "trashschedule.0",
   dishwasherDevice: "homeconnect.0.DEMO",
   energySolar: d("e.solar"),
@@ -61,7 +65,7 @@ function demoWeather(): Record<string, unknown> {
   const icons = ["02d", "10d", "01d", "03d", "09d", "01d"];
   const v: Record<string, unknown> = {
     [`${f}.current.temperature`]: 13.4, [`${f}.current.state`]: "Few clouds", [`${f}.current.icon`]: "https://openweathermap.org/img/w/02d.png",
-    [`${f}.current.windSpeed`]: 4.2, [`${f}.current.humidity`]: 71,
+    [`${f}.current.windSpeed`]: 4.2, [`${f}.current.windGust`]: 9.1, [`${f}.current.pressure`]: 1018, [`${f}.current.humidity`]: 71,
     [`${f}.current.sunrise`]: new Date(now).setHours(7, 12), [`${f}.current.sunset`]: new Date(now).setHours(17, 4),
   };
   icons.forEach((icon, i) => {
@@ -69,6 +73,8 @@ function demoWeather(): Record<string, unknown> {
       [`${f}.day${i}.date`]: day0.getTime() + i * 86_400_000, [`${f}.day${i}.temperatureMax`]: [14, 11, 16, 15, 10, 17][i],
       [`${f}.day${i}.temperatureMin`]: [6, 7, 5, 8, 6, 9][i], [`${f}.day${i}.precipitation`]: [0, 4.2, 0, 0.3, 7.5, 0][i],
       [`${f}.day${i}.icon`]: `https://openweathermap.org/img/w/${icon}.png`,
+      [`${f}.day${i}.state`]: ["Few clouds", "Light rain", "Clear sky", "Scattered clouds", "Showers", "Clear sky"][i],
+      [`${f}.day${i}.windSpeed`]: [3, 5, 2, 4, 7, 2][i],
     });
   });
   for (let i = 0; i < 8; i++) {
@@ -88,7 +94,7 @@ export const DEMO_NATIVE: Record<string, unknown> = {
 export const DEMO_VALUES: Record<string, unknown> = {
   ...demoWeather(),
   [d("e.solar")]: 1240, [d("e.home")]: 410, [d("e.gridIn")]: 0, [d("e.gridOut")]: 230, [d("e.soc")]: 64, [d("e.charge")]: 600, [d("e.discharge")]: 0,
-  [d("e.solarToday")]: 6.4, [d("e.homeToday")]: 7.9, [d("e.gridToday")]: 2.1,
+  [d("e.saved")]: 412.5, [d("e.total")]: 1840.2, [d("e.solarToday")]: 6.4, [d("e.homeToday")]: 7.9, [d("e.gridToday")]: 2.1,
   "trashschedule.0.next.daysLeft": 1, "trashschedule.0.next.types": "Recycling",
   "trashschedule.0.nextAfter.daysLeft": 6, "trashschedule.0.nextAfter.types": "Paper, Residual",
   "homeconnect.0.DEMO.status.BSH_Common_Status_OperationState": "BSH.Common.EnumType.OperationState.Run",

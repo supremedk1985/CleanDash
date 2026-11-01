@@ -1,6 +1,6 @@
 {
   "name": "iobroker.cleandash",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A clean, ready-made dashboard for wall tablets: pick your datapoints, no design work",
   "author": {
     "name": "Daniel Korte",
@@ -36,10 +36,16 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
+    "@fontsource/roboto": "^5.2.6",
     "@iobroker/socket-client": "^5.0.2",
     "@iobroker/types": "^7.0.7",
+    "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@vitejs/plugin-vue": "^6.0.1",
+    "autoprefixer": "^10.4.21",
+    "chart.js": "^4.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
     "vitest": "^4.1.10",

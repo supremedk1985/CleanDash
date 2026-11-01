@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cleandash",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Energy rings and history, weather timelines and details, bin ticker; bundled Roboto font; three columns",
+        "de": "Energie-Ringe und Verlauf, Wetter-Zeitleisten und Details, Tonnenticker; Schrift Roboto eingebaut; drei Spalten"
+      },
       "0.2.0": {
         "en": "Weather, energy, waste collection, dishwasher and shopping list tiles; notices for bin day and dishwasher",
         "de": "Kacheln für Wetter, Energie, Müllabfuhr, Spülmaschine und Einkaufsliste; Meldungen zu Abholtag und Spülmaschine"
@@ -84,7 +88,14 @@
     "energySolarToday": "",
     "energyConsumptionToday": "",
     "energyGridToday": "",
-    "shoppingLists": []
+    "shoppingLists": [],
+    "weatherHourly": false,
+    "energySavings": "",
+    "energyTotal": "",
+    "energySolarMax": 2700,
+    "energyHomeMax": 1300,
+    "energyTitle": "",
+    "energyHistoryUrl": ""
   },
   "objects": [],
   "instanceObjects": []

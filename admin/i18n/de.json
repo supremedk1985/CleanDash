@@ -57,5 +57,14 @@
   "From the grid today (kWh)": "Aus dem Netz heute (kWh)",
   "Shopping lists": "Einkaufslisten",
   "Bring! lists from the bring adapter: pick the 'content' datapoint of each list.": "Bring!-Listen aus dem Adapter bring: je Liste den Datenpunkt „content“ auswählen.",
-  "List (content datapoint)": "Liste (Datenpunkt content)"
+  "List (content datapoint)": "Liste (Datenpunkt content)",
+  "Hourly rain and temperature from Open-Meteo": "Regen und Temperatur je Stunde von Open-Meteo",
+  "Asks open-meteo.com (free, no key) every 30 minutes with the location from the system settings": "Fragt alle 30 Minuten open-meteo.com (kostenlos, ohne Schlüssel) mit dem Standort aus den Systemeinstellungen",
+  "Money saved so far (€)": "Bisher gespart (€)",
+  "Energy produced so far (kWh)": "Bisher erzeugt (kWh)",
+  "Solar ring full at (W)": "Solar-Ring voll bei (W)",
+  "House ring full at (W)": "Haus-Ring voll bei (W)",
+  "Empty: Energy centre": "Leer: Energiezentrale",
+  "Folder with history files": "Ordner mit Verlaufsdateien",
+  "Optional, for the history dialog (format: docs/energy-history.md), e.g. http://192.168.1.10/energie": "Freiwillig, für den Verlauf (Format: docs/energy-history.md), z. B. http://192.168.1.10/energie"
 }

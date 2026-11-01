@@ -45,17 +45,19 @@ const empty = () => {
       <h2 class="card-title">{{ t("noConfig") }}</h2>
       <p class="muted">{{ t("noConfigHint") }}</p>
     </section>
-    <!-- Wide screens: two columns. Narrow: one, in the order of the "o" classes (weather and bins first). -->
+    <!-- Three columns like the kitchen dashboard (4 : 3 : 2), one column on phones -->
     <div v-else class="columns">
       <div class="col">
-        <EnergyTile v-if="config?.energy" class="o4" />
-        <HouseTile v-if="config?.rooms.length || config?.lamps.length" class="o3" />
+        <EnergyTile v-if="config?.energy" />
+        <WeatherTile v-if="config?.weather" />
+        <HouseTile v-if="config?.rooms.length || config?.lamps.length" />
       </div>
       <div class="col">
-        <WeatherTile v-if="config?.weather" class="o1" />
-        <TrashTile v-if="config?.trash" class="o2" />
-        <DishwasherTile v-if="config?.dishwasher" class="o5" />
-        <ShoppingTile class="o6" />
+        <TrashTile v-if="config?.trash" />
+        <ShoppingTile />
+      </div>
+      <div class="col">
+        <DishwasherTile v-if="config?.dishwasher" />
       </div>
     </div>
   </main>

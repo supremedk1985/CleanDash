@@ -90,7 +90,8 @@ export class DemoSource implements Source {
   }
 
   async systemInfo(): Promise<SystemInfo> {
-    return { language: this.lang };
+    // a made-up place in central Germany, for sunrise/sunset and the hourly forecast
+    return { language: this.lang, latitude: 51.0, longitude: 10.0 };
   }
 
   async watch(ids: string[], onValue: (id: string, value: unknown) => void): Promise<void> {

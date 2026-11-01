@@ -17,12 +17,15 @@ export const connected = ref(true);
 export const lastContact = ref<Date | null>(null);
 export const loading = ref(true);
 export const demo = ref(false);
+/** true while the dark theme is shown (charts pick their colours from it) */
+export const isDark = ref(false);
 export const errorText = ref<string | null>(null);
 /** trashschedule colours by type name */
 export const trashColorMap = ref<Record<string, string>>({});
 
 let source: Source;
-let location: { latitude?: number; longitude?: number } = {};
+/** location from the ioBroker system settings (sunrise/sunset, hourly weather) */
+export const location = ref<{ latitude?: number; longitude?: number }>({});
 
 export const lampStates = computed<Record<string, LampState>>(() => {
   const out: Record<string, LampState> = {};
@@ -40,7 +43,7 @@ export async function start() {
   try {
     const [raw, sys] = await Promise.all([source.loadConfig(), source.systemInfo()]);
     setLanguage(sys.language);
-    location = { latitude: sys.latitude, longitude: sys.longitude };
+    location.value = { latitude: sys.latitude, longitude: sys.longitude };
     config.value = buildConfig(raw);
     applyTheme();
     setInterval(applyTheme, 60_000);
@@ -63,9 +66,10 @@ export function applyTheme() {
   let dark: boolean;
   if (mode === "dark") dark = true;
   else if (mode === "light") dark = false;
-  else if (location.latitude !== undefined && location.longitude !== undefined) dark = isDarkAt(new Date(), location.latitude, location.longitude);
+  else if (location.value.latitude !== undefined && location.value.longitude !== undefined) dark = isDarkAt(new Date(), location.value.latitude, location.value.longitude);
   else dark = globalThis.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
   document.documentElement.dataset.theme = dark ? "dark" : "light";
+  isDark.value = dark;
 }
 
 // --- writing, always behind a question when the configuration wants one ---------------------------

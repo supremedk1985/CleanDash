@@ -319,6 +319,13 @@
           "xs": 12,
           "md": 6
         },
+        "weatherHourly": {
+          "type": "checkbox",
+          "label": "Hourly rain and temperature from Open-Meteo",
+          "help": "Asks open-meteo.com (free, no key) every 30 minutes with the location from the system settings",
+          "xs": 12,
+          "md": 6
+        },
         "trashInstance": {
           "type": "instance",
           "adapter": "trashschedule",
@@ -407,6 +414,48 @@
           "label": "From the grid today (kWh)",
           "xs": 12,
           "md": 6
+        },
+        "energySavings": {
+          "type": "objectId",
+          "label": "Money saved so far (€)",
+          "xs": 12,
+          "md": 6,
+          "newLine": true
+        },
+        "energyTotal": {
+          "type": "objectId",
+          "label": "Energy produced so far (kWh)",
+          "xs": 12,
+          "md": 6
+        },
+        "energySolarMax": {
+          "type": "number",
+          "label": "Solar ring full at (W)",
+          "default": 2700,
+          "xs": 12,
+          "md": 3,
+          "newLine": true
+        },
+        "energyHomeMax": {
+          "type": "number",
+          "label": "House ring full at (W)",
+          "default": 1300,
+          "xs": 12,
+          "md": 3
+        },
+        "energyTitle": {
+          "type": "text",
+          "label": "Title",
+          "help": "Empty: Energy centre",
+          "xs": 12,
+          "md": 6
+        },
+        "energyHistoryUrl": {
+          "type": "text",
+          "label": "Folder with history files",
+          "help": "Optional, for the history dialog (format: docs/energy-history.md), e.g. http://192.168.1.10/energie",
+          "xs": 12,
+          "newLine": true
         }
       }
     },

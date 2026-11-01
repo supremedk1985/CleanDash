@@ -5,7 +5,7 @@
  * by itself when the cause is gone. Dismissing hides it until its text changes (a new cause is a new notice).
  */
 import { computed, ref, type ComputedRef } from "vue";
-import { config, lampStates, values } from "./store";
+import { config, lampStates, trashColorMap, values } from "./store";
 import { num, truthy, windowState } from "./values";
 import { dishwasherIds, trashIds } from "./config";
 import { machine, pickup } from "./tiles";
@@ -16,6 +16,11 @@ export interface Notice {
   key: string;
   level: "alert" | "info";
   text: string;
+  /** optional: a colour (e.g. the bin's) and an MDI icon class for the notice */
+  color?: string;
+  icon?: string;
+  /** label of the dismiss button; without it the notice has an X */
+  done?: string;
 }
 
 const heatingWithOpenWindow = computed<Notice[]>(() =>
@@ -43,7 +48,10 @@ const binDay = computed<Notice[]>(() => {
   const p = pickup(values[days], values[types]);
   if (!p || p.daysLeft > 1) return [];
   const key = p.daysLeft === 0 ? "noticeTrashToday" : "noticeTrashTomorrow";
-  return [{ key: `trash:${p.daysLeft}`, level: "alert", text: t(key, { types: p.types.join(", ") }) }];
+  return [{
+    key: `trash:${p.daysLeft}`, level: "alert", text: t(key, { types: p.types.join(", ") }),
+    color: trashColorMap.value[p.types[0]], icon: "mdi mdi-delete", done: t("done"),
+  }];
 });
 
 const dishwasherNotices = computed<Notice[]>(() => {
@@ -58,7 +66,9 @@ const dishwasherNotices = computed<Notice[]>(() => {
 });
 
 /** Tiles add their own sources here (mower stuck, …). Order = order on screen. */
-export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices, unreachableLamps];
+// Lamps that are not reachable are not announced (Daniel, 01.11.: "kann weg"); unreachableLamps stays for a later setting.
+export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices];
+void unreachableLamps;
 
 const dismissed = ref<Record<string, string>>({});
 

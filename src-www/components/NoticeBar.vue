@@ -8,10 +8,13 @@ import { t } from "../lib/i18n";
 
 <template>
   <div v-if="notices.length" class="notices" role="status" aria-live="polite">
-    <div v-for="n in notices" :key="n.key" class="notice" :class="n.level" :data-test="`notice-${n.key}`">
-      <Icon :path="n.level === 'alert' ? mdiAlertCircleOutline : mdiInformationOutline" :size="22" />
+    <div v-for="n in notices" :key="n.key" class="notice" :class="[n.level, { big: n.icon }]" :data-test="`notice-${n.key}`"
+      :style="n.color ? { borderColor: n.color } : undefined">
+      <i v-if="n.icon" :class="n.icon" class="notice-icon" :style="n.color ? { color: n.color } : undefined" aria-hidden="true"></i>
+      <Icon v-else :path="n.level === 'alert' ? mdiAlertCircleOutline : mdiInformationOutline" :size="22" />
       <span class="grow">{{ n.text }}</span>
-      <button type="button" class="icon-btn" :aria-label="t('dismiss')" @click="dismiss(n)"><Icon :path="mdiClose" :size="18" /></button>
+      <button v-if="n.done" type="button" class="btn primary small" @click="dismiss(n)">{{ n.done }}</button>
+      <button v-else type="button" class="icon-btn" :aria-label="t('dismiss')" @click="dismiss(n)"><Icon :path="mdiClose" :size="18" /></button>
     </div>
   </div>
 </template>

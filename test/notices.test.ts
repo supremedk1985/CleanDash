@@ -22,8 +22,8 @@ describe("notices", () => {
     values.h = true;
     values.l = false;
     values.r = false;
-    expect(notices.value).toHaveLength(2);
+    expect(notices.value).toHaveLength(1);
     dismiss(notices.value[0]);
-    expect(notices.value.map((n) => n.key)).toEqual(["unreachable"]);
+    expect(notices.value).toEqual([]);
   });
 });

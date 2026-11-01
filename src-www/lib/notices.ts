@@ -19,8 +19,6 @@ export interface Notice {
   /** optional: a colour (e.g. the bin's) and an MDI icon class for the notice */
   color?: string;
   icon?: string;
-  /** label of the dismiss button; without it the notice has an X */
-  done?: string;
 }
 
 const heatingWithOpenWindow = computed<Notice[]>(() =>
@@ -50,7 +48,7 @@ const binDay = computed<Notice[]>(() => {
   const key = p.daysLeft === 0 ? "noticeTrashToday" : "noticeTrashTomorrow";
   return [{
     key: `trash:${p.daysLeft}`, level: "alert", text: t(key, { types: p.types.join(", ") }),
-    color: trashColorMap.value[p.types[0]], icon: "mdi mdi-delete", done: t("done"),
+    color: trashColorMap.value[p.types[0]], icon: "mdi mdi-delete",
   }];
 });
 
@@ -70,12 +68,22 @@ const dishwasherNotices = computed<Notice[]>(() => {
 export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices];
 void unreachableLamps;
 
-const dismissed = ref<Record<string, string>>({});
+/** A notice can be put on snooze for a few minutes; then it comes back if its cause is still there. */
+export const SNOOZE_MS = 5 * 60_000;
+const snoozed = ref<Record<string, number>>({});
+const now = ref(Date.now());
+if (typeof window !== "undefined") window.setInterval(() => (now.value = Date.now()), 10_000);
 
 export const notices = computed(() =>
-  noticeSources.flatMap((s) => s.value).filter((n) => dismissed.value[n.key] !== n.text),
+  noticeSources.flatMap((s) => s.value).filter((n) => (snoozed.value[n.key] ?? 0) <= now.value),
 );
 
+export function snooze(n: Notice, ms = SNOOZE_MS) {
+  now.value = Date.now();
+  snoozed.value = { ...snoozed.value, [n.key]: now.value + ms };
+}
+
+/** kept for callers that hide a notice for good (until the page is reloaded) */
 export function dismiss(n: Notice) {
-  dismissed.value = { ...dismissed.value, [n.key]: n.text };
+  snooze(n, Number.MAX_SAFE_INTEGER / 2);
 }

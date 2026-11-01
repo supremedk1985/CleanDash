@@ -15,10 +15,16 @@ export interface Notice {
   /** stable per cause, e.g. "window-heating:Kitchen" */
   key: string;
   level: "alert" | "info";
-  text: string;
-  /** optional: a colour (e.g. the bin's) and an MDI icon class for the notice */
+  /** small line above the title (what it is about), the title, and a line below */
+  eyebrow?: string;
+  title: string;
+  detail?: string;
+  /** colour of the frame and the symbol; an MDI icon class, or a bin in that colour with a word on it */
   color?: string;
   icon?: string;
+  bin?: { label: string };
+  /** offers "Done" besides the snooze: the notice then stays away until its cause changes */
+  done?: boolean;
 }
 
 const heatingWithOpenWindow = computed<Notice[]>(() =>
@@ -27,8 +33,10 @@ const heatingWithOpenWindow = computed<Notice[]>(() =>
     const w = windowState(values[r.window], r.windowMode);
     const h = values[r.heating];
     if ((w !== "open" && w !== "tilted") || !(truthy(h) || (num(h) ?? 0) > 0)) return [];
-    const state = t(w === "open" ? "stateOpen" : "stateTilted");
-    return [{ key: `window-heating:${r.name}`, level: "alert", text: t("noticeWindowHeating", { room: r.name, state }) }];
+    return [{
+      key: `window-heating:${r.name}`, level: "alert", eyebrow: r.name, title: t(w === "open" ? "windowOpen" : "windowTilted"),
+      detail: t("heatingRuns"), color: "#f08a4b", icon: "mdi mdi-window-open-variant",
+    }];
   }),
 );
 
@@ -36,7 +44,7 @@ const unreachableLamps = computed<Notice[]>(() => {
   const names = (config.value?.lamps ?? [])
     .filter((l) => lampStates.value[l.key] && !lampStates.value[l.key].reachable)
     .map((l) => (l.room ? `${l.name} (${l.room})` : l.name));
-  return names.length ? [{ key: "unreachable", level: "info", text: t("noticeUnreachable", { lamps: names.join(", ") }) }] : [];
+  return names.length ? [{ key: "unreachable", level: "info", title: t("noticeUnreachable", { lamps: names.join(", ") }) }] : [];
 });
 
 const binDay = computed<Notice[]>(() => {
@@ -45,10 +53,11 @@ const binDay = computed<Notice[]>(() => {
   const [days, types] = trashIds(tr);
   const p = pickup(values[days], values[types]);
   if (!p || p.daysLeft > 1) return [];
-  const key = p.daysLeft === 0 ? "noticeTrashToday" : "noticeTrashTomorrow";
+  const color = trashColorMap.value[p.types[0]] ?? "#9ca3af";
   return [{
-    key: `trash:${p.daysLeft}`, level: "alert", text: t(key, { types: p.types.join(", ") }),
-    color: trashColorMap.value[p.types[0]], icon: "mdi mdi-delete",
+    key: `trash:${p.daysLeft}:${p.types.join(",")}`, level: "alert", eyebrow: t("trash"), title: p.types.join(", "),
+    detail: t(p.daysLeft === 0 ? "trashToday" : "trashTomorrow"), color,
+    bin: { label: (p.daysLeft === 0 ? t("today") : t("tomorrow")).toUpperCase() }, done: true,
   }];
 });
 
@@ -56,10 +65,11 @@ const dishwasherNotices = computed<Notice[]>(() => {
   const dw = config.value?.dishwasher;
   if (!dw) return [];
   const m = machine(values, dishwasherIds(dw));
-  if (!m.connected) return [{ key: "dishwasher", level: "info", text: t("noticeDwOffline") }];
-  if (m.state === "finished") return [{ key: "dishwasher", level: "info", text: t("noticeDwFinished") }];
-  if (m.state === "paused") return [{ key: "dishwasher", level: "alert", text: t("noticeDwPaused") }];
-  if (m.state === "error") return [{ key: "dishwasher", level: "alert", text: t("noticeDwError") }];
+  const base = { key: "dishwasher", eyebrow: t("dishwasher"), icon: "mdi mdi-dishwasher" };
+  if (!m.connected) return [{ ...base, key: "dishwasher:offline", level: "info", title: t("dwNoCloud"), color: "#94a3b8", icon: "mdi mdi-cloud-off-outline" }];
+  if (m.state === "finished") return [{ ...base, key: "dishwasher:finished", level: "info", title: t("dwFinished"), detail: t("dwEmpty"), color: "#22c55e", done: true }];
+  if (m.state === "paused") return [{ ...base, key: "dishwasher:paused", level: "alert", title: t("dwPaused"), color: "#f08a4b" }];
+  if (m.state === "error") return [{ ...base, key: "dishwasher:error", level: "alert", title: t("dwError"), color: "#ef4444" }];
   return [];
 });
 
@@ -68,14 +78,21 @@ const dishwasherNotices = computed<Notice[]>(() => {
 export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices];
 void unreachableLamps;
 
-/** A notice can be put on snooze for a few minutes; then it comes back if its cause is still there. */
+/** A notice can be put on snooze for a few minutes; then it comes back if its cause is still there. "Done" hides it
+ *  until its cause changes (a new key); that survives a reload where the browser allows storage. */
 export const SNOOZE_MS = 5 * 60_000;
+const DONE_KEY = "cleandash.done";
 const snoozed = ref<Record<string, number>>({});
+const done = ref<Record<string, true>>(loadDone());
 const now = ref(Date.now());
 if (typeof window !== "undefined") window.setInterval(() => (now.value = Date.now()), 10_000);
 
+function loadDone(): Record<string, true> {
+  try { return JSON.parse(localStorage.getItem(DONE_KEY) ?? "{}"); } catch { return {}; }
+}
+
 export const notices = computed(() =>
-  noticeSources.flatMap((s) => s.value).filter((n) => (snoozed.value[n.key] ?? 0) <= now.value),
+  noticeSources.flatMap((s) => s.value).filter((n) => !done.value[n.key] && (snoozed.value[n.key] ?? 0) <= now.value),
 );
 
 export function snooze(n: Notice, ms = SNOOZE_MS) {
@@ -83,7 +100,7 @@ export function snooze(n: Notice, ms = SNOOZE_MS) {
   snoozed.value = { ...snoozed.value, [n.key]: now.value + ms };
 }
 
-/** kept for callers that hide a notice for good (until the page is reloaded) */
 export function dismiss(n: Notice) {
-  snooze(n, Number.MAX_SAFE_INTEGER / 2);
+  done.value = { ...done.value, [n.key]: true };
+  try { localStorage.setItem(DONE_KEY, JSON.stringify(done.value)); } catch { /* only for this page */ }
 }

@@ -76,7 +76,7 @@ h1, h2, h3, p { margin: 0; }
 .banner.alert { background: var(--alert); color: #fff; }
 .banner.info { background: var(--brand); color: #fff; }
 
-.page { padding: 16px max(16px, env(safe-area-inset-left)) 24px max(16px, env(safe-area-inset-right)); max-width: 1600px; margin: 0 auto; }
+.page { padding: 16px max(16px, env(safe-area-inset-left)) 24px max(16px, env(safe-area-inset-right)); }
 .page-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .page-title { font-size: 1.5rem; font-weight: 600; }
 .clock { margin-left: auto; font-size: 1.5rem; font-weight: 300; font-variant-numeric: tabular-nums; }

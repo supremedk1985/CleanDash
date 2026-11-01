@@ -37,7 +37,7 @@ export interface EnergieZeitraum {
   netz: { werte: number[]; einspeisung: number[]; bezug: number; eingespeist: number; verbleib: { haus: number; speicher: number } };
 }
 
-// Der Ordner kommt aus der Konfiguration (energyHistoryUrl), zum Beispiel http://192.168.178.10/energie
+// Der Ordner kommt aus der Konfiguration (energyHistoryUrl), zum Beispiel http://192.168.1.20/energie
 export async function energieIndexLaden(BASIS: string): Promise<EnergieIndex> {
   const a = await fetch(`${BASIS}/index.json`, { cache: "no-store" });
   if (!a.ok) throw new Error(`index.json: HTTP ${a.status}`);

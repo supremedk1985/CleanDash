@@ -2,3 +2,4 @@ node_modules/
 *.tgz
 .dev-server/
 test-results/
+test/__testdaten__/

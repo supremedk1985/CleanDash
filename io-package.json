@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cleandash",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "news": {
+      "0.4.0": {
+        "en": "All tiles of the kitchen dashboard: tasks, robot mower with map, Bring! with catalogue, 3D printer, fuel prices, dehumidifier, robot vacuum, call button, Fundus, dishwasher, documents, internet speed, settings panel",
+        "de": "Alle Kacheln des Küchen-Dashboards: Aufgaben, Mähroboter mit Karte, Bring! mit Katalog, 3D-Drucker, Spritpreise, Luftentfeuchter, Saugroboter, Ruf-Knopf, Fundus, Spülmaschine, Dokumente, Internet, Einstellungsfeld"
+      },
       "0.3.0": {
         "en": "Energy rings and history, weather timelines and details, bin ticker; bundled Roboto font; three columns",
         "de": "Energie-Ringe und Verlauf, Wetter-Zeitleisten und Details, Tonnenticker; Schrift Roboto eingebaut; drei Spalten"
@@ -95,7 +99,21 @@
     "energySolarMax": 2700,
     "energyHomeMax": 1300,
     "energyTitle": "",
-    "energyHistoryUrl": ""
+    "energyHistoryUrl": "",
+    "fuelInstance": "",
+    "printerInstance": "",
+    "printerWebcamUrl": "",
+    "mowerDevice": "",
+    "vacuumDevice": "",
+    "f25Prefix": "",
+    "dehumidifierDevice": "",
+    "callDatapoint": "",
+    "callLabel": "",
+    "paperlessCount": "",
+    "speedtestUrl": "",
+    "aufgabenUrl": "",
+    "fundusUrl": "",
+    "showSettingsPanel": true
   },
   "objects": [],
   "instanceObjects": []

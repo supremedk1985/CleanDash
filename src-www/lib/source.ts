@@ -19,6 +19,10 @@ export interface Source {
   /** Initial values plus every later change; returns when the initial values are in. */
   watch(ids: string[], onValue: (id: string, value: unknown) => void): Promise<void>;
   write(id: string, value: string | number | boolean): Promise<void>;
+  /** Recorded values from the default history adapter: [value, ms] per datapoint, optionally averaged per step (ms). */
+  history(ids: string[], from: number, to: number, step?: number): Promise<Record<string, [unknown, number][]>>;
+  /** One-off read of several states (value or null each). */
+  read(ids: string[]): Promise<Record<string, unknown>>;
   /** The native part of an object, e.g. the settings of another adapter instance. */
   readNative(id: string): Promise<unknown>;
   onConnection(handler: (connected: boolean) => void): void;
@@ -64,6 +68,28 @@ export class IoBrokerSource implements Source {
   async write(id: string, value: string | number | boolean): Promise<void> {
     await this.ready;
     await this.conn.setState(id, value);
+  }
+
+  async history(ids: string[], from: number, to: number, step?: number): Promise<Record<string, [unknown, number][]>> {
+    await this.ready;
+    const out: Record<string, [unknown, number][]> = {};
+    await Promise.all(ids.map(async (id) => {
+      const r = (await this.conn.getHistory(id, {
+        start: from, end: to, aggregate: step ? "average" : "none", ...(step ? { step } : {}), ignoreNull: true, from: false, ack: false, q: false,
+      } as ioBroker.GetHistoryOptions)) as unknown as { val: unknown; ts: number }[] | { values?: { val: unknown; ts: number }[] };
+      const list = Array.isArray(r) ? r : r?.values ?? [];
+      out[id] = list.map((p) => [p.val, p.ts]);
+    }));
+    return out;
+  }
+
+  async read(ids: string[]): Promise<Record<string, unknown>> {
+    if (!ids.length) return {};
+    await this.ready;
+    const states = await this.conn.getStates(ids);
+    const out: Record<string, unknown> = {};
+    for (const id of ids) out[id] = states?.[id]?.val ?? null;
+    return out;
   }
 
   async readNative(id: string): Promise<unknown> {
@@ -114,6 +140,24 @@ export class DemoSource implements Source {
     }
     this.values.set(id, value);
     setTimeout(() => this.listeners.forEach((l) => l(id, value)), 300);
+  }
+
+  async history(ids: string[], from: number, to: number): Promise<Record<string, [unknown, number][]>> {
+    // a made-up day: the value now and then, every 20 minutes, with some wobble
+    const out: Record<string, [unknown, number][]> = {};
+    for (const id of ids) {
+      const v = this.values.get(id);
+      const pts: [unknown, number][] = [];
+      for (let t = from; t <= to; t += 20 * 60_000) pts.push([typeof v === "number" ? Math.max(0, v * (0.6 + 0.4 * Math.sin(t / 3.6e6))) : v ?? null, t]);
+      out[id] = pts;
+    }
+    return out;
+  }
+
+  async read(ids: string[]): Promise<Record<string, unknown>> {
+    const out: Record<string, unknown> = {};
+    for (const id of ids) out[id] = this.values.has(id) ? this.values.get(id) : null;
+    return out;
   }
 
   async readNative(id: string): Promise<unknown> {

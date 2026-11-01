@@ -3,7 +3,7 @@
  * `ask()`, which goes through the confirmation dialog when the configuration asks for one.
  */
 import { computed, reactive, ref } from "vue";
-import { buildConfig, datapoints, type Config, type Lamp, type Room, type Shutter } from "./config";
+import { buildConfig, datapoints, type Config, type Lamp, type RawConfig, type Room, type Shutter } from "./config";
 import { clampSetpoint, lampState, levelRaw, shutterRaw, type LampState } from "./values";
 import { chooseSource, type Source } from "./source";
 import { itemText, trashColors, type Item } from "./tiles";
@@ -24,6 +24,11 @@ export const errorText = ref<string | null>(null);
 export const trashColorMap = ref<Record<string, string>>({});
 
 let source: Source;
+/** the configuration exactly as stored, for tiles that read their own settings */
+export const rawConfig = ref<RawConfig>({});
+export function getSource(): Source {
+  return source;
+}
 /** location from the ioBroker system settings (sunrise/sunset, hourly weather) */
 export const location = ref<{ latitude?: number; longitude?: number }>({});
 
@@ -44,9 +49,10 @@ export async function start() {
     const [raw, sys] = await Promise.all([source.loadConfig(), source.systemInfo()]);
     setLanguage(sys.language);
     location.value = { latitude: sys.latitude, longitude: sys.longitude };
+    rawConfig.value = raw;
     config.value = buildConfig(raw);
     applyTheme();
-    setInterval(applyTheme, 60_000);
+    setInterval(() => applyTheme(), 60_000);
     if (config.value.trash) {
       source.readNative(`system.adapter.${config.value.trash.instance}`).then((n) => (trashColorMap.value = trashColors(n)), () => undefined);
     }
@@ -61,10 +67,15 @@ export async function start() {
   }
 }
 
-export function applyTheme() {
+/** `force` comes from the switch in the settings panel; otherwise: a stored manual choice, then the setting. */
+export function applyTheme(force?: boolean) {
   const mode = config.value?.theme ?? "auto";
+  let manual: boolean | null = null;
+  try { const v = localStorage.getItem("darkMode"); manual = v === "1" ? true : v === "0" ? false : null; } catch { /* blocked */ }
   let dark: boolean;
-  if (mode === "dark") dark = true;
+  if (typeof force === "boolean") dark = force;
+  else if (manual !== null) dark = manual;
+  else if (mode === "dark") dark = true;
   else if (mode === "light") dark = false;
   else if (location.value.latitude !== undefined && location.value.longitude !== undefined) dark = isDarkAt(new Date(), location.value.latitude, location.value.longitude);
   else dark = globalThis.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;

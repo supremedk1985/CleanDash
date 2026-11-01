@@ -493,6 +493,119 @@
           ]
         }
       }
+    },
+    "more": {
+      "type": "panel",
+      "label": "More tiles",
+      "items": {
+        "moreHint": {
+          "type": "staticText",
+          "text": "Each tile appears only when it is set up here.",
+          "xs": 12
+        },
+        "fuelInstance": {
+          "type": "instance",
+          "adapter": "tankerkoenig",
+          "allowDeactivate": true,
+          "label": "Fuel prices (tankerkoenig adapter)",
+          "xs": 12,
+          "md": 6
+        },
+        "printerInstance": {
+          "type": "instance",
+          "adapter": "octoprint",
+          "allowDeactivate": true,
+          "label": "3D printer (octoprint adapter)",
+          "xs": 12,
+          "md": 6
+        },
+        "printerWebcamUrl": {
+          "type": "text",
+          "label": "Printer camera (MJPEG address)",
+          "xs": 12,
+          "md": 6,
+          "help": "e.g. http://octopi.local/webcam/?action=stream"
+        },
+        "mowerDevice": {
+          "type": "objectId",
+          "label": "Robot mower (navimow adapter)",
+          "xs": 12,
+          "md": 6,
+          "help": "Pick the device, e.g. navimow.0.<serial>",
+          "newLine": true
+        },
+        "vacuumDevice": {
+          "type": "objectId",
+          "label": "Robot vacuum (roborock adapter)",
+          "xs": 12,
+          "md": 6,
+          "help": "Pick the device, e.g. roborock.0.Devices.<id>"
+        },
+        "f25Prefix": {
+          "type": "text",
+          "label": "Second robot via script (optional)",
+          "xs": 12,
+          "md": 6,
+          "help": "Folder with hinweis, akku, lebenszeichen"
+        },
+        "dehumidifierDevice": {
+          "type": "objectId",
+          "label": "Dehumidifier plug (Tasmota, sonoff adapter)",
+          "xs": 12,
+          "md": 6,
+          "help": "Pick the device; needs POWER and ENERGY_* datapoints",
+          "newLine": true
+        },
+        "callDatapoint": {
+          "type": "objectId",
+          "label": "Call button: datapoint set to true",
+          "xs": 12,
+          "md": 6,
+          "newLine": true
+        },
+        "callLabel": {
+          "type": "text",
+          "label": "Call button: label",
+          "xs": 12,
+          "md": 6,
+          "help": "e.g. Kinder anklingeln"
+        },
+        "paperlessCount": {
+          "type": "objectId",
+          "label": "Documents in the inbox (number)",
+          "xs": 12,
+          "md": 6,
+          "newLine": true
+        },
+        "speedtestUrl": {
+          "type": "text",
+          "label": "Internet speed: JSON file of a measuring script",
+          "xs": 12,
+          "md": 6
+        },
+        "aufgabenUrl": {
+          "type": "text",
+          "label": "MachIchGleich server",
+          "xs": 12,
+          "md": 6,
+          "help": "e.g. http://192.168.1.20:8091",
+          "newLine": true
+        },
+        "fundusUrl": {
+          "type": "text",
+          "label": "Fundus server",
+          "xs": 12,
+          "md": 6,
+          "help": "e.g. http://192.168.1.20:8095"
+        },
+        "showSettingsPanel": {
+          "type": "checkbox",
+          "label": "Show the small settings panel (reload, light/dark, diagnostics)",
+          "default": true,
+          "xs": 12,
+          "newLine": true
+        }
+      }
     }
   }
 }

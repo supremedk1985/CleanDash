@@ -5,12 +5,23 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "jsx": "preserve",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "vite/client",
+      "node"
+    ],
     "skipLibCheck": true,
     "noEmit": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src-www/**/*.ts", "src-www/**/*.vue", "test/**/*.ts"]
+  "include": [
+    "src-www/**/*.ts",
+    "src-www/**/*.vue",
+    "test/**/*.ts"
+  ]
 }

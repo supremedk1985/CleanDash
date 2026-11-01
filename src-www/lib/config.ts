@@ -60,6 +60,21 @@ export interface RawConfig {
   energyTitle?: string;
   energyHistoryUrl?: string;
   shoppingLists?: { name?: string; content?: string }[];
+  // kitchen tiles (each shown only when set up)
+  aufgabenUrl?: string;
+  fundusUrl?: string;
+  speedtestUrl?: string;
+  fuelInstance?: string;
+  printerInstance?: string;
+  printerWebcamUrl?: string;
+  paperlessCount?: string;
+  mowerDevice?: string;
+  vacuumDevice?: string;
+  f25Prefix?: string;
+  dehumidifierDevice?: string;
+  callDatapoint?: string;
+  callLabel?: string;
+  showSettingsPanel?: boolean;
   confirmWrites?: ConfirmMode;
   theme?: ThemeMode;
   rooms?: RoomRow[];

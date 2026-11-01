@@ -20,6 +20,8 @@
   --red: #b3261e;
   --blue-500: #3b82f6;
   --knob-track: #cfd8e0;
+  --pv-primary: #10b981;
+  --pv-secondary: #e2e8f0;
   color-scheme: light;
 }
 :root[data-theme="dark"] {
@@ -43,6 +45,8 @@
   --red: #e5534b;
   --blue-500: #60a5fa;
   --knob-track: #2a3e4f;
+  --pv-primary: #34d399;
+  --pv-secondary: #334155;
   color-scheme: dark;
 }
 
@@ -236,6 +240,31 @@ input[type="range"] { accent-color: var(--warm); height: 32px; }
 .add-form { display: flex; gap: 8px; }
 .text-input { flex: 1; min-width: 0; font: inherit; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-height: 44px; }
 .btn:disabled { opacity: 0.5; cursor: default; }
+
+/* look-alikes of the PrimeVue parts the kitchen tiles use */
+.pv-card-title { margin-bottom: 14px; }
+.pv-card-footer { margin-top: 14px; }
+.pv-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 8px 16px; border-radius: 8px;
+  border: 1px solid transparent; font-weight: 500; cursor: pointer; background: var(--pv-c); color: #fff; --pv-c: var(--pv-primary); }
+.pv-btn:disabled { opacity: 0.5; cursor: default; }
+.pv-primary { --pv-c: var(--pv-primary); } .pv-secondary { --pv-c: var(--pv-secondary); } .pv-success { --pv-c: #22c55e; }
+.pv-danger { --pv-c: #ef4444; } .pv-warn, .pv-warning { --pv-c: #f59e0b; } .pv-info { --pv-c: #0ea5e9; } .pv-help { --pv-c: #a855f7; } .pv-contrast { --pv-c: var(--text); }
+.pv-btn.pv-secondary:not(.pv-text):not(.pv-outlined) { color: var(--text); }
+.pv-btn.pv-text { background: transparent; color: var(--pv-c); }
+.pv-btn.pv-text.pv-secondary, .pv-btn.pv-outlined.pv-secondary { color: var(--muted); }
+.pv-btn.pv-outlined { background: transparent; color: var(--pv-c); border-color: color-mix(in srgb, var(--pv-c) 55%, transparent); }
+.pv-btn.pv-text:hover, .pv-btn.pv-outlined:hover { background: color-mix(in srgb, var(--pv-c) 10%, transparent); }
+.pv-btn.pv-rounded { border-radius: 999px; }
+.pv-btn.pv-icon-only { width: 42px; padding: 0; }
+.pv-btn.pv-small { min-height: 34px; padding: 4px 12px; font-size: 0.875rem; }
+.pv-btn.pv-small.pv-icon-only { width: 34px; padding: 0; }
+.pv-btn.pv-large { min-height: 52px; font-size: 1.125rem; }
+.pv-toggle { background: var(--pv-secondary); color: var(--text); }
+.pv-toggle.pv-toggle-on { background: var(--pv-primary); color: #fff; }
+.pv-progress { height: 1.25rem; border-radius: 6px; background: var(--line); overflow: hidden; }
+.pv-progress-value { height: 100%; background: var(--pv-primary); display: flex; align-items: center; justify-content: center; transition: width 0.3s; }
+.pv-progress-label { color: #fff; font-size: 0.75rem; font-weight: 600; }
+.pv-slider { width: 100%; accent-color: var(--pv-primary); }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }

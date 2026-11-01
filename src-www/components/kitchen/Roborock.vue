@@ -9,9 +9,6 @@ import {
   roborockAktionen,
   roborockBefehl,
   befehlLaeuft,
-  stationsMeldungen,
-  f25,
-  f25Meldungen,
   DOCK_STATUS_LABELS,
 } from "../../features/roborock";
 import type { RoborockAktion } from "../../features/roborock";
@@ -40,49 +37,7 @@ async function aktion(a: RoborockAktion) {
   await roborockBefehl(a);
 }
 
-// --- Stations-Popup, gleiches Muster wie der Tonnenticker (LocalStorage, „Alles klar!") ---
-// Bestätigt wird je Problem. Verschwindet ein Problem (Status wieder OK), fällt seine
-// Bestätigung weg - beim nächsten vollen Tank kommt das Popup also wieder.
-const STATION_KEY = "roborockStationBestaetigt";
-const meldungen = computed(() => [
-  ...(roborock.value ? stationsMeldungen(roborock.value) : []),
-  ...f25Meldungen(f25.value),
-]);
-// Nur F25-Meldungen offen → eigene Überschrift, der Saugroboter braucht dann ja keine Hilfe
-const nurF25 = computed(() => offeneMeldungen.value.length > 0 && offeneMeldungen.value.every((m) => m.schluessel.startsWith("f25-")));
-const offeneMeldungen = ref<typeof meldungen.value>([]);
 
-function bestaetigte(): Set<string> {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(STATION_KEY) || "[]"));
-  } catch (err: any) {
-    logger.warn("roborock.localStorage.read.failed", { error: err?.message || String(err) });
-    return new Set();
-  }
-}
-function speichereBestaetigte(s: Set<string>) {
-  try {
-    localStorage.setItem(STATION_KEY, JSON.stringify([...s]));
-  } catch (err: any) {
-    logger.warn("roborock.localStorage.write.failed", { error: err?.message || String(err) });
-  }
-}
-function pruefeMeldungen() {
-  const aktuell = new Set(meldungen.value.map((m) => m.schluessel));
-  const best = bestaetigte();
-  // Erledigte Probleme vergessen, damit sie beim nächsten Mal wieder melden
-  let geaendert = false;
-  for (const k of [...best]) if (!aktuell.has(k)) { best.delete(k); geaendert = true; }
-  if (geaendert) speichereBestaetigte(best);
-  offeneMeldungen.value = meldungen.value.filter((m) => !best.has(m.schluessel));
-}
-function stationBestaetigen() {
-  const best = bestaetigte();
-  offeneMeldungen.value.forEach((m) => best.add(m.schluessel));
-  speichereBestaetigte(best);
-  offeneMeldungen.value = [];
-}
-watch(meldungen, pruefeMeldungen, { immediate: true });
 
 function formatDuration(min: number) {
   const h = Math.floor(min / 60);
@@ -149,30 +104,8 @@ const consumableItems = computed(() => {
 
 <template>
   <div class="relative">
-    <!-- Stations-Popup: nur über dieser Karte, wie beim Tonnenticker -->
-    <div
-      v-if="offeneMeldungen.length"
-      class="absolute inset-0 flex items-center justify-center bg-black/50 z-50 rounded p-4"
-    >
-      <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full text-center shadow-xl">
-        <i class="mdi text-5xl text-orange-500" :class="nurF25 ? 'mdi-vacuum' : 'mdi-robot-vacuum-variant'"></i>
-        <p class="text-2xl font-bold mt-2 mb-4 dark:text-white">{{ nurF25 ? "F25 Ultra: Selbstreinigung" : "Der Staubsauger braucht Hilfe" }}</p>
-        <ul class="text-left text-lg mb-6 space-y-2 dark:text-gray-100">
-          <li v-for="m in offeneMeldungen" :key="m.schluessel" class="flex items-start gap-2">
-            <i class="mdi text-2xl text-orange-500" :class="m.icon"></i>
-            <span>{{ m.text }}</span>
-          </li>
-        </ul>
-        <button
-          @click="stationBestaetigen"
-          class="bg-blue-600 text-white text-xl font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transition"
-        >
-          Alles klar!
-        </button>
-      </div>
-    </div>
-
-  <card>
+    <!-- Help calls and station notices are notices at the top of the page now (lib/notices.ts). -->
+    <card>
     <template #title>
       <div class="flex items-center justify-between w-full">
         <span>Staubsaugerroboter <small v-if="roborock">{{ roborock.name }}</small></span>

@@ -16,7 +16,6 @@ import { computed, ref, onMounted, onUnmounted, watch } from "vue";
 import { beiRuhe } from "../../lib/idle";
 import {
   navimow,
-  maeherMeldungen,
   zustandText,
   akkuAnzeige,
   flaecheAnzeige,
@@ -185,93 +184,19 @@ function akkuFarbe(p: number) {
   return "";
 }
 
-// ─── Popup, gleiches Muster wie Tonnenticker und Staubsauger ───
-const SPEICHER_KEY = "navimowBestaetigt";
-const meldungen = computed(() => maeherMeldungen(navimow.value));
-const offeneMeldungen = ref<ReturnType<typeof maeherMeldungen>>([]);
-
-function bestaetigte(): Set<string> {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(SPEICHER_KEY) || "[]"));
-  } catch (err: any) {
-    // LocalStorage kann in Kiosk-WebViews mit abgeschaltetem DOM-Storage werfen.
-    // Dann lieber melden als schweigen.
-    logger.warn("navimow.localStorage.read.failed", { error: err?.message || String(err) });
-    return new Set();
-  }
-}
-function speichereBestaetigte(s: Set<string>) {
-  try {
-    localStorage.setItem(SPEICHER_KEY, JSON.stringify([...s]));
-  } catch (err: any) {
-    logger.warn("navimow.localStorage.write.failed", { error: err?.message || String(err) });
-  }
-}
-function pruefeMeldungen() {
-  const aktuell = new Set(meldungen.value.map((m) => m.schluessel));
-  const best = bestaetigte();
-  // Bestätigungen NUR aufräumen, wenn wir überhaupt wissen, wie es dem Mäher geht.
-  // Gefunden am 13.09. von einem Playwright-Test: Direkt nach dem Laden der Seite ist
-  // `zustand` leer und die Meldungsliste damit leer -- nicht weil die Probleme weg sind,
-  // sondern weil noch nichts abgerufen wurde. Wer in diesem Moment aufräumt, löscht die
-  // Bestätigung, und beim ersten Abruf kommt dasselbe Popup wieder. Im Kiosk, der die Seite
-  // nachts neu lädt, hätte der Mäher jeden Morgen erneut „Hilfe" gerufen.
-  const datenDa = !!navimow.value.zustand;
-  let geaendert = false;
-  if (datenDa) {
-    for (const k of [...best]) if (!aktuell.has(k)) { best.delete(k); geaendert = true; }
-  }
-  if (geaendert) speichereBestaetigte(best);
-  offeneMeldungen.value = meldungen.value.filter((m) => !best.has(m.schluessel));
-}
-function bestaetigen() {
-  const best = bestaetigte();
-  for (const m of meldungen.value) best.add(m.schluessel);
-  speichereBestaetigte(best);
-  offeneMeldungen.value = [];
-}
-
 onMounted(() => {
-  pruefeMeldungen();
   uhr = setInterval(() => { jetzt.value = Date.now(); }, 30_000);
 });
 onUnmounted(() => {
   if (uhr) clearInterval(uhr);
   navimowAufraeumen();
 });
-watch(
-  () => [navimow.value.zustand, navimow.value.stillstandMin, navimow.value.adapterVerbunden],
-  () => pruefeMeldungen(),
-  { immediate: true },
-);
+
 </script>
 
 <template>
   <div class="relative">
-    <!-- Hilferuf: über der GANZEN Kachel, auch über den Tasten -->
-    <div
-      v-if="offeneMeldungen.length"
-      data-test="hilferuf"
-      class="absolute inset-0 flex items-center justify-center bg-black/50 z-50 rounded p-4"
-    >
-      <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full text-center shadow-xl">
-        <i aria-hidden="true" class="mdi mdi-robot-mower text-5xl text-orange-500"></i>
-        <p class="text-2xl font-bold mt-2 mb-4 dark:text-white">Der Mäher braucht Hilfe</p>
-        <ul class="text-left text-lg mb-6 space-y-2 dark:text-gray-100">
-          <li v-for="m in offeneMeldungen" :key="m.schluessel" class="flex items-start gap-2">
-            <i aria-hidden="true" class="mdi text-2xl text-orange-500" :class="m.icon"></i>
-            <span>{{ m.text }}</span>
-          </li>
-        </ul>
-        <button
-          @click="bestaetigen"
-          class="bg-blue-600 text-white text-xl font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transition"
-        >
-          Alles klar!
-        </button>
-      </div>
-    </div>
-
+    <!-- Help calls and station notices are notices at the top of the page now (lib/notices.ts). -->
     <card>
       <template #title>
         <div class="flex items-center justify-between w-full">

@@ -4,11 +4,13 @@
  * Every tile can contribute through `noticeSources`; a notice is derived from the current values, so it goes away
  * by itself when the cause is gone. Dismissing hides it until its text changes (a new cause is a new notice).
  */
-import { computed, ref, type ComputedRef } from "vue";
+import { computed, ref, watch, type ComputedRef } from "vue";
 import { config, lampStates, trashColorMap, values } from "./store";
 import { num, truthy, windowState } from "./values";
 import { dishwasherIds, trashIds } from "./config";
 import { machine, pickup } from "./tiles";
+import { maeherMeldungen, navimow } from "../features/navimow";
+import { f25, f25Meldungen, roborock, stationsMeldungen } from "../features/roborock";
 import { t } from "./i18n";
 
 export interface Notice {
@@ -74,8 +76,37 @@ const dishwasherNotices = computed<Notice[]>(() => {
 });
 
 /** Tiles add their own sources here (mower stuck, …). Order = order on screen. */
-// Lamps that are not reachable are not announced (Daniel, 01.11.: "kann weg"); unreachableLamps stays for a later setting.
-export const noticeSources: ComputedRef<Notice[]>[] = [binDay, heatingWithOpenWindow, dishwasherNotices];
+/** The robot mower asks for help: fault, lifted, stuck, no position (the kitchen tile's former pop-up). */
+const mowerNotices = computed<Notice[]>(() =>
+  maeherMeldungen(navimow.value).map((m) => ({
+    key: `mower:${m.schluessel}`, level: "alert", eyebrow: t("mower"), title: t("mowerHelp"), detail: m.text,
+    color: "#f08a4b", icon: `mdi ${m.icon}`, done: true,
+  })),
+);
+
+/** The vacuum's station (tanks, bag, filter) and the second robot's self-cleaning (former pop-up of the tile). */
+const vacuumNotices = computed<Notice[]>(() => [
+  ...(roborock.value ? stationsMeldungen(roborock.value) : []).map((m): Notice => ({
+    key: `vacuum:${m.schluessel}`, level: "alert", eyebrow: t("vacuum"), title: m.text, color: "#f08a4b", icon: `mdi ${m.icon}`, done: true,
+  })),
+  ...f25Meldungen(f25.value).map((m): Notice => ({
+    key: `vacuum:${m.schluessel}`, level: "alert", eyebrow: "F25 Ultra", title: m.text, color: "#f08a4b", icon: `mdi ${m.icon}`, done: true,
+  })),
+]);
+
+/**
+ * Sources of notices. `ready` says whether the source knows its state yet: only then are "done" marks of causes that
+ * are gone forgotten, so the same problem announces itself again next time (and a reload right after start, before
+ * the first values arrive, does not bring back what was already done).
+ * Lamps that are not reachable are not announced (Daniel, 01.11.: "kann weg"); unreachableLamps stays for a later setting.
+ */
+export const noticeSources: { prefix: string; ready: () => boolean; list: ComputedRef<Notice[]> }[] = [
+  { prefix: "trash:", ready: () => !!config.value?.trash && values[trashIds(config.value.trash)[0]] !== undefined, list: binDay },
+  { prefix: "window-heating:", ready: () => true, list: heatingWithOpenWindow },
+  { prefix: "dishwasher:", ready: () => !!config.value?.dishwasher && values[dishwasherIds(config.value.dishwasher).state] !== undefined, list: dishwasherNotices },
+  { prefix: "mower:", ready: () => !!navimow.value.zustand, list: mowerNotices },
+  { prefix: "vacuum:", ready: () => !!roborock.value, list: vacuumNotices },
+];
 void unreachableLamps;
 
 /** A notice can be put on snooze for a few minutes; then it comes back if its cause is still there. "Done" hides it
@@ -91,9 +122,25 @@ function loadDone(): Record<string, true> {
   try { return JSON.parse(localStorage.getItem(DONE_KEY) ?? "{}"); } catch { return {}; }
 }
 
-export const notices = computed(() =>
-  noticeSources.flatMap((s) => s.value).filter((n) => !done.value[n.key] && (snoozed.value[n.key] ?? 0) <= now.value),
-);
+const active = computed(() => noticeSources.flatMap((s) => s.list.value));
+
+export const notices = computed(() => active.value.filter((n) => !done.value[n.key] && (snoozed.value[n.key] ?? 0) <= now.value));
+
+/** Forget "done" for causes that are gone, per source that knows its state. */
+watch(active, (list) => {
+  const keys = new Set(list.map((n) => n.key));
+  let changed = false;
+  const next = { ...done.value };
+  for (const k of Object.keys(next)) {
+    const src = noticeSources.find((s) => k.startsWith(s.prefix));
+    if (src && src.ready() && !keys.has(k)) { delete next[k]; changed = true; }
+  }
+  if (changed) { done.value = next; saveDone(); }
+});
+
+function saveDone() {
+  try { localStorage.setItem(DONE_KEY, JSON.stringify(done.value)); } catch { /* only for this page */ }
+}
 
 export function snooze(n: Notice, ms = SNOOZE_MS) {
   now.value = Date.now();
@@ -102,5 +149,5 @@ export function snooze(n: Notice, ms = SNOOZE_MS) {
 
 export function dismiss(n: Notice) {
   done.value = { ...done.value, [n.key]: true };
-  try { localStorage.setItem(DONE_KEY, JSON.stringify(done.value)); } catch { /* only for this page */ }
+  saveDone();
 }

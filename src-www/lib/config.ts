@@ -343,3 +343,8 @@ export function dishwasherIds(d: Dishwasher) {
     connected: `${d.base}.general.connected`,
   };
 }
+
+/** The adapter instance a device belongs to: "navimow.1.ABC" → "navimow.1" (for its info.connection). */
+export function instanceOf(deviceId: string): string {
+  return deviceId.split(".").slice(0, 2).join(".");
+}

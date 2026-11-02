@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildConfig, datapoints } from "../src-www/lib/config";
+import { buildConfig, datapoints, instanceOf } from "../src-www/lib/config";
 import { DEMO_CONFIG } from "../src-www/lib/demo";
 
 describe("buildConfig", () => {
@@ -49,5 +49,12 @@ describe("buildConfig", () => {
     const ids = datapoints(buildConfig(DEMO_CONFIG));
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toContain("0_userdata.0.demo.s.bed");
+  });
+});
+
+describe("instanceOf", () => {
+  it("takes the adapter instance from a device id, not a fixed .0", () => {
+    expect(instanceOf("navimow.1.SN123")).toBe("navimow.1");
+    expect(instanceOf("roborock.0.Devices.abc")).toBe("roborock.0");
   });
 });

@@ -44,6 +44,7 @@ import { fetchState, setState } from "../compat/iobroker";
 import { logger } from "../lib/logger";
 import type { FeatureModule } from "./registry";
 import { rawConfig } from "../lib/store";
+import { instanceOf } from "../lib/config";
 
 /** The mower device from the settings (mowerDevice), e.g. navimow.0.<serial> */
 export const PREFIX = () => rawConfig.value.mowerDevice ?? "";
@@ -235,7 +236,7 @@ async function poll(mitKarte = true) {
     locationMqttStale,
     winkel,
   ] = await Promise.all([
-    fetchState<boolean>(`navimow.0.info.connection`),
+    fetchState<boolean>(`${instanceOf(PREFIX())}.info.connection`),
     fetchState<string>(`${PREFIX()}.status.vehicleState`),
     fetchState<number>(`${PREFIX()}.status.battery`),
     fetchState<string>(`${PREFIX()}.status.descriptiveCapacityRemaining`),

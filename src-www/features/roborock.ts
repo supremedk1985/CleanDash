@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { fetchBulk, fetchState, setState } from "../compat/iobroker";
 import type { FeatureModule } from "./registry";
+import { instanceOf } from "../lib/config";
 import { rawConfig } from "../lib/store";
 
 /** The vacuum device from the settings (vacuumDevice), e.g. roborock.0.Devices.<duid> */
@@ -229,7 +230,7 @@ async function poll() {
   ] = await Promise.all([
     // Der Adapter war vom 04.08. bis 04.09.2026 abgeschaltet - die Kachel zeigte fünf Wochen
     // lang „Lädt, 100 %" vom Juli, als wäre es live. Diese Flagge verhindert das künftig.
-    fetchState<boolean>(`roborock.0.info.connection`),
+    fetchState<boolean>(`${instanceOf(PREFIX())}.info.connection`),
     fetchState<string>(`${PREFIX()}.deviceInfo.name`),
     fetchState<boolean>(`${PREFIX()}.deviceInfo.online`),
     fetchState<number>(`${PREFIX()}.deviceStatus.state`),

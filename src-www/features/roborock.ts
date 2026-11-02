@@ -161,9 +161,9 @@ export interface Roborock {
 
 export const roborock = ref<Roborock>();
 
-// ───────── Roborock F25 Ultra (Wischsauger, seit 11.10.2026) ─────────
-// Der Adapter kennt den F25 nur ohne Werte; das ioBroker-Skript script.js.Haus.F25_Selbstreinigung fragt ihn selbst
-// ab und schreibt unter 0_userdata.0.F25Ultra einen fertigen Hinweis — die Regeln stehen dort, nicht hier.
+// ───────── Zweiter Roboter über ein eigenes Skript ─────────
+// Für Geräte, die der Adapter nur ohne Werte kennt: ein eigenes ioBroker-Skript fragt sie selbst ab und schreibt in
+// einen Ordner (f25Prefix) einen fertigen Hinweis — die Regeln stehen dort, nicht hier. Format: README.
 
 /** Optional second robot reported by a script of your own (f25Prefix: hinweis, akku, lebenszeichen) */
 const F25 = () => rawConfig.value.f25Prefix ?? "";
@@ -186,11 +186,10 @@ export const F25_HOECHSTENS_ALT_MS = 15 * 60 * 1000;
  *  nächsten Mal wieder (Bestätigung fällt weg, sobald der Hinweis verschwindet). */
 export function f25Meldungen(f: F25Stand | undefined, jetzt = Date.now()): Stationsmeldung[] {
   if (!f || !f.lebenszeichen || jetzt - f.lebenszeichen > F25_HOECHSTENS_ALT_MS) return [];
-  // „wartet" (Akku noch unter 15 %) bewusst ohne Popup — Daniel, 11.10.: „Die Meldung soll nur kommen, wenn es so
-  // weit ist. Nicht vorher die Info."
+  // „wartet" (Akku noch zu leer) bewusst ohne Popup: die Meldung kommt erst, wenn es so weit ist.
   if (f.hinweis === "bereit")
     return [{ schluessel: "f25-bereit", icon: "mdi-water-sync",
-      text: `Der F25 hat jetzt ${f.akku} % Akku – bitte die Selbstreinigung starten.` }];
+      text: `${rawConfig.value.f25Name?.trim() || "Der zweite Roboter"} hat jetzt ${f.akku} % Akku – bitte die Selbstreinigung starten.` }];
   return [];
 }
 
@@ -228,8 +227,7 @@ async function poll() {
     waterBoxFilterStatus,
     rssi,
   ] = await Promise.all([
-    // Der Adapter war vom 04.08. bis 04.09.2026 abgeschaltet - die Kachel zeigte fünf Wochen
-    // lang „Lädt, 100 %" vom Juli, als wäre es live. Diese Flagge verhindert das künftig.
+    // Ist der Adapter aus, zeigte die Kachel sonst alte Werte, als wären sie live. Diese Flagge verhindert das.
     fetchState<boolean>(`${instanceOf(PREFIX())}.info.connection`),
     fetchState<string>(`${PREFIX()}.deviceInfo.name`),
     fetchState<boolean>(`${PREFIX()}.deviceInfo.online`),
@@ -278,7 +276,7 @@ async function poll() {
 
 export const roborockFeature: FeatureModule = { name: "roborock", interval: "slow", poll };
 
-// ───────── Bedienung (seit 04.09.2026, Daniels Wunsch: Start/Stop auf der Kachel) ─────────
+// ───────── Bedienung: Start/Stop auf der Kachel ─────────
 
 /** Zustände, in denen der Roboter gerade arbeitet — dann heißt die Taste „Pause". */
 const REINIGT = new Set([5, 11, 17, 18, 16]);
@@ -314,7 +312,7 @@ export interface Stationsmeldung {
 /**
  * Was an der Station zu tun ist. Status 1 heißt beim Roborock „Aktion nötig", 2 „OK",
  * 0/3 „unbekannt/nicht verbaut" - letztere lösen bewusst nichts aus. Ohne Adapter-Verbindung
- * gibt es keine Meldung: die Werte wären Konserve (siehe Vorfall vom 04.09.2026).
+ * gibt es keine Meldung: die Werte wären Konserve (siehe oben).
  */
 export function stationsMeldungen(r: Pick<Roborock, "adapterVerbunden" | "clearWaterBoxStatus" | "dirtyWaterBoxStatus" | "dustBagStatus" | "cleanFluidStatus" | "waterBoxFilterStatus">): Stationsmeldung[] {
   if (!r.adapterVerbunden) return [];

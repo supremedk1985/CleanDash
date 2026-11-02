@@ -4,8 +4,8 @@
     "version": "0.4.0",
     "news": {
       "0.4.0": {
-        "en": "All tiles of the kitchen dashboard: tasks, robot mower with map, Bring! with catalogue, 3D printer, fuel prices, dehumidifier, robot vacuum, call button, Fundus, dishwasher, documents, internet speed, settings panel",
-        "de": "Alle Kacheln des Küchen-Dashboards: Aufgaben, Mähroboter mit Karte, Bring! mit Katalog, 3D-Drucker, Spritpreise, Luftentfeuchter, Saugroboter, Ruf-Knopf, Fundus, Spülmaschine, Dokumente, Internet, Einstellungsfeld"
+        "en": "All tiles of the kitchen dashboard: tasks, robot mower with map, Bring! with catalogue, 3D printer, fuel prices, dehumidifier, robot vacuum, call button, Fundus, dishwasher, documents, internet speed, settings panel; tiles can be arranged and hidden per device",
+        "de": "Alle Kacheln des Küchen-Dashboards: Aufgaben, Mähroboter mit Karte, Bring! mit Katalog, 3D-Drucker, Spritpreise, Luftentfeuchter, Saugroboter, Ruf-Knopf, Fundus, Spülmaschine, Dokumente, Internet, Einstellungsfeld; Kacheln je Gerät anordnen und ausblenden"
       },
       "0.3.0": {
         "en": "Energy rings and history, weather timelines and details, bin ticker; bundled Roboto font; three columns",
@@ -106,6 +106,7 @@
     "mowerDevice": "",
     "vacuumDevice": "",
     "f25Prefix": "",
+    "f25Name": "",
     "dehumidifierDevice": "",
     "callDatapoint": "",
     "callLabel": "",

@@ -7,7 +7,6 @@ import { printer_3d } from "../../features/printer3d";
 // Ein MJPEG-<img> meldet sich nie wieder, wenn der Stream abreißt — es bleibt einfach
 // das letzte Bild stehen. Bei einem Fehler zeigen wir das an und versuchen es mit
 // frischer URL (Cache-Buster) alle 15 s neu, solange die Kachel sichtbar ist.
-// In der cerebro-App (build:app) über den cerebro-Dienst, damit die Kamera auch unterwegs läuft
 /** MJPEG stream of the printer camera from the settings (printerWebcamUrl); empty: no picture */
 const WEBCAM_URL = computed(() => rawConfig.value.printerWebcamUrl ?? "");
 const kameraGestoert = ref(false);

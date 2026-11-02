@@ -12,10 +12,10 @@ const EINKAUFEN = LISTEN[0]!.id, CAMPING = LISTEN[1]!.id;
 
 beforeEach(() => {
   vi.mocked(setState).mockClear();
-  // Wie am 04.10.2026 wirklich: Einkaufen hat Fiebersaft drauf, „zuletzt" mit Glacé (Zusatz Veltins) und einer Zahl
-  inhalt.value = { [EINKAUFEN]: [{ name: "Fiebersaft", specification: "" }, { name: "Milch", specification: "2" }] };
+  // Einkaufen hat zwei Artikel, „zuletzt" einen mit Zusatz und eine nackte Zahl
+  inhalt.value = { [EINKAUFEN]: [{ name: "Hustensaft", specification: "" }, { name: "Milch", specification: "2" }] };
   zuletzt.value = {
-    [EINKAUFEN]: [{ name: "Bier", specification: "" }, { name: "Glacé", specification: "Veltins " }, { name: "0,5", specification: "" },
+    [EINKAUFEN]: [{ name: "Bier", specification: "" }, { name: "Glacé", specification: "Vanille " }, { name: "0,5", specification: "" },
       { name: "Farbfangtücher", specification: "" }],
     [CAMPING]: [{ name: "Grillkohle", specification: "" }],
   };
@@ -55,7 +55,7 @@ describe("Vorschläge", () => {
 
   it("Häufiges zuerst, mit dem Zusatz von damals", () => {
     const v = vorschlaege("gl", EINKAUFEN);
-    expect(v[0]).toMatchObject({ name: "Glacé", haeufig: true, zusatz: "Veltins" });
+    expect(v[0]).toMatchObject({ name: "Glacé", haeufig: true, zusatz: "Vanille" });
   });
 
   it("verzeiht Tippfehler und kennt andere Wörter", () => {
@@ -102,8 +102,8 @@ describe("Schreiben", () => {
   });
 
   it("entfernen schreibt removeItemTranslated", async () => {
-    await entfernen(EINKAUFEN, "Fiebersaft");
-    expect(setState).toHaveBeenCalledWith(`${EINKAUFEN}.removeItemTranslated`, "Fiebersaft");
+    await entfernen(EINKAUFEN, "Hustensaft");
+    expect(setState).toHaveBeenCalledWith(`${EINKAUFEN}.removeItemTranslated`, "Hustensaft");
     expect(inhalt.value[EINKAUFEN]!.map((e) => e.name)).toEqual(["Milch"]);
   });
 });

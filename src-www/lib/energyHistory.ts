@@ -44,7 +44,7 @@ export async function energieIndexLaden(BASIS: string): Promise<EnergieIndex> {
   return a.json();
 }
 
-/** null, wenn es die Datei (noch) nicht gibt — sie wird auf cerebro nach und nach nachgeladen */
+/** null, wenn es die Datei (noch) nicht gibt — sie wird vom Erzeuger nach und nach nachgeladen */
 export async function zeitraumLaden(BASIS: string, art: Art, schluessel: string): Promise<EnergieZeitraum | null> {
   const a = await fetch(`${BASIS}/${art}/${schluessel}.json`, { cache: "no-store" });
   if (a.status === 404) return null;

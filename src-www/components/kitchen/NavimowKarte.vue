@@ -2,8 +2,7 @@
 /**
  * NavimowKarte.vue -- die Mähkarte, einmal gebaut, zweimal genutzt (Kachel und Dialog).
  *
- * SEIT 01.10.2026 im Stil der Navimow-App (Daniel: Screenshot der App, „nur ohne Regen, aber in dem Stil";
- * dann: „die grauen Striche sollen dicker sein und grün" und „das Zone-Label kann weg"): graublaue Rasenfläche auf hellem Grund, kräftige grüne
+ * Im Stil der Navimow-App, ohne Regen und ohne Zonen-Beschriftung: graublaue Rasenfläche auf hellem Grund, kräftige grüne
  * Grenzlinie, Mäher als Draufsicht in seiner Fahrtrichtung, Station.
  * Der Umriss kommt aus der Spur (features/rasenUmriss.ts); alles ist EIN SVG in Weltkoordinaten (y gespiegelt),
  * deshalb sitzen Station und Mäher bei jeder Größe richtig.

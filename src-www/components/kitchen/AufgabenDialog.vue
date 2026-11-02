@@ -1,14 +1,11 @@
 <script setup lang="ts">
 /**
- * Die Einzelheiten einer Aufgabe -- als Popup auf dem Küchendashboard.
- *
- * Daniel am 13.09.: „Wenn man auf dem Dashboard auf den Text klickt, dann
- * sollen die Details in einem Popup kommen."
+ * Die Einzelheiten einer Aufgabe als Popup (Text der Zeile antippen).
  *
  * Es ist bewusst eine LESE-Ansicht: In der Küche steht man im Vorbeigehen davor
  * und will wissen, was zu der Zeile gehört -- alle Schritte, die Notiz, wie oft
  * schon versucht wurde. Geändert wird in der App, wo man angemeldet ist und
- * weiß, wer man ist. Das Einzige, was hier geht, ist Abhaken (Entscheidung 13),
+ * weiß, wer man ist. Das Einzige, was hier geht, ist Abhaken ,
  * und dafür gibt es den Knopf in der Zeile.
  */
 import { computed } from "vue";

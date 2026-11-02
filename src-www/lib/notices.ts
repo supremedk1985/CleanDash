@@ -98,7 +98,7 @@ const vacuumNotices = computed<Notice[]>(() => [
  * Sources of notices. `ready` says whether the source knows its state yet: only then are "done" marks of causes that
  * are gone forgotten, so the same problem announces itself again next time (and a reload right after start, before
  * the first values arrive, does not bring back what was already done).
- * Lamps that are not reachable are not announced (Daniel, 01.11.: "kann weg"); unreachableLamps stays for a later setting.
+ * Lamps that are not reachable are not announced; unreachableLamps stays for a later setting.
  */
 export const noticeSources: { prefix: string; ready: () => boolean; list: ComputedRef<Notice[]> }[] = [
   { prefix: "trash:", ready: () => !!config.value?.trash && values[trashIds(config.value.trash)[0]] !== undefined, list: binDay },

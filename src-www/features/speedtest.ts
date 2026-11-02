@@ -3,11 +3,9 @@
  * ------------
  * Wie schnell die Internetleitung zuletzt war.
  *
- * Die Zahlen kommen NICHT aus ioBroker, sondern aus einer Datei, die
- * `/srv/backup/speedtest.sh` dreimal täglich schreibt (06:10, 13:10, 20:40).
- * Sie liegt im Webroot neben dem Sicherungs-Status, wird also vom selben
- * nginx ausgeliefert wie diese Seite -- kein Dienst dazwischen, keine
- * Anmeldung, und bei einem Ausfall sieht man den letzten Stand statt nichts.
+ * Die Zahlen kommen NICHT aus ioBroker, sondern aus einer JSON-Datei, die ein
+ * eigenes Messskript schreibt (speedtestUrl, Format im README). Bei einem
+ * Ausfall sieht man den letzten Stand statt nichts.
  *
  * WAS DIE ZAHL NICHT IST: ein Beweis über den Anschluss. Läuft gerade ein
  * großer Download, eine Sicherung übers Netz oder ein Videoabend, misst der
@@ -18,7 +16,6 @@ import { ref } from "vue";
 import type { FeatureModule } from "./registry";
 import { rawConfig } from "../lib/store";
 
-// In der cerebro-App (build:app) über den cerebro-Dienst (27.10.2026)
 /** JSON written by a measuring script of your own (speedtestUrl); empty means: no tile */
 const SPEEDTEST_URL = () => rawConfig.value.speedtestUrl ?? "";
 

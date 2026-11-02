@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Popup der Energiezentrale — aufgebaut wie die Anker-App (Daniel, 01.10.2026: „so wie im Screenshot"):
+ * Popup der Energiezentrale, aufgebaut wie die Anker-App:
  * oben Tag / Woche / Monat / Jahr, darunter die gewählte Größe (Haus, Solar, Speicher, Netz) mit Summe,
  * die Kurve bzw. die Balken, Blättern nach Datum und unten die „Analyse der Energiequellen" als
  * geteilter Balken mit Anteilen. Daten: lib/energyHistory.ts (Dateien aus dem Ordner energyHistoryUrl).
@@ -62,7 +62,7 @@ async function laden() {
   } finally { laedt.value = false; }
 }
 
-/** Beim Öffnen und beim Wechsel der Art: der aktuelle Zeitraum — fehlt er (cerebro gerade erst an), der neueste vorhandene */
+/** Beim Öffnen und beim Wechsel der Art: der aktuelle Zeitraum — fehlt er (noch nicht geschrieben), der neueste vorhandene */
 function aufAktuell() {
   const jetzt = schluesselFuer(art.value, new Date());
   const vorhanden = index.value?.[art.value] ?? [];

@@ -4,7 +4,7 @@
  * Der deutsche Artikelkatalog von Bring! (https://web.getbring.com/locale/catalog.de-DE.json, Stand 04.10.2026):
  * Anzeigename, Bring-Schlüssel (für das Bild und dieselbe Kachel in der Bring-App) und Abteilung.
  * Fest eingebaut statt abgerufen: die Vorschläge kommen so auch ohne Internet, und es sind nur 359 Artikel.
- * Neu erzeugen: siehe ~/.claude/nexus/iobroker.md, Abschnitt „Bring!-Knopf".
+ * Neu erzeugen: die Katalog-Datei laden und Name, Schlüssel und Abteilung übernehmen.
  */
 export const ABTEILUNGEN = ["Obst & Gemüse", "Brot & Gebäck", "Milch & Käse", "Fleisch & Fisch", "Zutaten & Gewürze", "Fertig- & Tiefkühlprodukte", "Getreideprodukte", "Snacks & Süsswaren", "Getränke", "Haushalt", "Pflege & Gesundheit", "Tierbedarf", "Baumarkt & Garten"] as const;
 

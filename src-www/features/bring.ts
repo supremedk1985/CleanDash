@@ -1,11 +1,9 @@
 /**
  * bring.ts
  * --------
- * Bring!-Einkaufslisten auf dem Küchen-Dashboard (Daniel, 04.10.2026: „einen Bring-Button, nach dem Klick ein
- * Fenster, wo man was hinzufügen kann, mit Autovervollständigung und allem, was geht, um es möglichst schnell zu
- * hinterlegen").
+ * Bring!-Einkaufslisten: ein Knopf öffnet ein Fenster zum schnellen Hinzufügen, mit Autovervollständigung.
  *
- * Der Weg: ioBroker-Adapter bring.0 (verbunden mit Daniels Bring-Konto). Geschrieben wird über
+ * Der Weg: der bring-Adapter von ioBroker. Geschrieben wird über
  * `<liste>.saveItemTranslated` als „Name" oder „Name, Zusatz" -- der Adapter trennt am ersten Komma, übersetzt den
  * deutschen Anzeigenamen in Bring!s Schlüssel (dieselbe Kachel wie in der App) und liest die Liste eine Sekunde
  * später neu. Entfernen über `removeItemTranslated` (ganz weg -- für „Rückgängig").
@@ -28,7 +26,6 @@ export interface BringListe {
   name: string;
 }
 
-/** Die Listen von Daniels Bring-Konto (Stand 04.10.2026). Die erste ist die, die das Fenster vorschlägt. */
 /** The lists from the settings (shoppingLists); the first one is the one the window suggests. `id` is the list's
  *  base in the bring adapter, e.g. bring.0.<uuid>. Filled by setBringLists() when the configuration is known. */
 export const LISTEN: BringListe[] = [];
@@ -142,7 +139,7 @@ interface Eintrag { name: string; schluessel?: string; abteilung?: string; n: st
 
 /**
  * Alltagsartikel bekommen einen kleinen Vorsprung: bei „to" soll Tomaten vor Tofu stehen, bei „bu" Butter vor
- * Bulgur. Bring! kennt keine Häufigkeiten über alle Nutzer, Daniels eigene stehen über „zuletzt verwendet" ohnehin vorn.
+ * Bulgur. Bring! kennt keine Häufigkeiten über alle Nutzer, die eigenen stehen über „zuletzt verwendet" ohnehin vorn.
  */
 const ALLTAG = new Set(["Milch", "Brot", "Brötchen", "Eier", "Butter", "Käse", "Joghurt", "Quark", "Sahne", "Tomaten",
   "Gurke", "Salat", "Äpfel", "Bananen", "Kartoffeln", "Zwiebeln", "Knoblauch", "Karotten", "Paprika", "Zitrone", "Nudeln",
@@ -267,7 +264,7 @@ export function haeufige(listeId: string, max = 12): Vorschlag[] {
 }
 
 /**
- * Bild eines Katalogartikels bei Bring! (354 von 360 so gefunden, 04.10.2026: klein, Umlaute ausgeschrieben,
+ * Bild eines Katalogartikels bei Bring! (354 von 360 so gefunden: klein, Umlaute ausgeschrieben,
  * alles andere zu „_"). Fehlt eins, zeigt die Oberfläche ein Ersatzzeichen.
  */
 export function bildUrl(schluessel?: string): string | undefined {

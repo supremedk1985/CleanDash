@@ -23,7 +23,7 @@ const isError = computed(
 );
 const isCleaning = computed(() => !!roborock.value?.inCleaning);
 
-// Start/Stop-Tasten (04.09.2026): welche, entscheidet der Zustand — siehe roborockAktionen().
+// Start/Stop-Tasten: welche, entscheidet der Zustand — siehe roborockAktionen().
 const aktionen = computed(() =>
   roborock.value ? roborockAktionen(roborock.value.state, roborock.value.inCleaning, roborock.value.online, roborock.value.adapterVerbunden) : []
 );

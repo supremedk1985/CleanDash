@@ -1,13 +1,12 @@
 /**
  * rasenUmriss.ts
  * --------------
- * Der Umriss des Rasens aus der gefahrenen Spur — für die Mähkarte im Stil der Navimow-App
- * (Daniel, 01.10.2026: Screenshot der App, „nur ohne Regen, aber in dem Stil").
+ * Der Umriss des Rasens aus der gefahrenen Spur — für die Mähkarte im Stil der Navimow-App.
  *
  * WARUM AUS DER SPUR: Der Adapter (TA2k/ioBroker.navimow) gibt keine Grenzlinie heraus, nur ein fertig gezeichnetes PNG
  * und `mapTrack` (die Punkte der Fahrten, 0,25-m-Raster). Die Randfahrt läuft aber einmal ganz um den Rasen — also ist
  * alles, was die Spur umschließt, Rasen:
- *   1. Spur auf ein 25-cm-Raster legen (Schritte bis 5 m: in Daniels Spur liegt mitten in der Randfahrt an der Station ein
+ *   1. Spur auf ein 25-cm-Raster legen (Schritte bis 5 m: in einer echten Spur lag mitten in der Randfahrt an der Station ein
  *      Sprung von 3,8 m — mit 3 m blieb der Ring offen und die Flut lief hinein, 36 statt ~360 m²)
  *   2. um ½ m verbreitern, damit kleine Lücken in der Randfahrt schließen
  *   3. von außen fluten — was die Flut nicht erreicht, ist innen

@@ -71,6 +71,8 @@ export interface RawConfig {
   mowerDevice?: string;
   vacuumDevice?: string;
   f25Prefix?: string;
+  /** Name of the second robot in its reminder, e.g. "Der Wischsauger" */
+  f25Name?: string;
   dehumidifierDevice?: string;
   callDatapoint?: string;
   callLabel?: string;

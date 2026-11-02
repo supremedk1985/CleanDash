@@ -13,7 +13,7 @@
  *      für alles, was Messer in Gang setzt, und einer ehrlichen Rückmeldung: „true" von
  *      setState heißt nur „ioBroker hat den Wert", nie „der Mäher fährt".
  *
- * Drei Wahrheitsquellen werden getrennt geführt und nie vermischt (Lehre vom 04.09.2026,
+ * Drei Wahrheitsquellen werden getrennt geführt und nie vermischt (Lehre aus einem stillen Ausfall,
  * als eine Kachel fünf Wochen Konserve als live zeigte): ioBroker antwortet
  * (backendErreichbar in lib/iobroker), der Adapter hat die Cloud (info.connection),
  * die Cloud hat den Mäher gehört (status.timestamp).
@@ -340,7 +340,7 @@ export interface Meldung {
  * Die Hilferufe des Mähers. Leer heißt: alles in Ordnung.
  * Der Schlüssel ist das, was der Benutzer wegklickt -- er muss also für dasselbe Problem
  * gleich bleiben und sich unterscheiden, sobald es ein anderes ist.
- * Ohne Adapterverbindung gibt es keine Meldung: die Werte wären Konserve (04.09.2026).
+ * Ohne Adapterverbindung gibt es keine Meldung: die Werte wären Konserve.
  */
 export function maeherMeldungen(
   m: Pick<Navimow, "zustand" | "stillstandMin" | "adapterVerbunden"> & { positionStummMin?: number },

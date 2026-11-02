@@ -1,7 +1,6 @@
 /**
- * Schmale Anzeige (Handy, cerebro-App) gegen das Küchen-Tablet: unter 640 px gilt „Handy" -- dieselbe Grenze wie
+ * Schmale Anzeige (Handy) gegen das Wandtablet: unter 640 px gilt „Handy" -- dieselbe Grenze wie
  * Tailwinds `sm:`, damit Klassen und Werte im Skript (Knob-Größen, Symbolgrößen) dieselbe Entscheidung treffen.
- * Seit 27.10.2026 (Daniel: „optimiere die Darstellung fürs Handy").
  */
 import { ref } from "vue";
 

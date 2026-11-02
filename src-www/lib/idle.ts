@@ -1,8 +1,8 @@
 /**
  * leerlauf.ts
  * -----------
- * Daniel (03.10.2026): „Nachdem das Dashboard einige Minuten nicht benutzt ist, soll es wieder alle Fenster schließen
- * und nach oben scrollen, dass es immer schön aussieht, wenn man drauf guckt."
+ * Nach ein paar Minuten ohne Benutzung schließt das Dashboard alle Fenster und rollt nach oben, damit es aufgeräumt
+ * aussieht, wenn man draufschaut.
  *
  * Nach LEERLAUF_MS ohne Berührung, Taste, Mausrad oder Scrollen zählt `ruhe` um eins hoch und die Seite rollt nach
  * oben. Jedes Fenster, das man SELBST öffnet, hört mit `beiRuhe()` darauf und schließt sich. Hinweise, die von selbst
@@ -17,7 +17,7 @@ export const LEERLAUF_MS = 3 * 60_000;
 export const ruhe = ref(0);
 
 // KEIN "scroll": Steht die Seite unten, verschiebt der Browser sie bei jeder Datenaktualisierung ein Stück
-// (Scroll-Anchoring) -- das sah aus wie Benutzung, und die Ruhe trat nie ein (im Test gefunden, 03.10.2026).
+// (Scroll-Anchoring) -- das sah aus wie Benutzung, und die Ruhe trat nie ein (im Test gefunden).
 // Echtes Scrollen kommt als touchstart/pointerdown (Finger), wheel (Maus) oder keydown (Tasten) an.
 const EREIGNISSE = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
 

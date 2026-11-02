@@ -7,7 +7,7 @@ const k = (code: string, stapel: string, position: number, darueber: number, ext
 const s = (id: number, name: string, bereich: string, kiste: FuKiste | null, extra: Partial<FuSache> = {}): FuSache =>
   ({ id, name, beschreibung: "", bereich, menge: "", notiz: "", foto: null, fotos: [], raus_seit: null, raus_anzahl: null, kiste, ...extra });
 
-describe("Fundus auf dem Küchen-Dashboard", () => {
+describe("Fundus auf dem Dashboard", () => {
   it("ohne Server-Angabe keine Adresse (dann keine Kachel)", () => {
     expect(serverAdresse("")).toBe("");
     expect(serverAdresse("  ")).toBe("");
@@ -39,7 +39,7 @@ describe("Fundus auf dem Küchen-Dashboard", () => {
     expect(filtern(liste, "Werkzeug", "K-02").map((x) => x.id)).toEqual([3]);
   });
 
-  it("lässt Aufgebrauchtes aus der Kiste und führt es auf der Nachkaufliste (08.10.2026)", () => {
+  it("lässt Aufgebrauchtes aus der Kiste und führt es auf der Nachkaufliste", () => {
     const a = k("K-01", "A", 1, 0);
     const liste = [s(1, "Riegel", "PC", a, { menge: "0", leer: true }), s(2, "Relais", "Elektro", a, { menge: "3" }),
       s(3, "Schraube", "Werkzeug", a, { menge: "0 Stück" }), s(4, "Lötzinn", "Elektro", a, { menge: "Rolle" })];
@@ -56,7 +56,7 @@ describe("Fundus auf dem Küchen-Dashboard", () => {
     expect(g[0].kisten.map((x) => x.code)).toEqual(["K-01", "K-02"]);
   });
 
-  it("gruppiert nach Raum in Daniels Reihenfolge, „ohne Raum“ zuletzt", () => {
+  it("gruppiert nach Raum in der Reihenfolge der App, „ohne Raum“ zuletzt", () => {
     const g = nachStapel([k("K-01", "A", 1, 0), k("K-02", "A", 1, 0, { raum: "Werkstatt" }), k("K-03", "", 1, 0, { raum: "Keller" }),
       k("K-04", "A", 1, 0, { raum: "Keller" })], ["Werkstatt", "Keller"]);
     expect(g.map((x) => `${x.raum}|${x.stapel}`)).toEqual(["Werkstatt|A", "Keller|A", "Keller|", "|A"]);

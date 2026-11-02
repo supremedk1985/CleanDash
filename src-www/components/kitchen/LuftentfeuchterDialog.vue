@@ -2,7 +2,7 @@
 /**
  * Verlauf des Luftentfeuchters: 24 Stunden oder 7 Tage, oben die Zahlen (heute, gestern, gesamt, Laufzeit), darunter die
  * Leistung als Kurve mit den Ein-Zeiten hinterlegt, bei 7 Tagen zusätzlich der Verbrauch je Tag, unten alle Schaltzeiten.
- * Daten: history.0 über simple-api (features/luftentfeuchter.ts). Der Verlauf beginnt am 15.10.2026.
+ * Daten: der Standard-History-Adapter von ioBroker (features/luftentfeuchter.ts).
  */
 import { computed, ref, watch } from "vue";
 import Dialog from "../../compat/primevue/Dialog.vue";
@@ -108,7 +108,7 @@ const zeitText = (t: number) => zeitraum.value === "tag" ? uhr(t)
       <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-2"><div class="text-xs text-gray-500">heute</div><div class="font-semibold">{{ kwhText(l.heute) }}</div></div>
       <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-2"><div class="text-xs text-gray-500">gestern</div><div class="font-semibold">{{ kwhText(l.gestern) }}</div></div>
       <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-2"><div class="text-xs text-gray-500">{{ zeitraum === 'tag' ? '24 h' : '7 Tage' }}: lief</div><div class="font-semibold" data-test="lf-lief">{{ dauerText(lief) }}</div></div>
-      <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-2"><div class="text-xs text-gray-500">gesamt seit 2022</div><div class="font-semibold">{{ kwhText(l.gesamt) }}</div></div>
+      <div class="rounded-xl bg-gray-100 dark:bg-gray-800 p-2"><div class="text-xs text-gray-500">gesamt</div><div class="font-semibold">{{ kwhText(l.gesamt) }}</div></div>
     </div>
 
     <div class="flex gap-2 mb-2">
@@ -122,7 +122,7 @@ const zeitText = (t: number) => zeitraum.value === "tag" ? uhr(t)
     <div v-if="fehler" class="text-red-600 dark:text-red-400 py-6 text-center">Verlauf nicht abrufbar.</div>
     <div v-else class="relative h-56" data-test="lf-diagramm">
       <ChartCanvas v-if="(v[ID.leistung] ?? []).length" :key="zeitraum + bis" :config="(diagramm as any)" />
-      <div v-else class="h-full flex items-center justify-center text-gray-500">{{ laedt ? 'lädt …' : 'Noch kein Verlauf in diesem Zeitraum (aufgezeichnet seit 15.10.2026).' }}</div>
+      <div v-else class="h-full flex items-center justify-center text-gray-500">{{ laedt ? 'lädt …' : 'Noch kein Verlauf in diesem Zeitraum.' }}</div>
     </div>
 
     <div v-if="zeitraum === 'woche' && tage.length" class="mt-4">

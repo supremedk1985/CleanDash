@@ -1,8 +1,8 @@
 /**
  * energyChartColors.ts
  * ---------------------
- * Farben fürs Popup der Energiezentrale. Feste Zuordnung Größe → Farbe, nach dem Vorbild der Anker-App
- * (Daniel, 01.10.2026: „so wie im Screenshot"): Haus blau, Speicher grün, Solar gelb, Netz violett.
+ * Farben fürs Popup der Energiezentrale. Feste Zuordnung Größe → Farbe, nach dem Vorbild der Anker-App:
+ * Haus blau, Speicher grün, Solar gelb, Netz violett.
  * Dieselbe Farbe gilt für Symbol, Kurve, Balkenstück und Punkt in der Analyse — eine Farbe, eine Bedeutung.
  */
 

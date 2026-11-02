@@ -1,14 +1,11 @@
 /**
  * luftentfeuchter.ts
  * ------------------
- * Der Luftentfeuchter an der Teckin-Steckdose mit Tasmota (seit 15.10.2026, ioBroker-Adapter `sonoff.0`).
- *
- * Daniel: „Ergänze auf dem Dashboard eine kleine Kachel, die den Verbrauch, An-/Aus-Zeiten und Button darstellt.
- * Verlauf und co."
+ * Ein Luftentfeuchter an einer Steckdose mit Tasmota (ioBroker-Adapter sonoff): Verbrauch, An-/Aus-Zeiten, Schalter, Verlauf.
  *
  * Zwei Quellen:
  *   - die aktuellen Werte (Schalter, Leistung, kWh heute/gestern/gesamt, erreichbar) per getBulk im schnellen Takt,
- *   - der Verlauf aus history.0 über simple-api `query/` (dataSource history.0, seit 15.10. eingetragen). Die Steckdose
+ *   - der Verlauf aus dem Standard-History-Adapter (Aufzeichnung für POWER und ENERGY_Power einschalten). Die Steckdose
  *     schreibt Leistung bei jeder Änderung und spätestens alle 10 Minuten, den Schalter bei jedem Wechsel.
  *
  * Ein Entfeuchter steht oft eingeschaltet herum, ohne zu laufen (Wassertank voll, Zielfeuchte erreicht). Deshalb zwei
@@ -32,10 +29,10 @@ export const ID = {
   get erreichbar() { return `${P()}.alive`; },
 };
 
-/** Ab dieser Leistung „läuft" er (Verdichter). Im Leerlauf zieht er ~20 W, im Betrieb ~150 W (gemessen 15.10.2026). */
+/** Ab dieser Leistung „läuft" er (Verdichter). Im Leerlauf zieht er ~20 W, im Betrieb ~150 W (an einem Gerät gemessen). */
 export const LAEUFT_AB_W = 60;
 
-/** Ein Messpunkt aus history.0: Wert und Zeit in ms */
+/** Ein Messpunkt aus dem History-Adapter: Wert und Zeit in ms */
 export type Punkt = [number | boolean | null, number];
 
 export interface Luftentfeuchter {
@@ -168,7 +165,7 @@ export function uhr(t: number): string {
 // --- Abrufe ---------------------------------------------------------------------------------------------------------
 
 /**
- * Verlauf aus history.0 über simple-api. `step` (ms) mit aggregate=average für lange Zeiträume, sonst die Rohwerte.
+ * Verlauf aus dem Standard-History-Adapter. `step` (ms) mit aggregate=average für lange Zeiträume, sonst die Rohwerte.
  * Antwortformat (Grafana-artig): [{ target: id, datapoints: [[wert, zeit], …] }, …].
  */
 export async function verlaufLaden(ids: string[], ab: number, bis: number, step?: number): Promise<Record<string, Punkt[]>> {

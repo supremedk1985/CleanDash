@@ -1,8 +1,7 @@
 /**
  * fundus.ts
  * ---------
- * Der Fundus auf dem Küchen-Dashboard (Daniel, 03.10.2026): „Ein Knopf und dann öffnet sich eine
- * Fullscreen-Seite, um zu suchen und so weiter. Nicht gedacht zum Hinzufügen."
+ * Der Fundus auf dem Dashboard: ein Knopf öffnet eine Vollbildseite zum Suchen, nicht zum Hinzufügen.
  *
  * Wie bei den Aufgaben holt das Dashboard die Daten DIREKT vom Server (Port 8095), nicht über ioBroker. Der
  * Server liefert dafür eigene, rein lesende Endpunkte ohne Anmeldung (/api/kachel/fundus*), die nur aus
@@ -16,7 +15,7 @@ import { ref } from "vue";
 
 export interface FuKiste {
   code: string;
-  /** Raum (seit 03.10.2026); leer = keinem Raum zugeordnet. Ein Stapel ist Raum + Name. */
+  /** Raum; leer = keinem Raum zugeordnet. Ein Stapel ist Raum + Name. */
   raum?: string;
   stapel: string;
   position: number;
@@ -41,7 +40,7 @@ export interface FuSache {
   raus_seit: string | null;
   raus_anzahl: number | null;
   kiste: FuKiste | null;
-  /** Aufgebraucht (Menge 0, Server seit 08.10.2026): liegt nicht mehr in der Kiste, steht auf der Nachkaufliste. */
+  /** Aufgebraucht (Menge 0): liegt nicht mehr in der Kiste, steht auf der Nachkaufliste. */
   leer?: boolean;
 }
 
@@ -49,7 +48,7 @@ export interface FuStand {
   sachen: FuSache[];
   kisten: FuKiste[];
   bereiche: string[];
-  /** Raumnamen in der Reihenfolge, die Daniel in der App festlegt. */
+  /** Raumnamen in der Reihenfolge, die in der App festgelegt ist. */
   raeume: string[];
   laedt: boolean;
   fehler: string | null;
@@ -103,7 +102,7 @@ export type Entnahme = "raus" | "zurueck" | "verbraucht";
 
 /**
  * Aufgebraucht? Der Server sagt es (`leer`); ältere Server nicht, dann zählt die erste Zahl im Mengentext.
- * Daniel, 08.10.2026, nach einem RAM-Riegel mit „0 ×" in K-06: „das macht kaum Sinn". Eine Sache mit Menge 0
+ * „0 ×" in einer Kiste ergibt keinen Sinn: Eine Sache mit Menge 0
  * liegt nicht in der Kiste -- sie gehört auf die Nachkaufliste oder ganz weg, und das fragt die Kachel bei Null.
  */
 export function istLeer(s: Pick<FuSache, "menge" | "leer">): boolean {
@@ -129,7 +128,7 @@ export async function entfernen(id: number): Promise<string | null> {
 }
 
 /**
- * Entnehmen am Tablet (Daniel, 03.10.2026): dieselben drei Handgriffe wie in der App. Gibt die geänderte Sache
+ * Entnehmen am Tablet: dieselben drei Handgriffe wie in der App. Gibt die geänderte Sache
  * zurück und ersetzt sie in der geladenen Liste, damit Liste und Einzelansicht sofort stimmen; null bei Fehler.
  */
 export async function entnehmen(id: number, aktion: Entnahme, anzahl?: number): Promise<FuSache | null> {
@@ -196,7 +195,7 @@ export function filtern(sachen: FuSache[], bereich: string | null, kiste: string
 }
 
 /**
- * Kisten nach Raum und Stapel gruppiert: Räume in Daniels Reihenfolge ([raeume]), „ohne Raum" zuletzt; darin Stapel
+ * Kisten nach Raum und Stapel gruppiert: Räume in der Reihenfolge der App ([raeume]), „ohne Raum" zuletzt; darin Stapel
  * alphabetisch, „ohne Stapel" zuletzt; im Stapel von oben nach unten.
  */
 export function nachStapel(kisten: FuKiste[], raeume: string[] = []): Array<{ raum: string; stapel: string; kisten: FuKiste[] }> {
@@ -234,8 +233,7 @@ export interface FuRaumGruppe {
 }
 
 /**
- * Für die Ansicht „Räume" (Daniel, 03.10.2026): je Raum seine Stapel und die losen Kisten, Räume in Daniels
- * Reihenfolge, „ohne Raum" zuletzt.
+ * Für die Ansicht „Räume": je Raum seine Stapel und die losen Kisten, Räume in der Reihenfolge der App, „ohne Raum" zuletzt.
  */
 export function nachRaum(kisten: FuKiste[], raeume: string[] = []): FuRaumGruppe[] {
   const gruppen: FuRaumGruppe[] = [];

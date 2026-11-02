@@ -85,7 +85,7 @@ export class Dishwasher {
 
   /**
    * false = die Cloud hat die Maschine verloren (general.connected). Dann stimmt kein Zustand
-   * hier mehr - am 04.09.2026 zeigte die Kachel „Bereit" vom 31.08., während die Maschine lief.
+   * hier mehr - sonst zeigte die Kachel ein altes „Bereit", während die Maschine lief.
    */
   isVerbunden(): boolean {
     return this.verbunden;

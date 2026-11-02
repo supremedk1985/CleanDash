@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /**
- * Schnell etwas auf die Bring!-Liste (Daniel, 04.10.2026: „mit Autovervollständigung und allem, was geht, um es
- * möglichst schnell zu hinterlegen").
+ * Schnell etwas auf die Bring!-Liste, mit Autovervollständigung.
  *
  * Was „schnell" hier heißt:
  *  - Vorschläge ab dem ersten Buchstaben, aus Bring!s Katalog, aus „zuletzt verwendet" und eigenen Artikeln; Tippfehler

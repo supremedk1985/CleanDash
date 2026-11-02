@@ -63,7 +63,7 @@ const ALLE_ZUSTAENDE = [
   "Error", "inSoftwareUpdate", "Self-Checking", "Offline", "", "irgendwasNeues",
 ];
 
-/** Das echte mapFrame vom 12.09.2026 (800×686 px, scale 22,857). */
+/** Ein echtes mapFrame (800×686 px, scale 22,857). */
 const FRAME: KartenFrame = { minX: -19, maxX: 16, minY: -4, maxY: 26, width: 800, height: 686, scale: 22.857142857142858 };
 const FRAME_JSON = JSON.stringify(FRAME);
 
@@ -574,7 +574,7 @@ describe("navimowTippen (Zweitbestätigung)", () => {
   });
 });
 
-// --- Nachgebessert am 2026-09-13 (zwei Review-Befunde) -----------------------------
+// --- Nachgebessert (zwei Review-Befunde) -----------------------------
 describe("Stillstandsuhr bei Datenlücken", () => {
   it("meldet »keine Position«, wenn er mäht und lange nichts sendet", () => {
     // Der Zielfall: festgefahren UND funkstill. Die Stillstandsuhr pausiert dann mangels

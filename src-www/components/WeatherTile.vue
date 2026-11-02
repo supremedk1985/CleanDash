@@ -92,8 +92,8 @@ const heuteDetails = computed(() => {
     </template>
       <WeatherDetailsDialog v-model:visible="detailsVisible" :tab="detailsTab" />
 
-      <!-- Seit 09.10.2026 (Daniels Entwurf, „gefällt mir gut"): Heute über die volle Kachelbreite mit der
-           Regen-Zeitleiste wie im Wohnmobil-Cockpit, darunter Morgen und Übermorgen nebeneinander, jeder
+      <!-- Heute über die volle Kachelbreite mit der
+           Regen-Zeitleiste, darunter Morgen und Übermorgen nebeneinander, jeder
            mit seiner eigenen kleinen Zeitleiste. Antippen öffnet die drei Tage groß (Reiter „Stunden"). -->
       <div class="space-y-3">
         <div v-if="forecast[0]" class="rounded-xl bg-blue-50 dark:bg-blue-950 shadow-sm px-4 pt-3 pb-2" data-test="wetter-heute">

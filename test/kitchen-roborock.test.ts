@@ -57,7 +57,7 @@ describe("f25Meldungen", () => {
   it("meldet nichts ohne Hinweis - auch wenn er die Selbstreinigung selbst gestartet hat", () => {
     expect(f25Meldungen(stand("", 40), jetzt)).toEqual([]);
   });
-  it("meldet nichts, solange er noch auf genug Akku wartet (Daniel: nur wenn es so weit ist)", () => {
+  it("meldet nichts, solange er noch auf genug Akku wartet (nur wenn es so weit ist)", () => {
     expect(f25Meldungen(stand("wartet", 9), jetzt)).toEqual([]);
   });
   it("fordert bei genug Akku zum Starten auf, mit eigenem Schlüssel", () => {

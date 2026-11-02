@@ -13,7 +13,7 @@ const reiter = ref<string>(props.tab);
 // Beim Öffnen auf den Reiter springen, über den man gekommen ist (Kalender → Woche, Zeitleiste → Stunden)
 watch(visible, (offen) => { if (offen) reiter.value = props.tab; });
 
-/** Heute, morgen, übermorgen als Zeitleisten untereinander, wie im Wohnmobil-Cockpit (09.10.2026). */
+/** Heute, morgen, übermorgen als Zeitleisten untereinander. */
 const stundenTage = computed(() =>
   wetterstunden.value.tage.slice(0, 3).map((tag, i) => ({
     tag,

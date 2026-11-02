@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Eine Kiste in der Ansicht „Räume" (03.10.2026): gezeichnet wie im Regal -- IKEA UPPSNOFSAD schwarz mit weißem
+ * Eine Kiste in der Ansicht „Räume": gezeichnet wie im Regal -- IKEA UPPSNOFSAD schwarz mit weißem
  * Etikett, SAMLA milchig, sonst neutral --, mit Nummer, bis zu zwei Inhaltsfotos (im Fünfer-Raster ist nicht mehr Platz) und der Zahl der Sachen.
  */
 import { computed } from "vue";

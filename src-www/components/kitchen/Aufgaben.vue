@@ -1,9 +1,6 @@
 <script setup lang="ts">
 /**
- * Die Aufgaben-Kachel fürs Küchendashboard.
- *
- * Entwurf und Begründungen: ~/Ticketsystem/NOTIZEN.md (Entscheidungen 11-21)
- * und die Entwurfsseite vom 13.09.
+ * Die Aufgaben-Kachel (MachIchGleich).
  *
  * Drei Dinge, die man der Kachel ansehen soll, ohne sie zu bedienen:
  *   1. WAS offen ist            -> Titel
@@ -21,17 +18,15 @@ import type { KachelAufgabe } from "../../features/aufgaben";
 import AufgabenDialog from "./AufgabenDialog.vue";
 
 const laeuft = ref<string | null>(null);
-/** Welche Aufgabe im Popup steht (Daniel, 13.09.: Text antippen -> Details). */
+/** Welche Aufgabe im Popup steht (Text antippen -> Details). */
 const offene = ref<KachelAufgabe | null>(null);
 const popupOffen = ref(false);
 /**
  * Welche Aufgabe gerade abgehakt werden soll.
  *
- * Daniel am 13.09.: „Wenn man auf ein Häkchen klickt, dann soll eine Abfrage
- * kommen, damit es nicht aus Versehen als erledigt markiert wird." Das
- * Küchentablet hängt an der Wand und wird im Vorbeigehen gestreift -- ein
- * verirrter Fingertipp nimmt dem anderen sonst still die Erinnerung weg
- * (Entscheidung 19: ein Haken genügt für beide).
+ * Ein Haken fragt erst nach: Ein Wandtablet wird im Vorbeigehen gestreift --
+ * ein verirrter Fingertipp nähme dem anderen sonst still die Erinnerung weg
+ * (ein Haken genügt für beide).
  */
 const nachfrage = ref<KachelAufgabe | null>(null);
 
@@ -66,8 +61,8 @@ async function tippen(a: KachelAufgabe) {
   laeuft.value = null;
 }
 
-/** Was genau abgehakt wird -- der nächste offene Schritt, nicht die Aufgabe
- *  (Entscheidung 16). Die Rückfrage muss das sagen, sonst beantwortet man sie
+/** Was genau abgehakt wird -- der nächste offene Schritt, nicht die Aufgabe.
+ * Die Rückfrage muss das sagen, sonst beantwortet man sie
  *  für etwas anderes, als dann passiert. */
 const nachfrageText = computed(() => {
   const a = nachfrage.value;
@@ -116,7 +111,7 @@ beiRuhe(() => { popupOffen.value = false; nachfrage.value = null; });
         <li v-for="a in sichtbare" :key="a.id"
             class="flex items-start gap-3 py-2 border-b last:border-b-0 border-gray-200 dark:border-gray-700"
             :data-pruef="'zeile'" :data-id="a.id">
-          <!-- Entscheidung 18: ein Streifen je beteiligter Person -->
+          <!-- ein Streifen je beteiligter Person -->
           <span class="flex gap-0.5 self-stretch shrink-0" data-pruef="streifen"
                 :aria-label="'Beteiligt: ' + a.beteiligte.map(p => aufgaben.personen[p]?.name ?? p).join(', ')">
             <i v-for="p in a.beteiligte" :key="p" class="w-1.5 rounded-full block"
@@ -144,14 +139,14 @@ beiRuhe(() => { popupOffen.value = false; nachfrage.value = null; });
             </div>
           </div>
 
-          <!-- Entscheidung 21: nur die Klammer mit einer Zahl, kein Vorschaubild -->
+          <!-- nur die Klammer mit einer Zahl, kein Vorschaubild -->
           <span v-if="a.anhaenge" class="shrink-0 mt-0.5 text-sm text-gray-500 dark:text-gray-400
                        flex items-center gap-0.5" data-pruef="klammer"
                 :aria-label="a.anhaenge + ' Anhänge'">
             <span class="pi pi-paperclip text-xs" aria-hidden="true"></span>{{ a.anhaenge }}
           </span>
 
-          <!-- Entscheidung 12: der Punkt sagt, wie eilig -->
+          <!-- der Punkt sagt, wie eilig -->
           <span class="shrink-0 mt-2 w-3 h-3 rounded-full"
                 :class="{
                   'bg-red-500': a.prio === 'dringend',
@@ -177,7 +172,7 @@ beiRuhe(() => { popupOffen.value = false; nachfrage.value = null; });
       </div>
 
       <!-- Was schon geschafft ist. Dieselbe Zahl wie in der App, sie überlebt
-           das Aufräumen dort (Daniel, 13.09.). -->
+           das Aufräumen dort. -->
       <div v-if="aufgaben.bilanz.erledigt" class="pt-2 text-sm text-emerald-700 dark:text-emerald-400"
            data-pruef="bilanz">
         <span class="pi pi-check-circle text-xs mr-1" aria-hidden="true"></span>

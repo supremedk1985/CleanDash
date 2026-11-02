@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Kleine Kachel „Luftentfeuchter" (15.10.2026): Schalter, was er gerade tut, Verbrauch heute, seit wann an/aus,
+ * Kleine Kachel „Luftentfeuchter": Schalter, was er gerade tut, Verbrauch heute, seit wann an/aus,
  * darunter die Leistung der letzten 24 Stunden als Balken (eine Säule je Stunde, ohne Achse — wie beim Internet).
  * Antippen öffnet den Verlauf mit Diagramm und allen Schaltzeiten.
  */

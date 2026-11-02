@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
- * Ansicht „Räume" der Fundus-Seite (Daniel, 03.10.2026).
+ * Ansicht „Räume" der Fundus-Seite.
  *
- * Fünfer-Raster: „ein Fünfer-Raster soll es sein, mehr Kisten stehen nicht nebeneinander". Jeder Stapel und jede
+ * Fünfer-Raster: mehr Kisten stehen nicht nebeneinander. Jeder Stapel und jede
  * einzelne Kiste belegt einen Platz, ab dem sechsten geht es in der nächsten Reihe weiter. Innerhalb einer Reihe
  * stehen alle auf demselben Boden (items-end), wie im Regal.
  *

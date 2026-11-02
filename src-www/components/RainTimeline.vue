@@ -1,14 +1,13 @@
 <script setup lang="ts">
 /**
- * Regen- und Temperatur-Zeitleiste für einen Tag (0–23 Uhr), nachgebaut nach der Wetterseite des
- * Wohnmobil-Cockpits (auto-cockpit/src/ui/page_weather.cpp), 09.10.2026:
+ * Regen- und Temperatur-Zeitleiste für einen Tag (0–23 Uhr):
  *  - je Stunde ein breiter Balken für die Regenwahrscheinlichkeit (Höhe = Prozent) und darin ein
  *    schmaler, kräftiger für die Regenmenge (relativ zum Tagesmaximum, Skala mindestens 2 mm, damit
  *    Niesel nicht wie Starkregen aussieht; jede Stunde mit Regen mindestens 2 px hoch),
  *  - darüber die Temperatur als Linie im oberen Teil, Spanne mindestens 4 °C, Höchst- und Tiefstwert
  *    am jeweiligen Punkt,
  *  - eine senkrechte Markierung für „jetzt", Stundenmarken bei 0, 6, 12 und 18 Uhr.
- * Farben wie im Cockpit, aber passend zum hellen und dunklen Dashboard (Daniels Wahl).
+ * Farben passend zum hellen und dunklen Dashboard.
  * Gezeichnet als SVG mit fester Zeichenfläche, die mit der Kachel skaliert.
  */
 import { computed } from "vue";

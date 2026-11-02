@@ -44,7 +44,8 @@ describe("Rasenumriss aus der Spur", () => {
     expect(spurLesen('{"points":null}')).toBeNull();
   });
 
-  it("die echte Spur vom 01.10.2026 ergibt eine plausible Fläche", () => {
+  // Braucht eine echte Spur in test/__testdaten__/ (nicht im Repo); ohne sie wird der Fall übersprungen.
+  it.skipIf(!echteSpur)("eine echte Spur ergibt eine plausible Fläche", () => {
     const u = rasenUmriss(spurLesen(echteSpur)!)!;
     expect(u).not.toBeNull();
     // Der Garten liegt in einem Rahmen von rund 33 × 27 m; die Rasenfläche ist deutlich kleiner als der Rahmen

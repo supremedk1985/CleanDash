@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { shoppinglist } from "../../features/shoppingList";
 import BringFenster from "./BringFenster.vue";
 
-/** Bring!-Knopf (Daniel, 04.10.2026): öffnet das Fenster zum schnellen Hinzufügen. Ein Tipp auf die Liste auch. */
+/** Bring!-Knopf: öffnet das Fenster zum schnellen Hinzufügen. Ein Tipp auf die Liste auch. */
 const fenster = ref(false);
 </script>
 

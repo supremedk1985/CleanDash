@@ -1,14 +1,13 @@
 <script setup lang="ts">
 /**
- * Fundus auf dem Küchen-Dashboard (Daniel, 03.10.2026): ein Knopf, dahinter eine Vollbildseite zum
+ * Fundus auf dem Dashboard: ein Knopf, dahinter eine Vollbildseite zum
  * Suchen und Stöbern -- welche Sache liegt in welcher Kiste, und wie viele muss man abheben. Einräumen und
- * Ändern bleiben in der App; seit dem 03.10. nachmittags kann man hier aber ENTNEHMEN (Daniel: „Entnahme von
- * einzelnen Anzahl oder dem ganzen Stück"): rausnehmen mit Anzahl, zurücklegen, verbrauchen.
+ * Ändern bleiben in der App; hier kann man aber ENTNEHMEN: rausnehmen mit Anzahl, zurücklegen, verbrauchen.
  *
  * Drei Wege zu einer Sache: suchen (die Suche des Servers mit Tippfehlern und Verwendungszweck), nach
  * Bereich stöbern, oder über die Kisten. Ein Tipp auf eine Sache zeigt sie groß mit ihrem Ort.
  *
- * Aufgebraucht (Daniel, 08.10.2026): Fällt die Menge durch „Verbraucht" auf null, fragt die Kachel sofort „weg damit
+ * Aufgebraucht: Fällt die Menge durch „Verbraucht" auf null, fragt die Kachel sofort „weg damit
  * oder nachkaufen?". Weg damit löscht die Sache (der Server erlaubt das ohne Anmeldung NUR für Aufgebrauchtes);
  * Nachkaufen behält sie -- aber nicht als „0 ×" in der Kiste, sondern auf der Nachkaufliste.
  */
@@ -31,7 +30,7 @@ const bereich = ref<string | null>(null);
 const kiste = ref<string | null>(null);
 const gewaehlt = ref<FuSache | null>(null);
 const grossesFoto = ref<string | null>(null);
-// Nachkaufliste statt Kisteninhalt (08.10.2026)
+// Nachkaufliste statt Kisteninhalt
 const nachkaufen = ref(false);
 // Kurze Meldung über der Liste, z. B. nach „Weg damit"
 const meldung = ref<string | null>(null);
@@ -84,8 +83,8 @@ const leere = computed(() => nachkaufliste(fundus.value.sachen));
 function nachkaufenUmschalten() { nachkaufen.value = !nachkaufen.value; ansicht.value = "sachen"; }
 const stapel = computed(() => nachStapel(fundus.value.kisten, fundus.value.raeume));
 
-// Schloss für die Ansicht „Räume" (Daniel, 03.10.2026: „nach Entsperren oben rechts die Kiste verschieben"):
-// Schutz gegen Versehen am Küchentablet. Sperrt sich zwei Minuten nach dem letzten Umstellen von selbst wieder,
+// Schloss für die Ansicht „Räume" (Kisten erst nach Entsperren oben rechts verschieben):
+// Schutz gegen Versehen am Wandtablet. Sperrt sich zwei Minuten nach dem letzten Umstellen von selbst wieder,
 // ebenso beim Schließen der Seite oder beim Wechsel der Ansicht.
 const entsperrt = ref(false);
 let schlossUhr: ReturnType<typeof setTimeout> | undefined;
@@ -127,7 +126,7 @@ async function entnahme(aktion: Entnahme) {
   };
   wieviel.value = 1;
 }
-// Bei null (08.10.2026): „Weg damit" entfernt die Sache, „Nachkaufen" lässt sie auf der Nachkaufliste.
+// Bei null: „Weg damit" entfernt die Sache, „Nachkaufen" lässt sie auf der Nachkaufliste.
 async function wegDamit() {
   const s = gewaehlt.value;
   if (!s || sendet.value) return;
@@ -237,9 +236,9 @@ function leeren() { anfrage.value = ""; void nextTick(() => suchfeld.value?.focu
                 <div class="text-gray-500 dark:text-gray-400">{{ kistenText(gewaehlt.kiste) }}</div>
               </div>
             </div>
-            <!-- Entnehmen (03.10.2026) -->
+            <!-- Entnehmen -->
             <div class="p-4 rounded-xl bg-white dark:bg-gray-800 flex flex-col gap-3" data-test="fundus-entnahme">
-              <!-- Aufgebraucht (08.10.2026): weg damit oder nachkaufen? -->
+              <!-- Aufgebraucht: weg damit oder nachkaufen? -->
               <template v-if="istLeer(gewaehlt)">
                 <div class="text-lg">Aufgebraucht. Soll es ganz aus dem Fundus, oder willst du es nachkaufen?</div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -316,7 +315,7 @@ function leeren() { anfrage.value = ""; void nextTick(() => suchfeld.value?.focu
               {{ t }}
             </button>
           </div>
-          <!-- Nachkaufliste (08.10.2026): nur da, wenn etwas aufgebraucht ist -->
+          <!-- Nachkaufliste: nur da, wenn etwas aufgebraucht ist -->
           <button v-if="leere.length || nachkaufen" type="button" @click="nachkaufenUmschalten" data-test="fundus-nachkaufliste"
                   class="h-11 px-4 rounded-full border-2 font-semibold flex items-center gap-2 whitespace-nowrap"
                   :class="nachkaufen ? 'bg-amber-400 border-amber-400 text-gray-900' : 'border-amber-400 text-amber-800 dark:text-amber-300'"
@@ -356,7 +355,7 @@ function leeren() { anfrage.value = ""; void nextTick(() => suchfeld.value?.focu
           <template v-else>{{ liste.length === 1 ? "1 Treffer" : `${liste.length} Treffer` }}</template>
         </div>
 
-        <!-- Räume (03.10.2026): Fünfer-Raster, Verschieben nach Entsperren -->
+        <!-- Räume: Fünfer-Raster, Verschieben nach Entsperren -->
         <FundusRaeume v-if="!sucht && ansicht === 'raeume'" :entsperrt="entsperrt" @oeffnen="kisteZeigen" @bewegt="schlossNachstellen" />
 
         <!-- Kisten nach Stapel -->

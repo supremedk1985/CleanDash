@@ -7,7 +7,11 @@ tablet, done. No widgets to draw, no CSS to write: CleanDash looks tidy out of t
 
 > **Status: early version (0.4.0).** All tiles below work; not yet in the ioBroker repository. Feedback welcome.
 
-![CleanDash on a tablet (demo house, made-up values)](docs/screenshot-dark.png)
+![CleanDash on a tablet (demo house, made-up values, German interface)](docs/screenshot-dark.png)
+
+| Light | A room | Notices | Move mode |
+|---|---|---|---|
+| ![Light theme](docs/screenshot-light.png) | ![Room with lamps and shutters](docs/screenshot-room.png) | ![Notices over the page](docs/screenshot-notices.png) | ![Move mode](docs/screenshot-move.png) |
 
 ## What it does
 
@@ -26,12 +30,13 @@ devices, instances and addresses all come from the settings.
 | **Robot vacuum** | roborock adapter | State, battery, area, station (water tanks, dust bag, filter), start and dock |
 | **3D printer** | octoprint adapter | Progress, time left, temperatures, optional webcam picture |
 | **Fuel prices** | tankerkoenig adapter | Your stations, cheapest first |
-| **Dehumidifier** | sonoff adapter (Tasmota plug) | On/off, power, energy today |
+| **Dehumidifier** | sonoff adapter (Tasmota plug) | On/off, power, energy today; the 24-hour and 7-day history needs the history adapter logging `POWER` and `ENERGY_Power` |
 | **Call button** | any boolean datapoint | One big button that sets it to `true` (for example a doorbell for the kids' rooms) |
 | **Documents in the inbox** | any number datapoint | The count, for example from a Paperless script |
-| **Internet speed** | JSON file | Download, upload, ping from a measuring script of your own (fields `wann`, `runter`, `hoch`, `ping`) |
-| **Second robot via script** | a folder with `hinweis`, `akku`, `lebenszeichen` | For robots the adapter cannot read: a script writes the state, CleanDash shows the reminder |
-| **MachIchGleich, Fundus** | own servers (address) | Tasks and the parts box of two self-hosted companion apps by the author; useful only if you run them, otherwise leave empty |
+| **Internet speed** | JSON file | Download, upload, ping from a measuring script of your own, rated against your own average ([format](#data-formats)) |
+| **Second robot via script** | a folder with three datapoints | For robots the adapter cannot read: a script of your own writes the state, CleanDash reminds you to start the self-cleaning ([format](#data-formats)) |
+| **Fundus** | own server (address) | Search the parts box of [Fundus](https://github.com/supremedk1985/Fundus), a self-hosted app by the author; only if you run it |
+| **MachIchGleich** | own server (address) | Tasks from the author's private task app; it is not published, so leave this empty |
 
 **Notices** that need attention lie over the page on the left; the tiles do not move. Each can be snoozed for five
 minutes, and those that are a task can be marked done (it comes back next time the cause appears):
@@ -43,8 +48,8 @@ another place or column, or hide it with the eye; *Done* saves the order in this
 phone can each have their own. *Reset* brings back the default order.
 
 Also: **asks before switching** (always or only for several devices at once), **light and dark** by sunrise and
-sunset at the location from the ioBroker system settings, **English and German** for rooms, energy, weather and
-waste (the other tiles are German for now), and **your login, your rights**: the page connects through the ioBroker
+sunset at the location from the ioBroker system settings, **English and German** for rooms, energy, waste, notices and
+move mode (the weather details and the other tiles are German for now), and **your login, your rights**: the page connects through the ioBroker
 web adapter, so its authentication and user permissions apply. No cloud, nothing leaves your network except the
 optional Open-Meteo forecast.
 
@@ -70,8 +75,38 @@ Open the instance settings:
 | **Shopping lists** | Bring! list | Name and the list's `content` datapoint |
 | **More tiles** | – | Pick the device or instance for mower, vacuum, printer, fuel, dehumidifier, call button, inbox count, speed test. Leave a field empty and the tile stays away |
 
-Then open `http://<ioBroker>:<web port>/cleandash/index.html` (port of the web adapter, 8082 by default) (the link is also on the instance in the admin). A second
-instance is opened with `?instance=1`.
+Then open `http://<ioBroker>:<web port>/cleandash/index.html` (port of the web adapter, 8082 by default; the link is
+also on the instance in the admin). A second instance is opened with `?instance=1`.
+
+## Data formats
+
+**Internet speed:** a JSON file your measuring script writes somewhere the tablet can fetch it (for example the web
+adapter's folder or any web server). Speeds in Mbit/s, ping and jitter in ms, times as ISO strings:
+
+```json
+{
+  "ok": true,
+  "stand": "2026-11-02T07:30:00",
+  "runter": 95.4, "hoch": 38.2, "ping": 11, "jitter": 2.1, "server": "Frankfurt",
+  "mittel_runter": 92.0,
+  "verlauf": [{ "wann": "2026-11-01T20:40:00", "runter": 90.1, "hoch": 37.5, "ping": 12 }]
+}
+```
+
+Only `runter`, `hoch` and `ping` are required. With `mittel_runter` (your average) the tile turns yellow below 70 % and
+red below 40 % of it; `verlauf` draws the small bars; `"ok": false` marks a failed measurement.
+
+**Second robot via script:** a folder (for example `0_userdata.0.mop`) with three datapoints your script keeps up to
+date:
+
+| Datapoint | Value |
+|---|---|
+| `hinweis` | `"bereit"` when the battery is full enough and the self-cleaning has not run, otherwise `"wartet"` or `""` |
+| `akku` | battery in percent |
+| `lebenszeichen` | time of the robot's last answer in ms (`Date.now()`); older than 15 minutes and CleanDash stays quiet |
+
+While `hinweis` is `"bereit"`, a notice asks to start the self-cleaning. Set the robot's name for the notice in the
+settings.
 
 ## Try it without ioBroker
 
@@ -103,6 +138,22 @@ energy arrive live over the socket; the other tiles ask every 5 seconds (or 90 s
 4. English texts for all tiles
 5. Speed test measured by the adapter itself, rated against your own average
 
+## Changelog
+
+### 0.4.0 (2026-11-02)
+- All tiles of the author's kitchen dashboard as configurable tiles
+- Arrange and hide tiles per device (move mode)
+- Notices as cards that can be snoozed or marked done
+
+### 0.3.0
+- Energy rings and history, weather timelines, bin ticker
+
+### 0.2.0
+- Weather, energy, waste collection, dishwasher and shopping list
+
+### 0.1.0
+- First draft: rooms and lights
+
 ## License
 
 MIT © 2026 Daniel Korte. Icons: [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0).
@@ -125,7 +176,8 @@ Eingerichtet wird alles in den Instanzeinstellungen, im Code steht nichts über 
 - **Wetter** (openweathermap), **Müllabfuhr** (trashschedule), **Spülmaschine** (homeconnect), **Einkaufslisten** (bring)
 - **Weitere Kacheln:** Mähroboter (navimow), Saugroboter (roborock), 3D-Drucker (octoprint), Spritpreise
   (tankerkoenig), Luftentfeuchter (sonoff/Tasmota), Ruf-Knopf, Dokumente im Posteingang, Internetgeschwindigkeit,
-  zweiter Roboter über ein eigenes Skript, dazu MachIchGleich und Fundus (nur mit eigenem Server). Bleibt ein Feld leer, erscheint die Kachel nicht.
+  zweiter Roboter über ein eigenes Skript, dazu Fundus (nur mit eigenem Server). Bleibt ein Feld leer, erscheint die
+  Kachel nicht. Die Formate für Internetgeschwindigkeit und zweiten Roboter stehen oben unter *Data formats*.
 
 **Meldungen** liegen links über der Seite, die Kacheln verschieben sich nicht: Tonne rausstellen, Fenster offen bei
 laufender Heizung, Spülmaschine fertig oder mit Fehler, Mäher festgefahren, Station des Saugers braucht Wasser oder

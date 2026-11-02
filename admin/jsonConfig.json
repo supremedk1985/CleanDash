@@ -546,7 +546,14 @@
           "label": "Second robot via script (optional)",
           "xs": 12,
           "md": 6,
-          "help": "Folder with hinweis, akku, lebenszeichen"
+          "help": "Folder with hinweis, akku, lebenszeichen (see README)"
+        },
+        "f25Name": {
+          "type": "text",
+          "label": "Second robot: name in the reminder",
+          "xs": 12,
+          "md": 6,
+          "help": "e.g. The mop. Empty: The second robot"
         },
         "dehumidifierDevice": {
           "type": "objectId",
@@ -568,7 +575,7 @@
           "label": "Call button: label",
           "xs": 12,
           "md": 6,
-          "help": "e.g. Kinder anklingeln"
+          "help": "e.g. Call the kids"
         },
         "paperlessCount": {
           "type": "objectId",

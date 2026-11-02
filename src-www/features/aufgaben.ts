@@ -1,15 +1,14 @@
 /**
  * aufgaben.ts
  * -----------
- * Die Küchenkachel für das Aufgaben-System (Entwurf und Entscheidungen in
- * ~/Ticketsystem/NOTIZEN.md).
+ * Die Kachel für das Aufgaben-System MachIchGleich.
  *
  * Anders als alle übrigen Kacheln holt diese ihre Daten NICHT aus ioBroker,
  * sondern direkt vom Aufgaben-Server auf Port 8091. Der Grund: ioBroker wäre
  * hier nur ein Briefkasten, der die Daten weiterreicht -- und jeder Umweg ist
  * eine Stelle, an der etwas veraltet, ohne dass man es sieht.
  *
- * Entscheidung 13: Die Kachel meldet sich NICHT an. Sie zeigt alles von allen
+ * Die Kachel meldet sich NICHT an. Sie zeigt alles von allen
  * und darf auch abhaken -- auch für den anderen. Der Server lässt diesen
  * Zugang nur aus dem Haus-Netz zu; von außen antwortet er mit 403.
  */
@@ -34,7 +33,7 @@ export interface KachelAufgabe {
   anhaenge: number;
   versuche: number;
   letzter_versuch: string | null;
-  /** Für das Popup (Daniel, 13.09.): alle Schritte, Notiz, Takt, Herkunft. */
+  /** Für das Popup: alle Schritte, Notiz, Takt, Herkunft. */
   schritte?: Array<{ nr: number; text: string; zustaendig: string; erledigt: boolean }>;
   notiz?: string;
   stufe?: string;
@@ -132,11 +131,11 @@ export async function poll(): Promise<void> {
 }
 
 /**
- * Abhaken an der Kachel. Entscheidung 13: Wer in der Küche steht, hakt für den
+ * Abhaken an der Kachel. Wer in der Küche steht, hakt für den
  * ganzen Haushalt ab -- auch Aufgaben des anderen.
  *
- * Es wird immer der NÄCHSTE OFFENE Schritt abgehakt, nicht die ganze Aufgabe
- * (Entscheidung 16). Sonst wäre der Schrank mit einem Tippen fertig, obwohl
+ * Es wird immer der NÄCHSTE OFFENE Schritt abgehakt, nicht die ganze Aufgabe.
+ * Sonst wäre der Schrank mit einem Tippen fertig, obwohl
  * der Keller noch voll ist.
  */
 export async function abhaken(a: KachelAufgabe): Promise<boolean> {

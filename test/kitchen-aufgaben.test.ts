@@ -12,7 +12,7 @@ import { aufgaben, poll, abhaken, nebenzeile, HOECHSTENS, serverAdresse, notizZe
 import type { KachelAufgabe } from "../src-www/features/aufgaben";
 
 const personen = {
-  daniel: { name: "Daniel", farbe: "#0f6e6e" },
+  max: { name: "Max", farbe: "#0f6e6e" },
   anna: { name: "Anna", farbe: "#6b4e9e" },
 };
 
@@ -25,7 +25,7 @@ const werkstatt: KachelAufgabe = {
 
 const schrank: KachelAufgabe = {
   id: "a2", titel: "Schrank im Keller aufbauen", prio: "normal",
-  beteiligte: ["daniel", "anna"], anhaenge: 3, versuche: 0, letzter_versuch: null,
+  beteiligte: ["max", "anna"], anhaenge: 3, versuche: 0, letzter_versuch: null,
   schritt: { id: "s1", text: "Aussortieren, was weg kann", nr: 1, von: 2, zustaendig: "beide" },
 };
 
@@ -48,7 +48,7 @@ describe("Daten holen", () => {
     await poll();
     expect(aufgaben.value.aufgaben).toHaveLength(2);
     expect(aufgaben.value.dringend).toBe(1);
-    expect(aufgaben.value.personen.daniel.farbe).toBe("#0f6e6e");
+    expect(aufgaben.value.personen.max.farbe).toBe("#0f6e6e");
     expect(aufgaben.value.erreichbar).toBe(true);
     expect(aufgaben.value.stand).toBeInstanceOf(Date);
   });
@@ -169,7 +169,7 @@ describe("Die Adresse des Servers", () => {
 describe("Was die Küche im Popup sieht", () => {
   it("übernimmt die Bilanz vom Server -- sie überlebt das Aufräumen in der App", async () => {
     vi.stubGlobal("fetch", antwortMit({
-      aufgaben: [], personen, dringend: 0, bilanz: { erledigt: 42, je_person: { daniel: 40 } },
+      aufgaben: [], personen, dringend: 0, bilanz: { erledigt: 42, je_person: { max: 40 } },
     }));
     await poll();
     expect(aufgaben.value.bilanz.erledigt).toBe(42);

@@ -5,7 +5,7 @@
  * by itself when the cause is gone. Dismissing hides it until its text changes (a new cause is a new notice).
  */
 import { computed, ref, watch, type ComputedRef } from "vue";
-import { config, lampStates, trashColorMap, values } from "./store";
+import { config, lampStates, sharedDoneId, trashColorMap, values, writeShared } from "./store";
 import { num, truthy, windowState } from "./values";
 import { dishwasherIds, trashIds } from "./config";
 import { machine, pickup } from "./tiles";
@@ -101,7 +101,8 @@ const vacuumNotices = computed<Notice[]>(() => [
  * Lamps that are not reachable are not announced; unreachableLamps stays for a later setting.
  */
 export const noticeSources: { prefix: string; ready: () => boolean; list: ComputedRef<Notice[]> }[] = [
-  { prefix: "trash:", ready: () => !!config.value?.trash && values[trashIds(config.value.trash)[0]] !== undefined, list: binDay },
+  // both days AND types: with only one of them known there is no notice yet, and the done mark must not be forgotten
+  { prefix: "trash:", ready: () => !!config.value?.trash && trashIds(config.value.trash).slice(0, 2).every((id) => values[id] !== undefined && values[id] !== null), list: binDay },
   { prefix: "window-heating:", ready: () => true, list: heatingWithOpenWindow },
   { prefix: "dishwasher:", ready: () => !!config.value?.dishwasher && values[dishwasherIds(config.value.dishwasher).state] !== undefined, list: dishwasherNotices },
   { prefix: "mower:", ready: () => !!navimow.value.zustand, list: mowerNotices },
@@ -110,11 +111,23 @@ export const noticeSources: { prefix: string; ready: () => boolean; list: Comput
 void unreachableLamps;
 
 /** A notice can be put on snooze for a few minutes; then it comes back if its cause is still there. "Done" hides it
- *  until its cause changes (a new key); that survives a reload where the browser allows storage. */
+ *  until its cause changes (a new key). The marks live in the state `cleandash.<n>.notices.done` (JSON), so every
+ *  dashboard of the house knows that the bin is already out, and a reload or a browser that forgets its storage does
+ *  not bring it back; without that state (demo, older instance) they stay in this browser's localStorage. */
 export const SNOOZE_MS = 5 * 60_000;
 const DONE_KEY = "cleandash.done";
 const snoozed = ref<Record<string, number>>({});
-const done = ref<Record<string, true>>(loadDone());
+const local = ref<Record<string, true>>(loadDone());
+/** the shared marks, or null while that state is unknown */
+const shared = computed<Record<string, true> | null>(() => {
+  const raw = sharedDoneId.value ? values[sharedDoneId.value] : undefined;
+  if (raw === undefined) return null;
+  try {
+    const o = typeof raw === "string" && raw ? JSON.parse(raw) : {};
+    return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+  } catch { return {}; }
+});
+const done = computed(() => shared.value ?? local.value);
 const now = ref(Date.now());
 if (typeof window !== "undefined") window.setInterval(() => (now.value = Date.now()), 10_000);
 
@@ -135,11 +148,13 @@ watch(active, (list) => {
     const src = noticeSources.find((s) => k.startsWith(s.prefix));
     if (src && src.ready() && !keys.has(k)) { delete next[k]; changed = true; }
   }
-  if (changed) { done.value = next; saveDone(); }
+  if (changed) saveDone(next);
 });
 
-function saveDone() {
-  try { localStorage.setItem(DONE_KEY, JSON.stringify(done.value)); } catch { /* only for this page */ }
+function saveDone(next: Record<string, true>) {
+  local.value = next;
+  try { localStorage.setItem(DONE_KEY, JSON.stringify(next)); } catch { /* only for this page */ }
+  if (sharedDoneId.value && shared.value !== null) void writeShared(sharedDoneId.value, JSON.stringify(next));
 }
 
 export function snooze(n: Notice, ms = SNOOZE_MS) {
@@ -148,6 +163,5 @@ export function snooze(n: Notice, ms = SNOOZE_MS) {
 }
 
 export function dismiss(n: Notice) {
-  done.value = { ...done.value, [n.key]: true };
-  saveDone();
+  saveDone({ ...done.value, [n.key]: true });
 }

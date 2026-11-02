@@ -175,5 +175,25 @@
     "showSettingsPanel": true
   },
   "objects": [],
-  "instanceObjects": []
+  "instanceObjects": [
+    {
+      "_id": "notices",
+      "type": "channel",
+      "common": { "name": { "en": "Notices", "de": "Meldungen" } },
+      "native": {}
+    },
+    {
+      "_id": "notices.done",
+      "type": "state",
+      "common": {
+        "name": { "en": "Notices marked as done (shared by all dashboards)", "de": "Als erledigt markierte Meldungen (für alle Dashboards)" },
+        "type": "string",
+        "role": "json",
+        "read": true,
+        "write": true,
+        "def": "{}"
+      },
+      "native": {}
+    }
+  ]
 }

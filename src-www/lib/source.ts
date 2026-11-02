@@ -26,6 +26,8 @@ export interface Source {
   /** The native part of an object, e.g. the settings of another adapter instance. */
   readNative(id: string): Promise<unknown>;
   onConnection(handler: (connected: boolean) => void): void;
+  /** State that holds the "done" marks of the notices for all dashboards of this instance (none in the demo). */
+  readonly doneId?: string;
 }
 
 export class IoBrokerSource implements Source {
@@ -33,7 +35,10 @@ export class IoBrokerSource implements Source {
   private conn: Connection;
   private ready: Promise<void>;
 
+  readonly doneId: string;
+
   constructor(private instance: number) {
+    this.doneId = `cleandash.${instance}.notices.done`;
     this.conn = new Connection({ name: `cleandash.${instance}`, port: globalThis.location.port, doNotLoadAllObjects: true });
     this.ready = this.conn.waitForFirstConnection();
   }

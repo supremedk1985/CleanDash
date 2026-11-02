@@ -75,3 +75,53 @@ describe("done marks", () => {
     expect(notices.value.find((x) => x.key === "mower:stoerung")).toBeDefined();
   });
 });
+
+import { sharedDoneId } from "../src-www/lib/store";
+
+describe("done marks shared by all dashboards (cleandash.0.notices.done)", () => {
+  const ID = "cleandash.0.notices.done";
+  const DAYS = "trashschedule.0.next.daysLeft";
+  const TYPES = "trashschedule.0.next.types";
+
+  it("a bin marked done on another dashboard stays away here too, also right after a reload", async () => {
+    config.value = buildConfig({ trashInstance: "trashschedule.0" });
+    sharedDoneId.value = ID;
+    values[DAYS] = 1;
+    values[TYPES] = "Compost";
+    values[ID] = JSON.stringify({ "trash:1:Compost": true });
+    await nextTick();
+    expect(notices.value.some((x) => x.key.startsWith("trash:"))).toBe(false);
+    values[ID] = "{}"; // nobody has taken it out
+    await nextTick();
+    expect(notices.value.map((x) => x.key)).toContain("trash:1:Compost");
+    sharedDoneId.value = null;
+  });
+
+  it("Done writes the mark into the shared state", async () => {
+    config.value = buildConfig({ trashInstance: "trashschedule.0" });
+    sharedDoneId.value = ID;
+    values[DAYS] = 1;
+    values[TYPES] = "Paper";
+    values[ID] = "{}";
+    await nextTick();
+    dismiss(notices.value.find((x) => x.key.startsWith("trash:"))!);
+    await nextTick();
+    expect(JSON.parse(values[ID] as string)).toEqual({ "trash:1:Paper": true });
+    expect(notices.value.some((x) => x.key.startsWith("trash:"))).toBe(false);
+    sharedDoneId.value = null;
+  });
+
+  it("days known but types not yet: the done mark is not forgotten", async () => {
+    config.value = buildConfig({ trashInstance: "trashschedule.0" });
+    sharedDoneId.value = ID;
+    values[ID] = JSON.stringify({ "trash:1:Glass": true });
+    values[DAYS] = 1;
+    values[TYPES] = null;
+    await nextTick();
+    values[TYPES] = "Glass";
+    await nextTick();
+    expect(notices.value.some((x) => x.key.startsWith("trash:"))).toBe(false);
+    expect(JSON.parse(values[ID] as string)).toEqual({ "trash:1:Glass": true });
+    sharedDoneId.value = null;
+  });
+});

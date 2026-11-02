@@ -22,6 +22,14 @@ export const isDark = ref(false);
 export const errorText = ref<string | null>(null);
 /** trashschedule colours by type name */
 export const trashColorMap = ref<Record<string, string>>({});
+/** Where the notices' "done" marks are shared between all dashboards (null: only this browser). */
+export const sharedDoneId = ref<string | null>(null);
+
+/** Writes the shared "done" marks. No confirmation: tapping "Done" is the decision, nothing in the house is switched. */
+export async function writeShared(id: string, value: string) {
+  values[id] = value;
+  try { await source.write(id, value); } catch { /* stays in this page and in localStorage */ }
+}
 
 let source: Source;
 /** the configuration exactly as stored, for tiles that read their own settings */
@@ -60,7 +68,8 @@ export async function start() {
     if (config.value.trash) {
       source.readNative(`system.adapter.${config.value.trash.instance}`).then((n) => (trashColorMap.value = trashColors(n)), () => undefined);
     }
-    await source.watch(datapoints(config.value), (id, v) => {
+    if (source.doneId) sharedDoneId.value = source.doneId;
+    await source.watch([...datapoints(config.value), ...(source.doneId ? [source.doneId] : [])], (id, v) => {
       values[id] = v;
       lastContact.value = new Date();
     });

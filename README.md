@@ -38,6 +38,10 @@ minutes, and those that are a task can be marked done (it comes back next time t
 bin day today or tomorrow, a window open while the heating runs, the dishwasher finished, paused or with an error,
 the mower stuck or lifted, the vacuum station needing water, emptying or a filter.
 
+**Arrange the tiles per device:** in the tile *Info & diagnostics*, *Start move mode*. Drag a tile by its handle to
+another place or column, or hide it with the eye; *Done* saves the order in this browser, so the kitchen tablet and a
+phone can each have their own. *Reset* brings back the default order.
+
 Also: **asks before switching** (always or only for several devices at once), **light and dark** by sunrise and
 sunset at the location from the ioBroker system settings, **English and German** for rooms, energy, weather and
 waste (the other tiles are German for now), and **your login, your rights**: the page connects through the ioBroker
@@ -98,7 +102,6 @@ energy arrive live over the socket; the other tiles ask every 5 seconds (or 90 s
 3. Tiles for well-known adapters (robot mower, vacuum, Bring!, speed test, OctoPrint, fuel, dehumidifier) ✔
 4. English texts for all tiles
 5. Speed test measured by the adapter itself, rated against your own average
-6. Edit mode on the dashboard: drag tiles, protected by a PIN, layout stored in ioBroker
 
 ## License
 
@@ -128,3 +131,7 @@ Eingerichtet wird alles in den Instanzeinstellungen, im Code steht nichts über 
 laufender Heizung, Spülmaschine fertig oder mit Fehler, Mäher festgefahren, Station des Saugers braucht Wasser oder
 einen leeren Beutel. Jede lässt sich für 5 Minuten wegdrücken („Snooze 5 Min.“), Aufgaben auch als „Erledigt“
 abhaken. Beim nächsten Anlass meldet sie sich wieder.
+
+**Kacheln anordnen, je Gerät:** in der Kachel *Infos & Diagnose* auf *Verschiebemodus starten*. Kacheln am Griff in eine
+andere Spalte oder Reihenfolge ziehen oder mit dem Auge ausblenden; *Fertig* speichert die Anordnung in diesem
+Browser. Küchentablet und Handy können so verschieden aussehen. *Zurücksetzen* stellt die Grundordnung wieder her.

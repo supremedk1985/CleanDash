@@ -4,6 +4,8 @@ import Button from "../../compat/primevue/Button.vue";
 import ToggleButton from "../../compat/primevue/ToggleButton.vue";
 import { isDark, setManualTheme, getThemeDiagnostics } from "../../lib/theme";
 import { logBuffer } from "../../lib/logger";
+import { draft, requestMoveMode } from "../../lib/layout";
+import { t } from "../../lib/i18n";
 
 const lastUpdated = ref(new Date().toLocaleString());
 const showDiagnostics = ref(false);
@@ -100,6 +102,16 @@ onUnmounted(() => {
       />
     </div>
 
+    <div class="pt-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
+      <div class="flex items-center gap-2">
+        <i class="mdi mdi-view-dashboard-edit-outline text-lg" style="color: var(--brand)" aria-hidden="true"></i>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ t("moveArrange") }}</span>
+          <span>{{ t("moveOnlyHere") }}</span>
+        </div>
+      </div>
+      <button v-if="!draft" type="button" class="move-start" data-test="move-start" @click="requestMoveMode">{{ t("moveStart") }}</button>
+    </div>
     <div class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
       <span class="flex items-center gap-2">
         <i class="pi pi-clock text-gray-400 dark:text-gray-500"></i>

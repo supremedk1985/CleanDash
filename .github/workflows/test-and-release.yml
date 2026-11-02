@@ -1,0 +1,45 @@
+# Tests on every push and pull request; a version tag (made by "npm run release") also publishes to npm and
+# creates the GitHub release. Needs the repository secret NPM_TOKEN.
+name: Test and Release
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-**"
+  pull_request: {}
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Type check, unit tests (vitest) and a full build; CleanDash has only www files (onlyWWW), so there are no adapter
+  # tests that start a js-controller.
+  check-and-lint:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ioBroker/testing-action-check@v1
+        with:
+          node-version: "22.x"
+          type-checking: true
+
+  deploy:
+    needs: [check-and-lint]
+    if: |
+      contains(github.event.head_commit.message, '[skip ci]') == false &&
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: ioBroker/testing-action-deploy@v1
+        with:
+          node-version: "22.x"
+          build: true
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

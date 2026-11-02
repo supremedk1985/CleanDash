@@ -3,3 +3,4 @@ node_modules/
 .dev-server/
 test-results/
 test/__testdaten__/
+.commitinfo

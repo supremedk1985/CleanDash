@@ -5,7 +5,7 @@
 **A clean, ready-made dashboard for wall tablets.** Pick your datapoints in the ioBroker admin, open the page on a
 tablet, done. No widgets to draw, no CSS to write: CleanDash looks tidy out of the box, in light and dark.
 
-> **Status: early version (0.4.0).** All tiles below work; not yet in the ioBroker repository. Feedback welcome.
+> **Status: early version (0.4.0).** [German quick guide](docs/de/README.md). All tiles below work; not yet in the ioBroker repository. Feedback welcome.
 
 ![CleanDash on a tablet (demo house, made-up values, German interface)](docs/screenshot-dark.png)
 
@@ -139,6 +139,10 @@ energy arrive live over the socket; the other tiles ask every 5 seconds (or 90 s
 5. Speed test measured by the adapter itself, rated against your own average
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### **WORK IN PROGRESS**
+-->
 
 ### 0.4.0 (2026-11-02)
 - All tiles of the author's kitchen dashboard as configurable tiles
@@ -156,34 +160,8 @@ energy arrive live over the socket; the other tiles ask every 5 seconds (or 90 s
 
 ## License
 
-MIT © 2026 Daniel Korte. Icons: [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0).
+MIT License, see [LICENSE](LICENSE).
 
----
+Copyright (c) 2026 Daniel Korte <korte.daniel@outlook.de>
 
-## Deutsch
-
-**Aufgeräumtes, fertiges Dashboard für Wandtablets.** Datenpunkte im ioBroker-Admin auswählen, Seite auf dem Tablet
-öffnen, fertig. Hell und dunkel, mit Rückfrage vor dem Schalten.
-
-**Stand 0.4.0.** Installation vorerst über GitHub (Admin → Adapter → GitHub-Symbol → *Benutzerdefiniert* →
-`https://github.com/supremedk1985/CleanDash`), Voraussetzung ist der **web**-Adapter. Danach
-`http://<ioBroker>:<Port des web-Adapters>/cleandash/index.html` öffnen.
-
-Eingerichtet wird alles in den Instanzeinstellungen, im Code steht nichts über ein bestimmtes Haus:
-
-- **Räume, Licht, Rollläden:** beliebige Datenpunkte je Raum und Lampe
-- **Energie:** beliebige Datenpunkte (Solar, Akku, Haus, Netz), dazu optional der Verlauf aus Dateien
-- **Wetter** (openweathermap), **Müllabfuhr** (trashschedule), **Spülmaschine** (homeconnect), **Einkaufslisten** (bring)
-- **Weitere Kacheln:** Mähroboter (navimow), Saugroboter (roborock), 3D-Drucker (octoprint), Spritpreise
-  (tankerkoenig), Luftentfeuchter (sonoff/Tasmota), Ruf-Knopf, Dokumente im Posteingang, Internetgeschwindigkeit,
-  zweiter Roboter über ein eigenes Skript, dazu Fundus (nur mit eigenem Server). Bleibt ein Feld leer, erscheint die
-  Kachel nicht. Die Formate für Internetgeschwindigkeit und zweiten Roboter stehen oben unter *Data formats*.
-
-**Meldungen** liegen links über der Seite, die Kacheln verschieben sich nicht: Tonne rausstellen, Fenster offen bei
-laufender Heizung, Spülmaschine fertig oder mit Fehler, Mäher festgefahren, Station des Saugers braucht Wasser oder
-einen leeren Beutel. Jede lässt sich für 5 Minuten wegdrücken („Snooze 5 Min.“), Aufgaben auch als „Erledigt“
-abhaken. Beim nächsten Anlass meldet sie sich wieder.
-
-**Kacheln anordnen, je Gerät:** in der Kachel *Infos & Diagnose* auf *Verschiebemodus starten*. Kacheln am Griff in eine
-andere Spalte oder Reihenfolge ziehen oder mit dem Auge ausblenden; *Fertig* speichert die Anordnung in diesem
-Browser. Küchentablet und Handy können so verschieden aussehen. *Zurücksetzen* stellt die Grundordnung wieder her.
+Icons: [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0).

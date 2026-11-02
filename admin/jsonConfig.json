@@ -11,7 +11,10 @@
           "label": "Title",
           "help": "Shown at the top of the dashboard. Empty: no title",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "confirmWrites": {
           "type": "select",
@@ -28,7 +31,10 @@
           ],
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "theme": {
           "type": "select",
@@ -49,14 +55,22 @@
             }
           ],
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "openLink": {
           "type": "staticLink",
           "label": "Open dashboard",
           "href": "/cleandash/index.html",
           "button": true,
-          "newLine": true
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -67,7 +81,11 @@
         "roomsHint": {
           "type": "staticText",
           "text": "One row per room. Every datapoint is optional; leave out what the room does not have.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "rooms": {
           "type": "table",
@@ -160,7 +178,11 @@
                 }
               ]
             }
-          ]
+          ],
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -171,7 +193,11 @@
         "lightsHint": {
           "type": "staticText",
           "text": "One row per device. Rows with the same name and room become one lamp (for example several LED strips). A room that does not exist in the room list shows the lamp under 'More lights'.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "lights": {
           "type": "table",
@@ -231,7 +257,11 @@
               "sort": false,
               "default": ""
             }
-          ]
+          ],
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -242,7 +272,11 @@
         "shuttersHint": {
           "type": "staticText",
           "text": "One row per shutter. The room must match a name in the room list.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "shutters": {
           "type": "table",
@@ -303,7 +337,11 @@
                 }
               ]
             }
-          ]
+          ],
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -317,14 +355,20 @@
           "allowDeactivate": true,
           "label": "Weather (openweathermap adapter)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "weatherHourly": {
           "type": "checkbox",
           "label": "Hourly rain and temperature from Open-Meteo",
           "help": "Asks open-meteo.com (free, no key) every 30 minutes with the location from the system settings",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "trashInstance": {
           "type": "instance",
@@ -333,7 +377,10 @@
           "label": "Waste collection (trashschedule adapter)",
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "dishwasherDevice": {
           "type": "objectId",
@@ -341,7 +388,10 @@
           "xs": 12,
           "md": 6,
           "help": "Pick the device, for example homeconnect.0.0123456789",
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         }
       }
     },
@@ -352,81 +402,121 @@
         "energyHint": {
           "type": "staticText",
           "text": "All values are optional. Power in watts, battery in percent, today's values in kWh.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "energySolar": {
           "type": "objectId",
           "label": "Solar power (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyConsumption": {
           "type": "objectId",
           "label": "House consumption (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyGridImport": {
           "type": "objectId",
           "label": "Power from the grid (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyGridExport": {
           "type": "objectId",
           "label": "Power fed into the grid (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyBatteryLevel": {
           "type": "objectId",
           "label": "Battery level (%)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyBatteryCharge": {
           "type": "objectId",
           "label": "Battery charging (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyBatteryDischarge": {
           "type": "objectId",
           "label": "Battery discharging (W)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energySolarToday": {
           "type": "objectId",
           "label": "Solar today (kWh)",
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyConsumptionToday": {
           "type": "objectId",
           "label": "Consumption today (kWh)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyGridToday": {
           "type": "objectId",
           "label": "From the grid today (kWh)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energySavings": {
           "type": "objectId",
           "label": "Money saved so far (€)",
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyTotal": {
           "type": "objectId",
           "label": "Energy produced so far (kWh)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energySolarMax": {
           "type": "number",
@@ -434,28 +524,41 @@
           "default": 2700,
           "xs": 12,
           "md": 3,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 3,
+          "xl": 3
         },
         "energyHomeMax": {
           "type": "number",
           "label": "House ring full at (W)",
           "default": 1300,
           "xs": 12,
-          "md": 3
+          "md": 3,
+          "sm": 12,
+          "lg": 3,
+          "xl": 3
         },
         "energyTitle": {
           "type": "text",
           "label": "Title",
           "help": "Empty: Energy centre",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "energyHistoryUrl": {
           "type": "text",
           "label": "Folder with history files",
           "help": "Optional, for the history dialog (format: docs/energy-history.md), e.g. http://192.168.1.10/energie",
           "xs": 12,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         }
       }
     },
@@ -466,7 +569,11 @@
         "shoppingHint": {
           "type": "staticText",
           "text": "Bring! lists from the bring adapter: pick the 'content' datapoint of each list.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "shoppingLists": {
           "type": "table",
@@ -490,7 +597,11 @@
               "sort": false,
               "default": ""
             }
-          ]
+          ],
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -501,7 +612,11 @@
         "moreHint": {
           "type": "staticText",
           "text": "Each tile appears only when it is set up here.",
-          "xs": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "fuelInstance": {
           "type": "instance",
@@ -509,7 +624,10 @@
           "allowDeactivate": true,
           "label": "Fuel prices (tankerkoenig adapter)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "printerInstance": {
           "type": "instance",
@@ -517,14 +635,20 @@
           "allowDeactivate": true,
           "label": "3D printer (octoprint adapter)",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "printerWebcamUrl": {
           "type": "text",
           "label": "Printer camera (MJPEG address)",
           "xs": 12,
           "md": 6,
-          "help": "e.g. http://octopi.local/webcam/?action=stream"
+          "help": "e.g. http://octopi.local/webcam/?action=stream",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "mowerDevice": {
           "type": "objectId",
@@ -532,28 +656,40 @@
           "xs": 12,
           "md": 6,
           "help": "Pick the device, e.g. navimow.0.<serial>",
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "vacuumDevice": {
           "type": "objectId",
           "label": "Robot vacuum (roborock adapter)",
           "xs": 12,
           "md": 6,
-          "help": "Pick the device, e.g. roborock.0.Devices.<id>"
+          "help": "Pick the device, e.g. roborock.0.Devices.<id>",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "f25Prefix": {
           "type": "text",
           "label": "Second robot via script (optional)",
           "xs": 12,
           "md": 6,
-          "help": "Folder with hinweis, akku, lebenszeichen (see README)"
+          "help": "Folder with hinweis, akku, lebenszeichen (see README)",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "f25Name": {
           "type": "text",
           "label": "Second robot: name in the reminder",
           "xs": 12,
           "md": 6,
-          "help": "e.g. The mop. Empty: The second robot"
+          "help": "e.g. The mop. Empty: The second robot",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "dehumidifierDevice": {
           "type": "objectId",
@@ -561,34 +697,49 @@
           "xs": 12,
           "md": 6,
           "help": "Pick the device; needs POWER and ENERGY_* datapoints",
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "callDatapoint": {
           "type": "objectId",
           "label": "Call button: datapoint set to true",
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "callLabel": {
           "type": "text",
           "label": "Call button: label",
           "xs": 12,
           "md": 6,
-          "help": "e.g. Call the kids"
+          "help": "e.g. Call the kids",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "paperlessCount": {
           "type": "objectId",
           "label": "Documents in the inbox (number)",
           "xs": 12,
           "md": 6,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "speedtestUrl": {
           "type": "text",
           "label": "Internet speed: JSON file of a measuring script",
           "xs": 12,
-          "md": 6
+          "md": 6,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "aufgabenUrl": {
           "type": "text",
@@ -596,21 +747,31 @@
           "xs": 12,
           "md": 6,
           "help": "e.g. http://192.168.1.20:8091",
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "fundusUrl": {
           "type": "text",
           "label": "Fundus server",
           "xs": 12,
           "md": 6,
-          "help": "e.g. http://192.168.1.20:8095"
+          "help": "e.g. http://192.168.1.20:8095",
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
         },
         "showSettingsPanel": {
           "type": "checkbox",
           "label": "Show the small settings panel (reload, light/dark, diagnostics)",
           "default": true,
           "xs": 12,
-          "newLine": true
+          "newLine": true,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
         }
       }
     }

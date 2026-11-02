@@ -5,28 +5,82 @@
     "news": {
       "0.4.0": {
         "en": "All tiles of the kitchen dashboard: tasks, robot mower with map, Bring! with catalogue, 3D printer, fuel prices, dehumidifier, robot vacuum, call button, Fundus, dishwasher, documents, internet speed, settings panel; tiles can be arranged and hidden per device",
-        "de": "Alle Kacheln des Küchen-Dashboards: Aufgaben, Mähroboter mit Karte, Bring! mit Katalog, 3D-Drucker, Spritpreise, Luftentfeuchter, Saugroboter, Ruf-Knopf, Fundus, Spülmaschine, Dokumente, Internet, Einstellungsfeld; Kacheln je Gerät anordnen und ausblenden"
+        "de": "Alle Kacheln des Küchen-Dashboards: Aufgaben, Mähroboter mit Karte, Bring! mit Katalog, 3D-Drucker, Spritpreise, Luftentfeuchter, Saugroboter, Ruf-Knopf, Fundus, Spülmaschine, Dokumente, Internet, Einstellungsfeld; Kacheln je Gerät anordnen und ausblenden",
+        "ru": "Все плитки кухонной панели: задачи, робот-газонокосилка с картой, Bring! с каталогом, 3D-принтер, цены на топливо, осушитель, робот-пылесос, кнопка вызова, Fundus, посудомоечная машина, документы, скорость интернета, панель настроек; плитки можно упорядочивать и скрывать для каждого устройства",
+        "pt": "Todos os mosaicos do painel da cozinha: tarefas, robô corta-relva com mapa, Bring! com catálogo, impressora 3D, preços de combustível, desumidificador, robô aspirador, botão de chamada, Fundus, máquina de lavar loiça, documentos, velocidade da internet, painel de definições; os mosaicos podem ser organizados e ocultados por dispositivo",
+        "nl": "Alle tegels van het keukendashboard: taken, robotmaaier met kaart, Bring! met catalogus, 3D-printer, brandstofprijzen, ontvochtiger, robotstofzuiger, belknop, Fundus, vaatwasser, documenten, internetsnelheid, instellingenpaneel; tegels kunnen per apparaat worden geordend en verborgen",
+        "fr": "Toutes les tuiles du tableau de bord de cuisine : tâches, robot tondeuse avec carte, Bring! avec catalogue, imprimante 3D, prix des carburants, déshumidificateur, robot aspirateur, bouton d'appel, Fundus, lave-vaisselle, documents, débit Internet, panneau de réglages ; les tuiles peuvent être réorganisées et masquées par appareil",
+        "it": "Tutti i riquadri della dashboard della cucina: attività, robot tagliaerba con mappa, Bring! con catalogo, stampante 3D, prezzi carburante, deumidificatore, robot aspirapolvere, pulsante di chiamata, Fundus, lavastoviglie, documenti, velocità internet, pannello impostazioni; i riquadri possono essere disposti e nascosti per dispositivo",
+        "es": "Todos los mosaicos del panel de cocina: tareas, robot cortacésped con mapa, Bring! con catálogo, impresora 3D, precios de combustible, deshumidificador, robot aspirador, botón de llamada, Fundus, lavavajillas, documentos, velocidad de internet, panel de ajustes; los mosaicos se pueden ordenar y ocultar por dispositivo",
+        "pl": "Wszystkie kafelki pulpitu kuchennego: zadania, robot koszący z mapą, Bring! z katalogiem, drukarka 3D, ceny paliw, osuszacz, robot sprzątający, przycisk przywołania, Fundus, zmywarka, dokumenty, prędkość internetu, panel ustawień; kafelki można układać i ukrywać dla każdego urządzenia",
+        "uk": "Усі плитки кухонної панелі: завдання, робот-газонокосарка з картою, Bring! з каталогом, 3D-принтер, ціни на пальне, осушувач, робот-пилосос, кнопка виклику, Fundus, посудомийна машина, документи, швидкість інтернету, панель налаштувань; плитки можна впорядковувати та приховувати для кожного пристрою",
+        "zh-cn": "厨房仪表板的全部磁贴：任务、带地图的割草机器人、带目录的 Bring!、3D 打印机、燃油价格、除湿机、扫地机器人、呼叫按钮、Fundus、洗碗机、文档、网速、设置面板；磁贴可按设备排列和隐藏"
       },
       "0.3.0": {
         "en": "Energy rings and history, weather timelines and details, bin ticker; bundled Roboto font; three columns",
-        "de": "Energie-Ringe und Verlauf, Wetter-Zeitleisten und Details, Tonnenticker; Schrift Roboto eingebaut; drei Spalten"
+        "de": "Energie-Ringe und Verlauf, Wetter-Zeitleisten und Details, Tonnenticker; Schrift Roboto eingebaut; drei Spalten",
+        "ru": "Кольца энергии и история, погодные шкалы и подробности, бегущая строка вывоза мусора; встроенный шрифт Roboto; три колонки",
+        "pt": "Anéis de energia e histórico, linhas temporais e detalhes do tempo, aviso dos contentores; fonte Roboto incluída; três colunas",
+        "nl": "Energieringen en geschiedenis, weertijdlijnen en details, afvalticker; meegeleverd lettertype Roboto; drie kolommen",
+        "fr": "Anneaux d'énergie et historique, chronologies et détails météo, bandeau des poubelles ; police Roboto incluse ; trois colonnes",
+        "it": "Anelli energia e storico, linee temporali e dettagli meteo, ticker dei rifiuti; font Roboto incluso; tre colonne",
+        "es": "Anillos de energía e historial, líneas de tiempo y detalles del tiempo, aviso de contenedores; fuente Roboto incluida; tres columnas",
+        "pl": "Pierścienie energii i historia, osie czasu i szczegóły pogody, pasek wywozu śmieci; dołączona czcionka Roboto; trzy kolumny",
+        "uk": "Кільця енергії та історія, погодні шкали й подробиці, рядок вивезення сміття; вбудований шрифт Roboto; три колонки",
+        "zh-cn": "能源环与历史、天气时间轴与详情、垃圾桶提示条；内置 Roboto 字体；三栏布局"
       },
       "0.2.0": {
         "en": "Weather, energy, waste collection, dishwasher and shopping list tiles; notices for bin day and dishwasher",
-        "de": "Kacheln für Wetter, Energie, Müllabfuhr, Spülmaschine und Einkaufsliste; Meldungen zu Abholtag und Spülmaschine"
+        "de": "Kacheln für Wetter, Energie, Müllabfuhr, Spülmaschine und Einkaufsliste; Meldungen zu Abholtag und Spülmaschine",
+        "ru": "Плитки погоды, энергии, вывоза мусора, посудомоечной машины и списка покупок; уведомления о дне вывоза мусора и посудомойке",
+        "pt": "Mosaicos de tempo, energia, recolha do lixo, máquina de lavar loiça e lista de compras; avisos para o dia de recolha e a máquina de lavar loiça",
+        "nl": "Tegels voor weer, energie, afvalophaling, vaatwasser en boodschappenlijst; meldingen voor ophaaldag en vaatwasser",
+        "fr": "Tuiles météo, énergie, collecte des déchets, lave-vaisselle et liste de courses ; avis pour le jour de collecte et le lave-vaisselle",
+        "it": "Riquadri meteo, energia, raccolta rifiuti, lavastoviglie e lista della spesa; avvisi per il giorno di raccolta e la lavastoviglie",
+        "es": "Mosaicos de tiempo, energía, recogida de basura, lavavajillas y lista de la compra; avisos para el día de recogida y el lavavajillas",
+        "pl": "Kafelki pogody, energii, wywozu śmieci, zmywarki i listy zakupów; powiadomienia o dniu wywozu i zmywarce",
+        "uk": "Плитки погоди, енергії, вивезення сміття, посудомийної машини та списку покупок; сповіщення про день вивезення сміття й посудомийку",
+        "zh-cn": "天气、能源、垃圾收集、洗碗机和购物清单磁贴；垃圾收集日和洗碗机提醒"
       },
       "0.1.0": {
         "en": "First draft: rooms and lights tile, configured in admin",
-        "de": "Erster Entwurf: Kachel für Räume und Licht, Einrichtung im Admin"
+        "de": "Erster Entwurf: Kachel für Räume und Licht, Einrichtung im Admin",
+        "ru": "Первый набросок: плитка комнат и освещения, настраивается в админке",
+        "pt": "Primeiro rascunho: mosaico de divisões e luzes, configurado no admin",
+        "nl": "Eerste opzet: tegel voor kamers en lampen, ingesteld in de admin",
+        "fr": "Première ébauche : tuile pièces et lumières, configurée dans l'admin",
+        "it": "Prima bozza: riquadro stanze e luci, configurato nell'admin",
+        "es": "Primer borrador: mosaico de habitaciones y luces, configurado en el admin",
+        "pl": "Pierwszy szkic: kafelek pomieszczeń i oświetlenia, konfigurowany w panelu admin",
+        "uk": "Перший начерк: плитка кімнат і освітлення, налаштовується в адмінці",
+        "zh-cn": "初版草稿：房间和灯光磁贴，在管理界面中配置"
       }
     },
     "titleLang": {
       "en": "CleanDash",
-      "de": "CleanDash"
+      "de": "CleanDash",
+      "ru": "CleanDash",
+      "pt": "CleanDash",
+      "nl": "CleanDash",
+      "fr": "CleanDash",
+      "it": "CleanDash",
+      "es": "CleanDash",
+      "pl": "CleanDash",
+      "uk": "CleanDash",
+      "zh-cn": "CleanDash"
     },
     "desc": {
       "en": "A clean, ready-made dashboard for wall tablets: pick your datapoints, no design work",
-      "de": "Aufgeräumtes, fertiges Dashboard für Wandtablets: Datenpunkte wählen, keine Gestaltungsarbeit"
+      "de": "Aufgeräumtes, fertiges Dashboard für Wandtablets: Datenpunkte wählen, keine Gestaltungsarbeit",
+      "ru": "Аккуратная готовая панель для настенных планшетов: выберите точки данных, без дизайнерской работы",
+      "pt": "Um painel limpo e pronto a usar para tablets de parede: escolha os seus pontos de dados, sem trabalho de design",
+      "nl": "Een strak, kant-en-klaar dashboard voor wandtablets: kies je datapunten, geen ontwerpwerk",
+      "fr": "Un tableau de bord épuré et prêt à l'emploi pour tablettes murales : choisissez vos points de données, sans travail de conception",
+      "it": "Una dashboard pulita e pronta all'uso per tablet a parete: scegli i tuoi datapoint, nessun lavoro di design",
+      "es": "Un panel limpio y listo para usar en tabletas de pared: elige tus puntos de datos, sin trabajo de diseño",
+      "pl": "Przejrzysty, gotowy pulpit dla tabletów ściennych: wybierz punkty danych, bez projektowania",
+      "uk": "Охайна готова панель для настінних планшетів: виберіть точки даних, без дизайнерської роботи",
+      "zh-cn": "简洁、开箱即用的壁挂平板仪表板：选择数据点即可，无需设计"
     },
     "authors": [
       "Daniel Korte <korte.daniel@outlook.de>"
@@ -37,7 +91,6 @@
       "kiosk",
       "visualization"
     ],
-    "license": "MIT",
     "platform": "Javascript/Node.js",
     "icon": "cleandash.svg",
     "extIcon": "https://raw.githubusercontent.com/supremedk1985/CleanDash/main/admin/cleandash.svg",
@@ -65,12 +118,17 @@
     ],
     "globalDependencies": [
       {
-        "admin": ">=7.0.0"
+        "admin": ">=7.6.17"
       },
       {
         "web": ">=6.0.0"
       }
-    ]
+    ],
+    "onlyWWW": true,
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    }
   },
   "native": {
     "title": "",

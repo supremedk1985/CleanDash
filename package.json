@@ -20,7 +20,7 @@
     "url": "https://github.com/supremedk1985/CleanDash.git"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "type": "module",
   "files": [
@@ -33,9 +33,16 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
     "test": "vitest run",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "check": "vue-tsc --noEmit -p tsconfig.json",
+    "test:package": "vitest run",
+    "release": "release-script"
   },
   "devDependencies": {
+    "@alcalzone/release-script": "^5.2.1",
+    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
+    "@alcalzone/release-script-plugin-license": "^5.2.2",
+    "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
     "@fontsource/roboto": "^5.2.6",
     "@iobroker/socket-client": "^5.0.2",
     "@iobroker/types": "^7.0.7",

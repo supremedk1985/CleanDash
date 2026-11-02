@@ -1,5 +1,5 @@
 # Tests on every push and pull request; a version tag (made by "npm run release") also publishes to npm and
-# creates the GitHub release. Needs the repository secret NPM_TOKEN.
+# creates the GitHub release. Publishing uses npm trusted publishing (set up once on npmjs.com, no token).
 name: Test and Release
 
 on:
@@ -22,7 +22,7 @@ jobs:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
     runs-on: ubuntu-latest
     steps:
-      - uses: ioBroker/testing-action-check@v1
+      - uses: ioBroker/testing-action-check@v2
         with:
           node-version: "22.x"
           type-checking: true
@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: ioBroker/testing-action-deploy@v1
         with:
-          node-version: "22.x"
+          node-version: "24.x"
           build: true
-          npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

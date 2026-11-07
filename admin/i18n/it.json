@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Cartella con hinweis, akku, lebenszeichen (vedi README)",
   "Second robot: name in the reminder": "Secondo robot: nome nel promemoria",
   "e.g. The mop. Empty: The second robot": "ad es. Il lavapavimenti. Vuoto: Il secondo robot",
-  "e.g. Call the kids": "ad es. Chiama i bambini"
+  "e.g. Call the kids": "ad es. Chiama i bambini",
+  "Fireplace monitor: datapoint folder (optional)": "Monitor del camino: cartella dei punti dati (opzionale)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Cartella con temperatur, zustand, kraft, … (vedi README). Il riquadro appare solo mentre il fuoco arde"
 }

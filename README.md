@@ -34,6 +34,7 @@ devices, instances and addresses all come from the settings.
 | **Call button** | any boolean datapoint | One big button that sets it to `true` (for example a doorbell for the kids' rooms) |
 | **Documents in the inbox** | any number datapoint | The count, for example from a Paperless script |
 | **Internet speed** | JSON file | Download, upload, ping from a measuring script of your own, rated against your own average ([format](#data-formats)) |
+| **Fireplace** | a folder with datapoints | Pixel campfire that burns as strongly as the stove, flue temperature, “add wood” — the tile appears only while the fire burns ([format](#data-formats)) |
 | **Second robot via script** | a folder with three datapoints | For robots the adapter cannot read: a script of your own writes the state, CleanDash reminds you to start the self-cleaning ([format](#data-formats)) |
 | **Fundus** | own server (address) | Search the parts box of [Fundus](https://github.com/supremedk1985/Fundus), a self-hosted app by the author; only if you run it |
 | **MachIchGleich** | own server (address) | Tasks from the author's private task app; it is not published, so leave this empty |
@@ -105,6 +106,18 @@ date:
 | `akku` | battery in percent |
 | `lebenszeichen` | time of the robot's last answer in ms (`Date.now()`); older than 15 minutes and CleanDash stays quiet |
 
+**Fireplace:** a folder (for example `0_userdata.0.fireplace`) filled by a device or script that watches the stove —
+for example a thermocouple in the flue pipe:
+
+| Datapoint | Value |
+|---|---|
+| `zustand` | `"brennt"` (burning), `"nachlegen"` (add wood) or `"kalt"` (cold) — the tile shows only for the first two |
+| `erreichbar` | `true` while the device answers; `false` hides the tile |
+| `temperatur` | flue temperature in °C |
+| `kraft` | fire strength 0–1 for the picture (0.25 = where it asks for wood, 1 = the peak of this burn) |
+| `hoechst`, `schwelle` | peak of this burn and the temperature below which it asks for wood (optional) |
+| `modul` | temperature at the sensor itself (optional) |
+
 While `hinweis` is `"bereit"`, a notice asks to start the self-cleaning. Set the robot's name for the notice in the
 settings.
 
@@ -143,6 +156,9 @@ energy arrive live over the socket; the other tiles ask every 5 seconds (or 90 s
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+- Fireplace tile: pixel campfire, flue temperature and “add wood”, only while the fire burns
 
 ### 0.4.0 (2026-11-02)
 - All tiles of the author's kitchen dashboard as configurable tiles

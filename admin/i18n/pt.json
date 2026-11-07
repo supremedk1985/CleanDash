@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Pasta com hinweis, akku, lebenszeichen (ver README)",
   "Second robot: name in the reminder": "Segundo robô: nome no lembrete",
   "e.g. The mop. Empty: The second robot": "p. ex. A esfregona. Vazio: O segundo robô",
-  "e.g. Call the kids": "p. ex. Chamar as crianças"
+  "e.g. Call the kids": "p. ex. Chamar as crianças",
+  "Fireplace monitor: datapoint folder (optional)": "Monitor da lareira: pasta de pontos de dados (opcional)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Pasta com temperatur, zustand, kraft, … (ver README). O bloco só aparece enquanto o fogo arde"
 }

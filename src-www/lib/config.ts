@@ -74,6 +74,8 @@ export interface RawConfig {
   /** Name of the second robot in its reminder, e.g. "Der Wischsauger" */
   f25Name?: string;
   dehumidifierDevice?: string;
+  /** Folder of a fireplace monitor: temperatur, zustand, kraft, hoechst, schwelle, modul, erreichbar, meldung (README) */
+  stovePrefix?: string;
   callDatapoint?: string;
   callLabel?: string;
   showSettingsPanel?: boolean;

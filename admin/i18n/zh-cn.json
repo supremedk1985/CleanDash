@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "包含 hinweis、akku、lebenszeichen 的文件夹（见 README）",
   "Second robot: name in the reminder": "第二台机器人：提醒中的名称",
   "e.g. The mop. Empty: The second robot": "例如 拖地机器人。留空：第二台机器人",
-  "e.g. Call the kids": "例如 叫孩子们"
+  "e.g. Call the kids": "例如 叫孩子们",
+  "Fireplace monitor: datapoint folder (optional)": "壁炉监控：数据点文件夹（可选）",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "包含 temperatur、zustand、kraft 等的文件夹（见 README）。仅在炉火燃烧时显示该磁贴"
 }

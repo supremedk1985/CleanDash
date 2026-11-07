@@ -691,6 +691,17 @@
           "lg": 6,
           "xl": 6
         },
+        "stovePrefix": {
+          "type": "text",
+          "label": "Fireplace monitor: datapoint folder (optional)",
+          "xs": 12,
+          "md": 6,
+          "help": "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns",
+          "newLine": true,
+          "sm": 12,
+          "lg": 6,
+          "xl": 6
+        },
         "dehumidifierDevice": {
           "type": "objectId",
           "label": "Dehumidifier plug (Tasmota, sonoff adapter)",

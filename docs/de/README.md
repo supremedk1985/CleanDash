@@ -14,8 +14,9 @@ Eingerichtet wird alles in den Instanzeinstellungen, im Code steht nichts über 
 - **Wetter** (openweathermap), **Müllabfuhr** (trashschedule), **Spülmaschine** (homeconnect), **Einkaufslisten** (bring)
 - **Weitere Kacheln:** Mähroboter (navimow), Saugroboter (roborock), 3D-Drucker (octoprint), Spritpreise
   (tankerkoenig), Luftentfeuchter (sonoff/Tasmota), Ruf-Knopf, Dokumente im Posteingang, Internetgeschwindigkeit,
-  zweiter Roboter über ein eigenes Skript, dazu Fundus (nur mit eigenem Server). Bleibt ein Feld leer, erscheint die
-  Kachel nicht. Die Formate für Internetgeschwindigkeit und zweiten Roboter stehen in der englischen Anleitung unter [*Data formats*](../../README.md#data-formats).
+  zweiter Roboter über ein eigenes Skript, Kamin (Pixel-Lagerfeuer, Rohrtemperatur, „Holz nachlegen“ — erscheint nur,
+  solange das Feuer brennt), dazu Fundus (nur mit eigenem Server). Bleibt ein Feld leer, erscheint die
+  Kachel nicht. Die Formate für Internetgeschwindigkeit, zweiten Roboter und Kamin stehen in der englischen Anleitung unter [*Data formats*](../../README.md#data-formats).
 
 **Meldungen** liegen links über der Seite, die Kacheln verschieben sich nicht: Tonne rausstellen, Fenster offen bei
 laufender Heizung, Spülmaschine fertig oder mit Fehler, Mäher festgefahren, Station des Saugers braucht Wasser oder

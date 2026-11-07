@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Папка з hinweis, akku, lebenszeichen (див. README)",
   "Second robot: name in the reminder": "Другий робот: ім'я в нагадуванні",
   "e.g. The mop. Empty: The second robot": "напр. Миючий робот. Порожньо: Другий робот",
-  "e.g. Call the kids": "напр. Покликати дітей"
+  "e.g. Call the kids": "напр. Покликати дітей",
+  "Fireplace monitor: datapoint folder (optional)": "Контроль каміна: тека точок даних (необов'язково)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Тека з temperatur, zustand, kraft, … (див. README). Плитка видна лише поки горить вогонь"
 }

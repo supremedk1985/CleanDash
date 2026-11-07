@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Map met hinweis, akku, lebenszeichen (zie README)",
   "Second robot: name in the reminder": "Tweede robot: naam in de herinnering",
   "e.g. The mop. Empty: The second robot": "bijv. De dweilrobot. Leeg: De tweede robot",
-  "e.g. Call the kids": "bijv. Kinderen roepen"
+  "e.g. Call the kids": "bijv. Kinderen roepen",
+  "Fireplace monitor: datapoint folder (optional)": "Haardbewaking: map met datapunten (optioneel)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Map met temperatur, zustand, kraft, … (zie README). De tegel verschijnt alleen zolang het vuur brandt"
 }

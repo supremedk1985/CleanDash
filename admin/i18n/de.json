@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Ordner mit hinweis, akku, lebenszeichen (siehe README)",
   "Second robot: name in the reminder": "Zweiter Roboter: Name in der Meldung",
   "e.g. The mop. Empty: The second robot": "z. B. Der Wischsauger. Leer: Der zweite Roboter",
-  "e.g. Call the kids": "z. B. Kinder anklingeln"
+  "e.g. Call the kids": "z. B. Kinder anklingeln",
+  "Fireplace monitor: datapoint folder (optional)": "Kaminwächter: Ordner mit Datenpunkten (optional)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Ordner mit temperatur, zustand, kraft, … (siehe README). Die Kachel erscheint nur, solange das Feuer brennt"
 }

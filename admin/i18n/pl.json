@@ -92,5 +92,7 @@
   "Folder with hinweis, akku, lebenszeichen (see README)": "Folder z hinweis, akku, lebenszeichen (patrz README)",
   "Second robot: name in the reminder": "Drugi robot: nazwa w przypomnieniu",
   "e.g. The mop. Empty: The second robot": "np. Mop. Puste: Drugi robot",
-  "e.g. Call the kids": "np. Zawołaj dzieci"
+  "e.g. Call the kids": "np. Zawołaj dzieci",
+  "Fireplace monitor: datapoint folder (optional)": "Monitor kominka: folder punktów danych (opcjonalnie)",
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Folder z temperatur, zustand, kraft, … (zobacz README). Kafelek pojawia się tylko, gdy ogień się pali"
 }

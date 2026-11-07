@@ -165,6 +165,7 @@
     "vacuumDevice": "",
     "f25Prefix": "",
     "f25Name": "",
+    "stovePrefix": "",
     "dehumidifierDevice": "",
     "callDatapoint": "",
     "callLabel": "",

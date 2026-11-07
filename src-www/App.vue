@@ -18,6 +18,7 @@ import Call2ComeDown from "./components/kitchen/Call2ComeDown.vue";
 import Fundus from "./components/kitchen/Fundus.vue";
 import Dishwasher from "./components/kitchen/Dishwasher.vue";
 import Paperless from "./components/kitchen/Paperless.vue";
+import Kamin from "./components/kitchen/Kamin.vue";
 import Speedtest from "./components/kitchen/Speedtest.vue";
 import SettingsPanel from "./components/kitchen/Config.vue";
 import { config, connected, demo, errorText, lastContact, loading, onConfig, rawConfig, start } from "./lib/store";
@@ -31,6 +32,7 @@ import { fuelFeature } from "./features/fuel";
 import { luftentfeuchterFeature } from "./features/luftentfeuchter";
 import { navimowFeature } from "./features/navimow";
 import { paperlessFeature } from "./features/paperless";
+import { kaminFeature, kaminSichtbar } from "./features/kamin";
 import { printer3dFeature, printer_3d } from "./features/printer3d";
 import { roborockFeature } from "./features/roborock";
 import { speedtestFeature } from "./features/speedtest";
@@ -45,7 +47,7 @@ onConfig.push((r) => {
     [r.aufgabenUrl, aufgabenFeature], [r.shoppingLists?.length, bringFeature], [r.dishwasherDevice, dishwasherFeature],
     [r.fuelInstance, fuelFeature], [r.dehumidifierDevice, luftentfeuchterFeature], [r.mowerDevice, navimowFeature],
     [r.paperlessCount, paperlessFeature], [r.printerInstance, printer3dFeature], [r.vacuumDevice, roborockFeature],
-    [r.speedtestUrl, speedtestFeature],
+    [r.speedtestUrl, speedtestFeature], [r.stovePrefix, kaminFeature],
   ];
   startPolling(on.filter(([set]) => !!set).map(([, m]) => m));
 });
@@ -68,6 +70,8 @@ const tiles = computed(() => {
     { id: "weather", col: 0, on: !!c?.weather, comp: WeatherTile, name: t("tileWeather") },
     { id: "house", col: 0, on: !!(c?.rooms.length || c?.lamps.length), comp: HouseTile, name: t("house") },
     { id: "trash", col: 1, on: !!c?.trash, comp: TrashTile, name: t("binTicker") },
+    // only while the fire burns (the tile comes and goes by itself)
+    { id: "stove", col: 1, on: !!x.stovePrefix && kaminSichtbar.value, comp: Kamin, name: t("tileStove") },
     { id: "aufgaben", col: 1, on: !!x.aufgabenUrl, comp: Aufgaben, name: "MachIchGleich" },
     { id: "mower", col: 1, on: !!x.mowerDevice, comp: Navimow, name: t("tileMower") },
     { id: "shopping", col: 1, on: !!x.shoppingLists?.length, comp: ShoppingList, name: t("tileShopping") },

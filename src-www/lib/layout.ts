@@ -23,9 +23,10 @@ const COLUMNS = 3;
 
 /**
  * The columns to show. `defs` are the tiles that are set up, in default order. `raise` moves one tile to second place
- * in its column (a running print). Hidden tiles stay in the columns only while moving.
+ * in its column (a running print); `top` moves one tile to the first place of the right column, wherever it was
+ * (the fireplace while it burns). Hidden tiles stay in the columns only while moving.
  */
-export function arrange(defs: TileDef[], saved: Layout | null, opts: { moving?: boolean; raise?: string } = {}): Layout {
+export function arrange(defs: TileDef[], saved: Layout | null, opts: { moving?: boolean; raise?: string; top?: string } = {}): Layout {
   const present = new Map(defs.map((d) => [d.id, d]));
   const cols: string[][] = Array.from({ length: COLUMNS }, (_, i) =>
     (saved?.cols[i] ?? []).filter((id, k, all) => present.has(id) && id !== PINNED && all.indexOf(id) === k));
@@ -47,6 +48,10 @@ export function arrange(defs: TileDef[], saved: Layout | null, opts: { moving?: 
       const k = c.indexOf(opts.raise);
       if (k > 1) { c.splice(k, 1); c.splice(1, 0, opts.raise); }
     }
+  }
+  if (opts.top && !opts.moving && present.has(opts.top) && !hidden.includes(opts.top)) {
+    for (const c of out) { const k = c.indexOf(opts.top); if (k >= 0) c.splice(k, 1); }
+    out[COLUMNS - 1].unshift(opts.top);
   }
   if (present.has(PINNED)) out[COLUMNS - 1].push(PINNED);
   return { cols: out, hidden };

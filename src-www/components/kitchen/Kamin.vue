@@ -45,25 +45,25 @@ watch(leinwand, malen);
       </div>
     </template>
     <template #content>
-      <div class="flex items-center gap-4">
-        <canvas ref="leinwand" width="32" height="32" class="kamin-feuer rounded-lg shrink-0" aria-hidden="true"></canvas>
-        <div class="min-w-0">
-          <div class="text-4xl font-bold tabular-nums" data-test="kamin-temperatur">{{ grad(k?.temperatur) }}</div>
-          <div class="inline-block mt-1 px-3 py-0.5 rounded-full text-sm font-semibold text-white"
-               :class="nachlegen ? 'bg-orange-600' : 'bg-amber-500'" data-test="kamin-zustand">
-            {{ nachlegen ? t("stoveAddWood") : t("stoveBurning") }}
-          </div>
-          <div class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            {{ t("stovePeak") }} {{ grad(k?.hoechst) }}<span v-if="k?.schwelle !== undefined"> · {{ t("stoveAlertBelow") }} {{ grad(k?.schwelle) }}</span>
-          </div>
-          <div v-if="k?.modul !== undefined" class="text-sm text-gray-500 dark:text-gray-400">{{ t("stoveModule") }} {{ grad(k?.modul) }}</div>
+      <!-- the fire fills the tile; the numbers sit underneath (the author, 07.11.2026) -->
+      <canvas ref="leinwand" width="32" height="32" class="kamin-feuer rounded-xl" aria-hidden="true"></canvas>
+      <div class="flex items-baseline justify-between gap-3 mt-3">
+        <div class="text-4xl font-bold tabular-nums" data-test="kamin-temperatur">{{ grad(k?.temperatur) }}</div>
+        <div class="px-3 py-0.5 rounded-full text-sm font-semibold text-white whitespace-nowrap"
+             :class="nachlegen ? 'bg-orange-600' : 'bg-amber-500'" data-test="kamin-zustand">
+          {{ nachlegen ? t("stoveAddWood") : t("stoveBurning") }}
         </div>
       </div>
+      <div class="flex justify-between gap-3 text-sm text-gray-500 dark:text-gray-400 mt-2 tabular-nums">
+        <span>{{ t("stovePeak") }} {{ grad(k?.hoechst) }}</span>
+        <span v-if="k?.schwelle !== undefined">{{ t("stoveAlertBelow") }} {{ grad(k?.schwelle) }}</span>
+      </div>
+      <div v-if="k?.modul !== undefined" class="text-sm text-gray-500 dark:text-gray-400 tabular-nums">{{ t("stoveModule") }} {{ grad(k?.modul) }}</div>
     </template>
   </card>
   </div>
 </template>
 
 <style scoped>
-.kamin-feuer { width: 7.5rem; height: 7.5rem; image-rendering: pixelated; }
+.kamin-feuer { display: block; width: 100%; aspect-ratio: 1 / 1; image-rendering: pixelated; background: #140d0a; }
 </style>

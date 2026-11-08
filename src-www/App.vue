@@ -70,12 +70,12 @@ const tiles = computed(() => {
     { id: "weather", col: 0, on: !!c?.weather, comp: WeatherTile, name: t("tileWeather") },
     { id: "house", col: 0, on: !!(c?.rooms.length || c?.lamps.length), comp: HouseTile, name: t("house") },
     { id: "trash", col: 1, on: !!c?.trash, comp: TrashTile, name: t("binTicker") },
-    // only while the fire burns (the tile comes and goes by itself)
-    { id: "stove", col: 1, on: !!x.stovePrefix && kaminSichtbar.value, comp: Kamin, name: t("tileStove") },
     { id: "aufgaben", col: 1, on: !!x.aufgabenUrl, comp: Aufgaben, name: "MachIchGleich" },
     { id: "mower", col: 1, on: !!x.mowerDevice, comp: Navimow, name: t("tileMower") },
     { id: "shopping", col: 1, on: !!x.shoppingLists?.length, comp: ShoppingList, name: t("tileShopping") },
     { id: "printer", col: 1, on: !!x.printerInstance, comp: Printer3D, name: t("tilePrinter") },
+    // only while the fire burns: the tile comes and goes by itself and sits at the top of the right column (`top` below)
+    { id: "stove", col: 2, on: !!x.stovePrefix && kaminSichtbar.value, comp: Kamin, name: t("tileStove") },
     { id: "fuel", col: 2, on: !!x.fuelInstance, comp: Fuel, name: t("tileFuel") },
     { id: "dehumidifier", col: 2, on: !!x.dehumidifierDevice, comp: Luftentfeuchter, name: t("tileDehumidifier") },
     { id: "vacuum", col: 2, on: !!x.vacuumDevice, comp: Roborock, name: t("tileVacuum") },
@@ -91,7 +91,7 @@ const tiles = computed(() => {
 const byId = computed(() => Object.fromEntries(tiles.value.map((d) => [d.id, d])));
 const moving = computed(() => draft.value !== null);
 const shown = computed(() => arrange(tiles.value, draft.value ?? savedLayout.value,
-  { moving: moving.value, raise: printing.value ? "printer" : undefined }));
+  { moving: moving.value, raise: printing.value ? "printer" : undefined, top: kaminSichtbar.value ? "stove" : undefined }));
 
 watch(moveRequested, () => startMoving(arrange(tiles.value, savedLayout.value, { moving: true })));
 // a tablet left in move mode goes back to normal after a few minutes untouched, without saving

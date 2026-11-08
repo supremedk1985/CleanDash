@@ -23,6 +23,16 @@ describe("arrange", () => {
     expect(l.hidden).toEqual([]);
   });
 
+  it("puts the `top` tile first in the right column, wherever it was saved", () => {
+    const mit = [...defs.slice(0, 6), { id: "stove", col: 2 }, defs[6]];
+    expect(arrange(mit, null, { top: "stove" }).cols[2]).toEqual(["stove", "fuel", PINNED]);
+    const saved = { cols: [["stove", "energy"], [], []], hidden: [] };
+    expect(arrange(mit, saved, { top: "stove" }).cols).toEqual([["energy", "weather"], ["trash", "mower", "printer"], ["stove", "fuel", PINNED]]);
+    // not while moving (the saved place stays editable), not when hidden
+    expect(arrange(mit, saved, { top: "stove", moving: true }).cols[0]).toEqual(["stove", "energy", "weather"]);
+    expect(arrange(mit, { cols: [[], [], []], hidden: ["stove"] }, { top: "stove" }).cols[2]).toEqual(["fuel", PINNED]);
+  });
+
   it("hides hidden tiles except while moving, and never hides settings", () => {
     const saved = { cols: [[], [], []], hidden: ["fuel", PINNED] };
     expect(arrange(defs, saved).cols[2]).toEqual([PINNED]);

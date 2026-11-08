@@ -23,6 +23,9 @@ import { t } from "../lib/i18n";
           <div class="notice-title">{{ n.title }}</div>
           <div v-if="n.detail" class="notice-detail">{{ n.detail }}</div>
           <div class="notice-buttons">
+            <button v-if="n.action" type="button" class="nb nb-action" :data-test="`action-${n.key}`" @click="n.action.run()">
+              <i :class="n.action.icon" aria-hidden="true"></i>{{ n.action.label }}
+            </button>
             <button type="button" class="nb nb-snooze" :data-test="`snooze-${n.key}`" @click="snooze(n)">
               <i class="mdi mdi-alarm-snooze" aria-hidden="true"></i>{{ t("snooze") }}
             </button>

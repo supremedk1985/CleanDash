@@ -165,7 +165,8 @@ export const roborock = ref<Roborock>();
 // Für Geräte, die der Adapter nur ohne Werte kennt: ein eigenes ioBroker-Skript fragt sie selbst ab und schreibt in
 // einen Ordner (f25Prefix) einen fertigen Hinweis — die Regeln stehen dort, nicht hier. Format: README.
 
-/** Optional second robot reported by a script of your own (f25Prefix: hinweis, akku, lebenszeichen) */
+/** Optional second robot reported by a script of your own (f25Prefix: hinweis, akku, lebenszeichen; optional
+ *  starten + startStand for a start button) */
 const F25 = () => rawConfig.value.f25Prefix ?? "";
 
 export interface F25Stand {
@@ -174,6 +175,8 @@ export interface F25Stand {
   akku: number;
   /** letzte Antwort des Geräts an das Skript, ms */
   lebenszeichen: number;
+  /** Startknopf: "laeuft", "ok", "fehlgeschlagen" oder "" (leer auch, wenn das Skript keinen Knopf kennt) */
+  startStand?: string;
 }
 
 export const f25 = ref<F25Stand>();
@@ -187,19 +190,37 @@ export const F25_HOECHSTENS_ALT_MS = 15 * 60 * 1000;
 export function f25Meldungen(f: F25Stand | undefined, jetzt = Date.now()): Stationsmeldung[] {
   if (!f || !f.lebenszeichen || jetzt - f.lebenszeichen > F25_HOECHSTENS_ALT_MS) return [];
   // „wartet" (Akku noch zu leer) bewusst ohne Popup: die Meldung kommt erst, wenn es so weit ist.
-  if (f.hinweis === "bereit")
-    return [{ schluessel: "f25-bereit", icon: "mdi-water-sync",
-      text: `${rawConfig.value.f25Name?.trim() || "Der zweite Roboter"} hat jetzt ${f.akku} % Akku – bitte die Selbstreinigung starten.` }];
-  return [];
+  if (f.hinweis !== "bereit") return [];
+  const name = rawConfig.value.f25Name?.trim() || "Der zweite Roboter";
+  const basis = { schluessel: "f25-bereit", icon: "mdi-water-sync" };
+  // Daniel, 08.11.2026: „Kann man da dann auch sagen, dass er die Selbstreinigung starten soll als Button?"
+  if (f.startStand === "laeuft") return [{ ...basis, text: `${name}: Selbstreinigung wird gestartet …` }];
+  if (f.startStand === "fehlgeschlagen")
+    return [{ ...basis, text: `${name}: Start hat nicht geklappt – bitte die Selbstreinigung am Gerät starten.` }];
+  return [{ ...basis, aktion: true, text: `${name} hat jetzt ${f.akku} % Akku – bitte die Selbstreinigung starten.` }];
+}
+
+/** Startknopf im Popup: das Skript schickt den Befehl und meldet über startStand zurück. Bis dahin zeigt das Popup
+ *  sofort „wird gestartet“, und der F25 wird im Fünf-Sekunden-Takt nachgefragt statt im langsamen. */
+export async function f25Starten() {
+  if (!F25() || !f25.value) return;
+  f25.value = { ...f25.value, startStand: "laeuft" };
+  if (!(await setState(`${F25()}.starten`, true))) { f25.value = { ...f25.value, startStand: "fehlgeschlagen" }; return; }
+  for (let i = 0; i < 12; i++) {
+    await new Promise((r) => setTimeout(r, 5000));
+    await pollF25().catch(() => undefined);
+    if (f25.value?.startStand !== "laeuft") break;
+  }
 }
 
 async function pollF25() {
   if (!F25()) return;
-  const w = await fetchBulk([`${F25()}.hinweis`, `${F25()}.akku`, `${F25()}.lebenszeichen`]);
+  const w = await fetchBulk([`${F25()}.hinweis`, `${F25()}.akku`, `${F25()}.lebenszeichen`, `${F25()}.startStand`]);
   f25.value = {
     hinweis: String(w[`${F25()}.hinweis`] ?? ""),
     akku: Number(w[`${F25()}.akku`] ?? -1),
     lebenszeichen: Number(w[`${F25()}.lebenszeichen`] ?? 0),
+    startStand: String(w[`${F25()}.startStand`] ?? ""),
   };
 }
 
@@ -307,6 +328,8 @@ export interface Stationsmeldung {
   schluessel: string;
   text: string;
   icon: string;
+  /** bietet im Popup einen Startknopf an (nur der F25) */
+  aktion?: boolean;
 }
 
 /**

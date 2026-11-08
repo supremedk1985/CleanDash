@@ -10,7 +10,7 @@ import { num, truthy, windowState } from "./values";
 import { dishwasherIds, trashIds } from "./config";
 import { machine, pickup } from "./tiles";
 import { maeherMeldungen, navimow } from "../features/navimow";
-import { f25, f25Meldungen, roborock, stationsMeldungen } from "../features/roborock";
+import { f25, f25Meldungen, f25Starten, roborock, stationsMeldungen } from "../features/roborock";
 import { t } from "./i18n";
 
 export interface Notice {
@@ -27,6 +27,8 @@ export interface Notice {
   bin?: { label: string };
   /** offers "Done" besides the snooze: the notice then stays away until its cause changes */
   done?: boolean;
+  /** a button that does the thing asked for (e.g. start the second robot's self-cleaning) */
+  action?: { label: string; icon: string; run: () => Promise<void> };
 }
 
 const heatingWithOpenWindow = computed<Notice[]>(() =>
@@ -91,6 +93,7 @@ const vacuumNotices = computed<Notice[]>(() => [
   })),
   ...f25Meldungen(f25.value).map((m): Notice => ({
     key: `vacuum:${m.schluessel}`, level: "alert", eyebrow: "F25 Ultra", title: m.text, color: "#f08a4b", icon: `mdi ${m.icon}`, done: true,
+    action: m.aktion ? { label: t("startSelfClean"), icon: "mdi mdi-play", run: f25Starten } : undefined,
   })),
 ]);
 

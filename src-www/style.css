@@ -95,7 +95,8 @@ h1, h2, h3, p { margin: 0; }
 .notice-eyebrow { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .notice-title { font-size: 2.6rem; font-weight: 700; line-height: 1.1; }
 .notice-detail { color: var(--muted); font-size: 1.3rem; margin-top: 2px; }
-.notice-buttons { display: flex; gap: 12px; margin-top: 16px; }
+.notice-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.nb-action { flex-basis: 100%; background: #f08a4b; color: #fff; }
 .nb { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 6px; padding: 18px; font-size: 1.25rem; font-weight: 600; cursor: pointer; }
 .nb-snooze { background: color-mix(in srgb, var(--muted) 20%, transparent); color: var(--text); }
 .nb-done { background: #22c55e; color: #fff; }

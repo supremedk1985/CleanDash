@@ -66,6 +66,17 @@ describe("f25Meldungen", () => {
     expect(m[0].text).toContain("Selbstreinigung starten");
     expect(m[0].text).toContain("15 %");
   });
+  it("bietet den Startknopf an und zeigt danach, wie der Start ausging", () => {
+    expect(f25Meldungen(stand("bereit", 70), jetzt)[0].aktion).toBe(true);
+    const laeuft = f25Meldungen({ ...stand("bereit", 70), startStand: "laeuft" }, jetzt)[0];
+    expect(laeuft.aktion).toBeFalsy();
+    expect(laeuft.text).toContain("wird gestartet");
+    const nein = f25Meldungen({ ...stand("bereit", 70), startStand: "fehlgeschlagen" }, jetzt)[0];
+    expect(nein.aktion).toBeFalsy();
+    expect(nein.text).toContain("am Gerät");
+    // gleicher Schlüssel: Snooze und „Erledigt“ gelten über alle drei Fassungen
+    expect(laeuft.schluessel).toBe("f25-bereit");
+  });
   it("schweigt, wenn das Skript sich zu lange nicht gemeldet hat", () => {
     expect(f25Meldungen(stand("bereit", 20, F25_HOECHSTENS_ALT_MS + 1), jetzt)).toEqual([]);
     expect(f25Meldungen({ hinweis: "bereit", akku: 20, lebenszeichen: 0 }, jetzt)).toEqual([]);

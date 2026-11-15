@@ -34,14 +34,25 @@ describe("fireplace analysis", () => {
     expect(f[1].von).toBe(min(60));
   });
 
-  it("trennt zwei Feuer, die zwischendurch unter die Aus-Schwelle fallen", () => {
+  it("trennt zwei Feuer, die lange genug auskühlen", () => {
     const temps: VPunkt[] = [
-      [80, min(0)], [200, min(10)], [40, min(20)], [90, min(30)], [150, min(40)], [30, min(50)],
+      [80, min(0)], [200, min(10)], [40, min(20)], [40, min(60)], [90, min(65)], [150, min(75)], [30, min(85)],
     ];
-    const f = feuerAbschnitte(temps, min(51));
+    const f = feuerAbschnitte(temps, min(86));
     expect(f).toHaveLength(2);
     expect(f[0].hoechst).toBe(200);
     expect(f[1].hoechst).toBe(150);
+  });
+
+  it("fasst ein Feuer mit kurzem Aussetzer (Fühlerfehler) zu einem zusammen", () => {
+    const temps: VPunkt[] = [
+      [80, min(0)], [200, min(10)], [40, min(20)], [90, min(28)], [150, min(35)], [30, min(45)],
+    ];
+    const f = feuerAbschnitte(temps, min(46));
+    expect(f).toHaveLength(1);
+    expect(f[0].hoechst).toBe(200);
+    expect(f[0].von).toBe(min(0));
+    expect(f[0].bis).toBe(min(45));
   });
 
   it("sortiert unsortierte Punkte und ignoriert Lücken (null)", () => {

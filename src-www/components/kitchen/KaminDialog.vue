@@ -68,7 +68,10 @@ watch([visible, bereich], ([offen]) => { if (offen) laden(); });
 // Das Fenster der „Feuer"-Ansicht liegt um das letzte Feuer; die anderen Ansichten zeigen den ganzen Zeitraum.
 const fenster = computed(() => feuerFenster(feuer.value, bis.value));
 const xVon = computed(() => (istFeuer.value && fenster.value ? fenster.value.von : von.value));
-const xBis = computed(() => (istFeuer.value && fenster.value ? fenster.value.bis : bis.value));
+// Brennt das letzte Feuer noch, reicht die Kurve bis „jetzt" (nicht nur bis zum letzten Verlaufspunkt)
+const xBis = computed(() =>
+  istFeuer.value && fenster.value ? (fenster.value.feuer.laeuft ? bis.value : fenster.value.bis) : bis.value
+);
 const feuerImFenster = computed(() =>
   istFeuer.value ? (fenster.value ? [fenster.value.feuer] : []) : feuer.value.filter((f) => f.bis >= von.value)
 );

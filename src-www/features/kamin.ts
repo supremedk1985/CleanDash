@@ -78,6 +78,8 @@ export const ANHEIZ_C = 70;
 export const AUS_C = 50;
 /** Reißt der Verlauf länger als das ab, gilt das Feuer am letzten Punkt als beendet (Gerät war weg). */
 const MAX_LUECKE_MS = 30 * 60_000;
+/** Zwei Feuer näher als das gelten als eines (kurzer Aussetzer, Fühlerfehler, kurzes Durchsacken beim Nachlegen). */
+const ZUSAMMEN_MS = 20 * 60_000;
 
 function nurZahlen(p: VPunkt[]): [number, number][] {
   return p.filter((x): x is [number, number] => typeof x[0] === "number").sort((a, b) => a[1] - b[1]);
@@ -104,7 +106,19 @@ export function feuerAbschnitte(temps: VPunkt[], jetzt: number, anheiz = ANHEIZ_
     vorT = t;
   }
   if (aktiv) { aktiv.laeuft = jetzt - vorT < MAX_LUECKE_MS; feuer.push(aktiv); }
-  return feuer;
+  // Benachbarte Feuer mit nur kurzer Lücke zusammenfassen (ein kurzer Fühler-Aussetzer soll ein Feuer nicht zerreißen)
+  const zusammen: Feuer[] = [];
+  for (const f of feuer) {
+    const vor = zusammen[zusammen.length - 1];
+    if (vor && f.von - vor.bis < ZUSAMMEN_MS) {
+      vor.bis = f.bis;
+      vor.laeuft = f.laeuft;
+      if (f.hoechst > vor.hoechst) { vor.hoechst = f.hoechst; vor.hoechstZeit = f.hoechstZeit; }
+    } else {
+      zusammen.push({ ...f });
+    }
+  }
+  return zusammen;
 }
 
 /** Die Zeitpunkte, zu denen „Holz nachlegen" gemeldet wurde (Übergang des Zustands nach „nachlegen"). */

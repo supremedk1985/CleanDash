@@ -80,7 +80,7 @@ export class IoBrokerSource implements Source {
     const out: Record<string, [unknown, number][]> = {};
     await Promise.all(ids.map(async (id) => {
       const r = (await this.conn.getHistory(id, {
-        start: from, end: to, aggregate: step ? "average" : "none", ...(step ? { step } : {}), ignoreNull: true, from: false, ack: false, q: false,
+        start: from, end: to, aggregate: step ? "average" : "none", ...(step ? { step } : { count: 200000 }), ignoreNull: true, from: false, ack: false, q: false,
       } as ioBroker.GetHistoryOptions)) as unknown as { val: unknown; ts: number }[] | { values?: { val: unknown; ts: number }[] };
       const list = Array.isArray(r) ? r : r?.values ?? [];
       out[id] = list.map((p) => [p.val, p.ts]);

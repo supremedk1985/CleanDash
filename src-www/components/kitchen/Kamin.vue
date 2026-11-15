@@ -7,6 +7,9 @@ import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { kamin } from "../../features/kamin";
 import { Lagerfeuer } from "../../lib/lagerfeuer";
 import { t } from "../../lib/i18n";
+import KaminDialog from "./KaminDialog.vue";
+
+const offen = ref(false);
 
 const k = kamin;
 const leinwand = ref<HTMLCanvasElement | null>(null);
@@ -37,7 +40,8 @@ watch(leinwand, malen);
 
 <template>
   <div>
-  <card data-test="kamin" :class="nachlegen ? 'ring-2 ring-orange-500' : ''">
+  <card data-test="kamin" class="cursor-pointer" :class="nachlegen ? 'ring-2 ring-orange-500' : ''"
+    role="button" tabindex="0" @click="offen = true" @keydown.enter="offen = true" @keydown.space.prevent="offen = true">
     <template #title>
       <div class="flex items-center gap-2">
         <span class="mdi mdi-fireplace" :class="nachlegen ? 'text-orange-500' : 'text-amber-500'"></span>
@@ -61,6 +65,7 @@ watch(leinwand, malen);
       <div v-if="k?.modul !== undefined" class="text-sm text-gray-500 dark:text-gray-400 tabular-nums">{{ t("stoveModule") }} {{ grad(k?.modul) }}</div>
     </template>
   </card>
+  <KaminDialog v-model:visible="offen" />
   </div>
 </template>
 

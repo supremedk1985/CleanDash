@@ -4,7 +4,7 @@
  */
 import { Connection } from "@iobroker/socket-client";
 import type { RawConfig } from "./config";
-import { DEMO_NATIVE, DEMO_VALUES, demoConfig } from "./demo";
+import { DEMO_NATIVE, DEMO_VALUES, demoConfig, demoKaminReihe } from "./demo";
 
 export interface SystemInfo {
   language?: string;
@@ -151,6 +151,8 @@ export class DemoSource implements Source {
     // a made-up day: the value now and then, every 20 minutes, with some wobble
     const out: Record<string, [unknown, number][]> = {};
     for (const id of ids) {
+      const kamin = demoKaminReihe(id, from, to);
+      if (kamin) { out[id] = kamin; continue; }
       const v = this.values.get(id);
       const pts: [unknown, number][] = [];
       for (let t = from; t <= to; t += 20 * 60_000) pts.push([typeof v === "number" ? Math.max(0, v * (0.6 + 0.4 * Math.sin(t / 3.6e6))) : v ?? null, t]);

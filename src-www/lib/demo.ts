@@ -14,6 +14,7 @@ export const DEMO_CONFIG: RawConfig = {
   energyTitle: "",
   trashInstance: "trashschedule.0",
   dishwasherDevice: "homeconnect.0.DEMO",
+  stovePrefix: d("stove"),
   energySolar: d("e.solar"),
   energyConsumption: d("e.home"),
   energyGridImport: d("e.gridIn"),
@@ -91,6 +92,9 @@ export const DEMO_NATIVE: Record<string, unknown> = {
   "system.adapter.trashschedule.0": { trashtypes: [{ name: "Recycling", color: "#d6b51e" }, { name: "Paper", color: "#2f6fd6" }, { name: "Residual", color: "#5b5b5b" }] },
 };
 
+/** Eckwerte des erfundenen Demo-Kamins (siehe demoKaminTemp). */
+export const DEMO_STOVE = { aus: 20, peak: 236, schwelle: 168 };
+
 export const DEMO_VALUES: Record<string, unknown> = {
   ...demoWeather(),
   [d("e.solar")]: 1240, [d("e.home")]: 410, [d("e.gridIn")]: 0, [d("e.gridOut")]: 230, [d("e.soc")]: 64, [d("e.charge")]: 600, [d("e.discharge")]: 0,
@@ -116,7 +120,69 @@ export const DEMO_VALUES: Record<string, unknown> = {
   [d("l.kids.on")]: true, [d("l.kids.level")]: 15, [d("l.kids.reach")]: true,
   [d("l.porch.on")]: true, [d("l.garden.on")]: false,
   [d("s.living1")]: 0, [d("s.living2")]: 40, [d("s.bed")]: 0,
+  [d("stove.temperatur")]: Math.round(demoKaminTemp(Date.now()) * 10) / 10, [d("stove.zustand")]: demoKaminZustand(Date.now()),
+  [d("stove.kraft")]: Math.max(0, Math.min(1, (demoKaminTemp(Date.now()) - DEMO_STOVE.aus) / (DEMO_STOVE.peak - DEMO_STOVE.aus))),
+  [d("stove.hoechst")]: DEMO_STOVE.peak, [d("stove.schwelle")]: DEMO_STOVE.schwelle, [d("stove.modul")]: 19,
+  [d("stove.erreichbar")]: true, [d("stove.meldung")]: "",
 };
+
+/**
+ * Ein erfundener Kamin für die Demo: jeden Abend ab 18 Uhr ein Feuer über rund vier Stunden, an geraden Tagen zusätzlich
+ * eines am Morgen. Die Temperatur steigt schnell auf die Spitze, fällt dann langsam; einmal je Feuer wird nachgelegt (ein
+ * zweiter Buckel). So zeigt das Analyse-Popup echte Abbrände, ohne ein echtes Gerät. Eine reine Funktion der Zeit.
+ */
+
+/** Beginn (ms) des jüngsten Demo-Feuers bei oder vor `t`, oder null. */
+function demoFeuerStart(t: number): number | null {
+  const d = new Date(t);
+  const kandidaten: number[] = [];
+  // Ein gerade laufendes Feuer, damit die Kachel in der Demo immer sichtbar ist (es begann vor 40 Minuten).
+  kandidaten.push(Date.now() - 40 * 60_000);
+  for (let zurueck = 0; zurueck <= 1; zurueck++) {
+    const tag = new Date(d.getFullYear(), d.getMonth(), d.getDate() - zurueck);
+    kandidaten.push(new Date(tag.getFullYear(), tag.getMonth(), tag.getDate(), 18, 0, 0).getTime()); // Abendfeuer
+    if (tag.getDate() % 2 === 0) kandidaten.push(new Date(tag.getFullYear(), tag.getMonth(), tag.getDate(), 8, 0, 0).getTime()); // Morgenfeuer
+  }
+  const vergangen = kandidaten.filter((s) => s <= t && t - s <= 5 * 3600_000).sort((a, b) => b - a);
+  return vergangen[0] ?? null;
+}
+
+export function demoKaminTemp(t: number): number {
+  const s = demoFeuerStart(t);
+  const grund = DEMO_STOVE.aus + 2 * Math.sin(t / 7e6);
+  if (s === null) return grund;
+  const altMin = (t - s) / 60_000;
+  // Anstieg in 25 min auf die Spitze, danach exponentieller Abfall
+  const anstieg = DEMO_STOVE.aus + (DEMO_STOVE.peak - DEMO_STOVE.aus) * Math.min(1, altMin / 25);
+  const abfall = DEMO_STOVE.aus + (DEMO_STOVE.peak - DEMO_STOVE.aus) * Math.exp(-(altMin - 25) / 95);
+  let temp = altMin <= 25 ? anstieg : abfall;
+  // Nachlegen: ein zweiter Buckel ab Minute 135 für 45 min
+  if (altMin >= 135 && altMin <= 180) temp += 70 * Math.sin(((altMin - 135) / 45) * Math.PI);
+  return Math.max(grund, temp);
+}
+
+export function demoKaminZustand(t: number): string {
+  const temp = demoKaminTemp(t);
+  if (temp < 60) return "kalt";
+  const s = demoFeuerStart(t);
+  const steigt = s !== null && (t - s) / 60_000 <= 25;
+  return steigt || temp >= DEMO_STOVE.schwelle ? "brennt" : "nachlegen";
+}
+
+/** Verlauf des Demo-Kamins für die History-Antwort (Punkte [Wert, Zeit]). */
+export function demoKaminReihe(id: string, from: number, to: number): [unknown, number][] | null {
+  const feld = id.endsWith(".temperatur") ? "temperatur" : id.endsWith(".modul") ? "modul"
+    : id.endsWith(".schwelle") ? "schwelle" : id.endsWith(".zustand") ? "zustand" : null;
+  if (!feld) return null;
+  const pts: [unknown, number][] = [];
+  for (let t = from; t <= to; t += 15 * 60_000) {
+    if (feld === "temperatur") pts.push([Math.round(demoKaminTemp(t) * 10) / 10, t]);
+    else if (feld === "modul") pts.push([19 + Math.round(Math.sin(t / 5e6) * 2), t]);
+    else if (feld === "schwelle") pts.push([DEMO_STOVE.schwelle, t]);
+    else pts.push([demoKaminZustand(t), t]);
+  }
+  return pts;
+}
 
 const GERMAN: Record<string, string> = {
   "Living room": "Wohnzimmer", Kitchen: "Küche", Office: "Büro", Utility: "Hauswirtschaft", Bedroom: "Schlafzimmer",

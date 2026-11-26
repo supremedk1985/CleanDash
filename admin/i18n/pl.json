@@ -94,5 +94,7 @@
   "e.g. The mop. Empty: The second robot": "np. Mop. Puste: Drugi robot",
   "e.g. Call the kids": "np. Zawołaj dzieci",
   "Fireplace monitor: datapoint folder (optional)": "Monitor kominka: folder punktów danych (opcjonalnie)",
-  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Folder z temperatur, zustand, kraft, … (zobacz README). Kafelek pojawia się tylko, gdy ogień się pali"
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Folder z temperatur, zustand, kraft, … (zobacz README). Kafelek pojawia się tylko, gdy ogień się pali",
+  "Warn below this humidity (%)": "Ostrzegaj poniżej tej wilgotności (%)",
+  "A notice names every room that is drier; it goes away 3 % above. 0 = no warning": "Komunikat wymienia każde suchsze pomieszczenie; znika 3 % powyżej. 0 = bez ostrzeżenia"
 }

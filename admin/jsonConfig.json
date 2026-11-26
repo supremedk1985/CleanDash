@@ -183,6 +183,19 @@
           "md": 12,
           "lg": 12,
           "xl": 12
+        },
+        "humidityMin": {
+          "type": "number",
+          "label": "Warn below this humidity (%)",
+          "help": "A notice names every room that is drier; it goes away 3 % above. 0 = no warning",
+          "min": 0,
+          "max": 80,
+          "newLine": true,
+          "xs": 12,
+          "sm": 6,
+          "md": 4,
+          "lg": 3,
+          "xl": 3
         }
       }
     },

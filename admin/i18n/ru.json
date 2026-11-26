@@ -94,5 +94,7 @@
   "e.g. The mop. Empty: The second robot": "напр. Моющий робот. Пусто: Второй робот",
   "e.g. Call the kids": "напр. Позвать детей",
   "Fireplace monitor: datapoint folder (optional)": "Контроль камина: папка точек данных (необязательно)",
-  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Папка с temperatur, zustand, kraft, … (см. README). Плитка видна только пока горит огонь"
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Папка с temperatur, zustand, kraft, … (см. README). Плитка видна только пока горит огонь",
+  "Warn below this humidity (%)": "Предупреждать ниже этой влажности (%)",
+  "A notice names every room that is drier; it goes away 3 % above. 0 = no warning": "Сообщение называет каждую более сухую комнату; исчезает на 3 % выше. 0 = без предупреждения"
 }

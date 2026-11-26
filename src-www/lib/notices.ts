@@ -12,6 +12,7 @@ import { machine, pickup } from "./tiles";
 import { maeherMeldungen, navimow } from "../features/navimow";
 import { f25, f25Meldungen, f25Starten, roborock, stationsMeldungen } from "../features/roborock";
 import { t } from "./i18n";
+import { dryRooms } from "../features/humidity";
 
 export interface Notice {
   /** stable per cause, e.g. "window-heating:Kitchen" */
@@ -43,6 +44,28 @@ const heatingWithOpenWindow = computed<Notice[]>(() =>
     }];
   }),
 );
+
+/** Rooms below the humidity limit, with a little hysteresis (features/humidity). The previous result is kept outside
+ *  the computed on purpose: it only recomputes when a reading or the configuration changes. */
+let lastDry = new Set<string>();
+const dryNow = computed(() => {
+  const min = config.value?.humidityMin ?? 0;
+  const rooms = (config.value?.rooms ?? []).filter((r) => r.humidity).map((r) => ({ name: r.name, value: num(values[r.humidity!]) }));
+  lastDry = dryRooms(rooms, min, lastDry);
+  return { min, rooms: rooms.filter((r) => lastDry.has(r.name)) };
+});
+
+/** Dry air: one card for all dry rooms, driest first. "Done" keeps it away until another room gets dry or all are fine. */
+const dryAir = computed<Notice[]>(() => {
+  const { min, rooms } = dryNow.value;
+  if (!rooms.length) return [];
+  const list = [...rooms].sort((a, b) => (a.value ?? 100) - (b.value ?? 100));
+  return [{
+    key: `humidity:${list.map((r) => r.name).sort().join(",")}`, level: "alert", eyebrow: t("airDry"), title: t("airTooDry"),
+    detail: t("airDryDetail", { rooms: list.map((r) => (r.value === null ? r.name : `${r.name} ${Math.round(r.value)} %`)).join(", "), min }),
+    color: "#38bdf8", icon: "mdi mdi-water-percent-alert", done: true,
+  }];
+});
 
 const unreachableLamps = computed<Notice[]>(() => {
   const names = (config.value?.lamps ?? [])
@@ -107,6 +130,7 @@ export const noticeSources: { prefix: string; ready: () => boolean; list: Comput
   // both days AND types: with only one of them known there is no notice yet, and the done mark must not be forgotten
   { prefix: "trash:", ready: () => !!config.value?.trash && trashIds(config.value.trash).slice(0, 2).every((id) => values[id] !== undefined && values[id] !== null), list: binDay },
   { prefix: "window-heating:", ready: () => true, list: heatingWithOpenWindow },
+  { prefix: "humidity:", ready: () => (config.value?.rooms ?? []).every((r) => !r.humidity || values[r.humidity] !== undefined), list: dryAir },
   { prefix: "dishwasher:", ready: () => !!config.value?.dishwasher && values[dishwasherIds(config.value.dishwasher).state] !== undefined, list: dishwasherNotices },
   { prefix: "mower:", ready: () => !!navimow.value.zustand, list: mowerNotices },
   { prefix: "vacuum:", ready: () => !!roborock.value, list: vacuumNotices },

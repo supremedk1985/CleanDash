@@ -94,5 +94,7 @@
   "e.g. The mop. Empty: The second robot": "例如 拖地机器人。留空：第二台机器人",
   "e.g. Call the kids": "例如 叫孩子们",
   "Fireplace monitor: datapoint folder (optional)": "壁炉监控：数据点文件夹（可选）",
-  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "包含 temperatur、zustand、kraft 等的文件夹（见 README）。仅在炉火燃烧时显示该磁贴"
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "包含 temperatur、zustand、kraft 等的文件夹（见 README）。仅在炉火燃烧时显示该磁贴",
+  "Warn below this humidity (%)": "湿度低于此值时提醒 (%)",
+  "A notice names every room that is drier; it goes away 3 % above. 0 = no warning": "提示会列出每个更干燥的房间；高出 3% 后消失。0 = 不提醒"
 }

@@ -94,5 +94,7 @@
   "e.g. The mop. Empty: The second robot": "bijv. De dweilrobot. Leeg: De tweede robot",
   "e.g. Call the kids": "bijv. Kinderen roepen",
   "Fireplace monitor: datapoint folder (optional)": "Haardbewaking: map met datapunten (optioneel)",
-  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Map met temperatur, zustand, kraft, … (zie README). De tegel verschijnt alleen zolang het vuur brandt"
+  "Folder with temperatur, zustand, kraft, … (see README). The tile shows only while the fire burns": "Map met temperatur, zustand, kraft, … (zie README). De tegel verschijnt alleen zolang het vuur brandt",
+  "Warn below this humidity (%)": "Waarschuwen onder deze luchtvochtigheid (%)",
+  "A notice names every room that is drier; it goes away 3 % above. 0 = no warning": "Een melding noemt elke kamer die droger is; ze verdwijnt 3 % erboven. 0 = geen waarschuwing"
 }

@@ -81,6 +81,8 @@ export interface RawConfig {
   showSettingsPanel?: boolean;
   confirmWrites?: ConfirmMode;
   theme?: ThemeMode;
+  /** warn when a room is drier than this (percent); 0 or empty = no warning */
+  humidityMin?: number;
   rooms?: RoomRow[];
   lights?: LightRow[];
   shutters?: ShutterRow[];
@@ -176,6 +178,8 @@ export interface Config {
   /** Floors in the order they first appear in the room list; "" means no floor given. */
   floors: { name: string; rooms: Room[] }[];
   rooms: Room[];
+  /** warn below this relative humidity in a room (percent); 0 = off */
+  humidityMin: number;
   /** Lamps whose room is not in the room list. */
   otherLamps: Lamp[];
   lamps: Lamp[];
@@ -294,6 +298,7 @@ export function buildConfig(raw: RawConfig | null | undefined): Config {
     theme: r.theme === "light" || r.theme === "dark" ? r.theme : "auto",
     floors,
     rooms,
+    humidityMin: Math.min(positive(r.humidityMin, 0), 100),
     otherLamps: lamps.filter((l) => !rooms.some((x) => x.name === l.room)),
     lamps,
   };
